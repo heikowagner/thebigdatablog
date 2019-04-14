@@ -1,6 +1,6 @@
 /*
 --Bandit.js
--This Program computes an decision in the multiarmed bandit problem
+-This Program computes an optimal lever and average return of the multiarmed bandit problem
 
 --Input
 f=[f_1(x),...,f_K(x)]       -An Array of size K containig functions given a cetrain reward r eg. binomial or a normal distribution with different means
