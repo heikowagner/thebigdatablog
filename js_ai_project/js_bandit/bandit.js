@@ -22,7 +22,7 @@ bandit = function(f, T) {
         //determine the position with the highest value
         var j = x_out.map((x) => x[0] / x[1] + Math.sqrt((2 * Math.log(t)) / x[1]))
         a = j.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
-        //pull maximum leaver
+        //pull maximum lever
         x_out[a] = [x_out[a][0] + f[a](), x_out[a][1] + 1]
     }
     return [a, x_out[a][0] / x_out[a][1]]
@@ -38,7 +38,7 @@ for (var k = 0; k < K; k++) {
     f.push(eval('() => Math.random()*' + k))
 }
 
-//The Bandit should return 9
+//The Bandit should return a=9 and an average return of approx 4.5
 bandit(f, 10000)
 
 
@@ -49,7 +49,7 @@ class Casino {
         this.K = K;
         this.m = m;
     }
-    leavers() {
+    levers() {
         var f = []
         for (var k = 0; k < this.K; k++) {
             f.push(eval('() => Math.random()*' + k * this.m))
@@ -65,8 +65,8 @@ var K = 10
 
 var f_2 = []
 for (var k = 1; k <= K_dash; k++) {
-    f_2.push(eval('() => { return bandit(new Casino(' + K + ',' + k + ').leavers() ,1000)[1] }'))
+    f_2.push(eval('() => { return bandit(new Casino(' + K + ',' + k + ').levers() ,1000)[1] }'))
 }
 
-//The Bandit should return 4
+//The Bandit should return a=4  and an average return of approx 20
 bandit(f_2, 1000)
