@@ -195,6 +195,47 @@ bandit(fn, 100000)
 var x_out = fn.map((x) => [x(), 1])
 
 
+//use the lever class
+
+//incoperate bandit_class and game rules
+
+random_bandit_game(state)
+{
+    new bandit_turn(state);
+    //play a random game
+    bandit_game(dummy).reward
+}
+
+//the returned reward of the bandit class can be a value or a set of possible states
+
+function random_bandit_game(state) {
+    //play initial turn
+    var choices = gamerules(state, 1)
+    while (typeof choices.reward === null) {
+        var K = choices.f.length
+        var decision = Math.floor(Math.random() * K)
+        //console.log(choices.f[decision])
+        choices = gamerules(choices.f[decision], choices.turn, 0)
+    }
+    //console.log(choices)
+    return choices
+}
+
+
+//evaluate the current state of the world to know possible choices
+var choices = gamerules(test, 1)
+
+
+var fn = []
+for (var k = 0; k < choices.f.length; k++) {
+    console.log(choices.f[k])
+    var dummy = choices.f[k]
+    fn.push( function() { return random_bandit_game(dummy).reward } )
+}
+
+fn[1]()
+
+bandit(fn, 100000)
 
 
 

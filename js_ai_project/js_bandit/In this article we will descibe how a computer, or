@@ -1,0 +1,7 @@
+In this article we will descibe how a computer, or an AI, can be taught rules. When people talk about an etical Ai, the only way to archieve this goal is by
+defining the corresponding set of rules. In game theorie this is kown as mechanism design. As an example, after a mathematical formulation, we will give an example written in javascript how such rules can be implemented.
+
+Formally, let ( \Gamma, \mathcal{B}, p) be a propability space. In the interpretation ( \Gamma, \mathcal{B} ) is the space of states of the game plus rewards and \omega \in \Omega is the current state of the game. 
+
+In the following we want to construct a setup for turnbased games like chess or go. These kind of sequential games with full information are very well to start with.The idea is that Players P_1, P_2 sequencially make a move and are fully are of the state of the game at all times. \mathcal{P} \subset \Omega are the states of the world for player 1. 
+We define a Gamerule G_1: \mathcal{P}_1 -> \mathcal{P}_2 gives all reachable states (\omega_1, \dots, \omega_M) which are reachable within on move (turn). In games like chess G_1 and G_2 are symmetric. A game (tournament) can then be described as a segence of moves G_2(G_1(\omega)...) = c \in \mathbb{R} where c is an reward.
