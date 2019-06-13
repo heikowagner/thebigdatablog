@@ -47,6 +47,27 @@ class bandit_turn {
 }
 
 
+//A class might be good to introduce long term and short hand memory
+class memory {
+    constructor(omega) {
+        this.mem = [];
+    }
+    memorize(state, levers) {
+        this.mem.push([state,levers])
+        return [state,levers]
+    }
+    find_memory_position() {
+        return pos= this.mem.map( (x,i) => [x[0]==state,i]).reduce( x => )
+    }
+    find_memory(state) {
+        var pos= this.find_memory_position(state)
+        return this.mem[pos]
+    }
+    forget() {
+        return true
+    }
+}
+
 bandit = function(f, T) {
     //pull each lever once
     var band= new bandit_turn(f);
@@ -116,5 +137,9 @@ function random_bandit_game(state) {
 }
 
 
-
+//In a paralell version we will not take the best but choose the one with the highest
+//propability to win using a binomial distribution. We choose a lot simulatanily and
+//update the props accordingly on the fly.
+// This could also be
+//a nice paper
 
