@@ -19,7 +19,6 @@ metadata:
   name: nginx
   labels:
     app: nginx
-  namespace: deployment-demo
   annotations:
     monitoring: "true"
 spec:
