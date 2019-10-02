@@ -1,0 +1,587 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"pull",
+				"pull_lever"
+			],
+			[
+				"wlan",
+				"wlanssid"
+			],
+			[
+				"wla",
+				"wlanpasswort"
+			],
+			[
+				"con",
+				"content"
+			],
+			[
+				"set",
+				"setHeaders"
+			],
+			[
+				"get",
+				"get_firmware"
+			],
+			[
+				"map",
+				"flatMap"
+			],
+			[
+				"row",
+				"rowsum"
+			],
+			[
+				"tra",
+				"transpose"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"is",
+				"is_hidden"
+			],
+			[
+				"dar",
+				"dark_mode"
+			],
+			[
+				"wl",
+				"wlanssid"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"li",
+				"LitElement"
+			],
+			[
+				"se",
+				"selectedDevice"
+			],
+			[
+				"old",
+				"oldVal"
+			],
+			[
+				"positi",
+				"positions"
+			],
+			[
+				"devie",
+				"device-init"
+			],
+			[
+				"cols",
+				"console"
+			],
+			[
+				"swar",
+				"swarm_key"
+			],
+			[
+				"contai",
+				"containers"
+			],
+			[
+				"subsc",
+				"Subscribe"
+			],
+			[
+				"select",
+				"selectedPis"
+			],
+			[
+				"selec",
+				"selectedPis"
+			],
+			[
+				"s",
+				"subscriptions"
+			],
+			[
+				"true",
+				"true"
+			],
+			[
+				"fro",
+				"forEach"
+			],
+			[
+				"ELSE",
+				"ELSEIF"
+			],
+			[
+				"status",
+				"status"
+			],
+			[
+				"cons",
+				"console_log"
+			],
+			[
+				"chan",
+				"changeRecord"
+			],
+			[
+				"clone",
+				"cloneStatus"
+			],
+			[
+				"hinzu",
+				"hinzugefügt"
+			],
+			[
+				"docker",
+				"docker_remove_image"
+			],
+			[
+				"lsit",
+				"list_to_start"
+			],
+			[
+				"slice",
+				"splices"
+			],
+			[
+				"gro",
+				"group"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"set_",
+				"set_pullable"
+			],
+			[
+				"contr",
+				"containers"
+			],
+			[
+				"delete",
+				"delete"
+			],
+			[
+				"cassandra",
+				"cassandra-data"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/Users/heikowagner/git/reswarm_flasher/electron-builder.yml",
+			"settings":
+			{
+				"buffer_size": 1905,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/heikowagner/git/reswarm_flasher/lib/gui/app/pages/main/controllers/image-selection.js",
+			"settings":
+			{
+				"buffer_size": 9501,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 119.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"git stat",
+				"git: status"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 428.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/heikowagner/git/reswarm_flasher"
+	],
+	"file_history":
+	[
+		"/Users/heikowagner/git/reswarm_flasher/lib/gui/app/modules/image-writer.js",
+		"/Users/heikowagner/git/reswarm_flasher/.resinci.json",
+		"/Users/heikowagner/.Trash/resinci.json",
+		"/Users/heikowagner/thebigdatablog/js_ai_project/js_bandit/bandit_website.js",
+		"/Users/heikowagner/thebigdatablog/js_ai_project/js_bandit/bandit_smart.js",
+		"/Users/heikowagner/thebigdatablog/js_ai_project/js_bandit/tictactoe_smart.js",
+		"/Users/heikowagner/git/reswarm_flasher/electron-builder.yml",
+		"/Volumes/HypriotOS/cloud-init.yaml",
+		"/Users/heikowagner/Documents/adr_db/startup.sh",
+		"/Users/heikowagner/Documents/adr_db/docker-compose.yml",
+		"/Users/heikowagner/Downloads/Docker/startup_deb.sh",
+		"/Users/heikowagner/Documents/RE Talk-Registration/talk.tex",
+		"/Users/heikowagner/thebigdatablog/kubernets/arm_webserver/Dockerfile",
+		"/Users/heikowagner/thebigdatablog/kubernets/docker-compose.yml",
+		"/Users/heikowagner/thebigdatablog/kubernets/deployment.yml",
+		"/Users/heikowagner/git/etcher/Makefile",
+		"/Users/heikowagner/Desktop/After thinking about the issue for a few moments,",
+		"/Users/heikowagner/Downloads/Download (12) 2/flash",
+		"/Users/heikowagner/Downloads/Download (15)/keyfile.json",
+		"/Users/heikowagner/Downloads/Download (15)/flash.command",
+		"/Users/heikowagner/Downloads/Download (23)/cloud-init.yaml",
+		"/Users/heikowagner/git/RESWARM/frontend/webserver/export/flash.command",
+		"/Users/heikowagner/git/RESWARM/frontend/webserver/export/flash",
+		"/Users/heikowagner/git/RESWARM/frontend/package.json",
+		"/Users/heikowagner/git/RESWARM/frontend/webserver/export 2/cloud-init.yaml",
+		"/Users/heikowagner/git/RESWARM/frontend/webserver/build_data/cloud-config_1.yaml",
+		"/Users/heikowagner/git/RESWARM/frontend/webserver/build_data/cloud-init_2.yaml",
+		"/Users/heikowagner/git/RESWARM/frontend/build_data/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (14)/flash.command",
+		"/Users/heikowagner/Downloads/Download (14)/flash",
+		"/Users/heikowagner/Downloads/Download (12) 2/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (12) 2/flash.command",
+		"/Users/heikowagner/Downloads/Download (12) 2/keyfile.json",
+		"/Users/heikowagner/Downloads/Download (12) 2/config.txt",
+		"/Users/heikowagner/git/RESWARM/frontend/webserver/node-server.js",
+		"/Users/heikowagner/Downloads/openvpn/client.ovpn",
+		"/Users/heikowagner/Downloads/Download (6)/config.txt",
+		"/Users/heikowagner/Downloads/Download (6)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (6)/device-config.yaml",
+		"/Users/heikowagner/Downloads/Download (6)/flash.command",
+		"/Users/heikowagner/Downloads/Download (6)/flash",
+		"/Users/heikowagner/Downloads/Download (3)/flash",
+		"/Users/heikowagner/Downloads/Download (3)/flash.command",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_mgmt_agent/Makefile",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_mgmt_agent/app/wamp_management.py",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_wifi/Makefile",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_wifi/app/wifi_app.py",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/management-view.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/reswarm-wifi.js",
+		"/Users/heikowagner/git/RESWARM/pi-services/setup/BuildConfig/BuildConfig.html",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/devstudio-view.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/reswarm-table.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/side-menu.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/leaflet-map.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/shared-styles/main.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/create-button.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/shared-styles/menu_dark.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/dropdown-button.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/shared-styles/menu_light.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/reswarm-dialog.js",
+		"/Users/heikowagner/Downloads/baseline-apps-24px.svg",
+		"/Users/heikowagner/Downloads/baseline-query_builder-24px.svg",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/group-view.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/device-view.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/editable-element.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/reswarm-icons.js",
+		"/Users/heikowagner/Downloads/baseline-power-24px.svg",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/heat-map.js",
+		"/Users/heikowagner/git/RESWARM/frontend/Makefile",
+		"/Users/heikowagner/git/RESWARM/frontend/Dockerfile",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/expansion-panel.js",
+		"/Users/heikowagner/Downloads/baseline-settings_input_component-24px (1).svg",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/build-config.js",
+		"/Users/heikowagner/Downloads/Download (31) 3/device-config.yaml",
+		"/Users/heikowagner/Downloads/Download (31) 3/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (28)/device-config.yaml",
+		"/Users/heikowagner/Downloads/Download (28)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (2) 2/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (22)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (24)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (23)/device-config.yaml",
+		"/Users/heikowagner/Downloads/Download (23)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (27)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (26) 2/device-config.yaml",
+		"/Users/heikowagner/Downloads/Download (26) 2/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (25)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (25)/config.txt",
+		"/Users/heikowagner/Downloads/Download (25)/device-config.yaml",
+		"/Users/heikowagner/Downloads/Download (11)/device-init.yaml",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/custom-button.js",
+		"/Users/heikowagner/git/RESWARM/backend/swarm_db/function/device/f_create_device.sql",
+		"/Users/heikowagner/Downloads/Download (2) 2/device-config.yaml",
+		"/Users/heikowagner/registration/CSDA Submission 2nd/Letters to the Referees/Referee2_hewa.tex",
+		"/Users/heikowagner/Documents/referee1.tex",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/editable-element-address.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/editable-element-address_new.js",
+		"/Users/heikowagner/git/RESWARM/backend/swarm_db/update_scripts/update-0.2.10.sql",
+		"/Users/heikowagner/Desktop/map-element-lit.js",
+		"/Users/heikowagner/git/RESWARM/backend/swarm_db/function/device/f_update_device.sql",
+		"/Users/heikowagner/git/RESWARM/backend/swarm_db/table/device.t_device.sql",
+		"/Users/heikowagner/git/RESWARM/frontend/marker.svg",
+		"/Users/heikowagner/git/RESWARM/frontend/src/shared-styles/leaflet.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/modules/leaflet/dist/leaflet.css",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/map-element.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/map-element-lit.js",
+		"/Users/heikowagner/Downloads/elsarticle-template/elsarticle-template.tex",
+		"/Users/heikowagner/registration/CSDA final Submission/mainpaper.tex",
+		"/Users/heikowagner/git/RESWARM/pi-services/setup/README.md",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/map-element.html",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_device_init/Makefile",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/map-element_simple.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/modules/leaflet/dist/leaflet-src.esm.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/modules/leaflet/dist/leaflet.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/modules/leaflet.js",
+		"/Users/heikowagner/git/RESWARM/pi-services/setup/device-init.yaml",
+		"/Users/heikowagner/git/RESWARM/pi-services/setup/BuildConfig/device-init.yaml",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_device_init/app/svc_device_init.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/snack-bar.js",
+		"/Users/heikowagner/git/RESWARM/frontend/src/components/terminal-logger.js",
+		"/Users/heikowagner/git/RESWARM/maps/test.html",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_app_logs/app/svc_app_logs.js",
+		"/Users/heikowagner/git/RESWARM/pi-services/services/svc_app_logs/webcomponent/log-element.html",
+		"/Volumes/HypriotOS/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (21)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (19)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (16)/device-init.yaml",
+		"/Users/heikowagner/Downloads/Download (19)/flash",
+		"/Users/heikowagner/git/RESWARM/pi-services/setup/BuildConfig/test.command"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/Users/heikowagner/git/reswarm_flasher/electron-builder.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1905,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1019,
+								1019
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"git_savvy.repo_path": "/Users/heikowagner/git/reswarm_flasher",
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 863.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/Users/heikowagner/git/reswarm_flasher/lib/gui/app/pages/main/controllers/image-selection.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9501,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3405,
+								3405
+							]
+						],
+						"settings":
+						{
+							"git_gutter_is_enabled": true,
+							"git_savvy.repo_path": "/Users/heikowagner/git/reswarm_flasher",
+							"syntax": "Packages/User/javascript_render.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1657.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.GitSavvy":
+	{
+		"height": 126.0
+	},
+	"output.exec":
+	{
+		"height": 283.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"output.show_commit_info":
+	{
+		"height": 126.0
+	},
+	"pinned_build_system": "Packages/User/node.sublime-build",
+	"project": "etcher.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"create_devi",
+				"RESWARM/backend/swarm_db/function/device/f_create_device.sql"
+			],
+			[
+				"",
+				"Conti_HBS/data_science/pyspark/work/spark_locpoly_regression.py"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/thebigdatablog/js_ai_project/js_bandit/jsbandit.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 297.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

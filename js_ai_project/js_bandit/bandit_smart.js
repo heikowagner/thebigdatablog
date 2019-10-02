@@ -46,7 +46,6 @@ class bandit_turn {
     }
 }
 
-
 //A class might be good to introduce long term and short hand memory
 class memory {
     constructor(omega) {
