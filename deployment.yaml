@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: ngix
+    labels:
+      app: ngix
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8081
+    name: ngix
+    targetPort: 80
+  selector:
+    app: ngix
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+  annotations:
+    monitoring: "true"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: ahuh/arm-nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "1000m"
+          requests: 
+            memory: "128Mi"
+            cpu: "500m"
