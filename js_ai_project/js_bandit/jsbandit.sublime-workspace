@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"fla",
+				"flatMap"
+			],
+			[
+				"state",
+				"state_mat"
+			],
+			[
 				"pull",
 				"pull_lever"
 			],
@@ -201,7 +209,7 @@
 			"file": "bandit_website.js",
 			"settings":
 			{
-				"buffer_size": 9897,
+				"buffer_size": 9030,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -383,7 +391,7 @@
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 39.0
 	},
 	"find_in_files":
 	{
@@ -397,6 +405,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"math.",
 			"best_response",
 			"state.rowsums",
 			"electron"
@@ -434,7 +443,7 @@
 						[
 							[
 								0,
-								0
+								1991
 							]
 						],
 						"settings":
@@ -446,10 +455,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 620.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -465,8 +474,8 @@
 						"selection":
 						[
 							[
-								1919,
-								1919
+								3241,
+								3241
 							]
 						],
 						"settings":
@@ -478,10 +487,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2067.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -490,15 +499,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9897,
+						"buffer_size": 9030,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3657,
-								3657
+								8497,
+								8497
 							]
 						],
 						"settings":
@@ -506,11 +515,11 @@
 							"git_gutter_is_enabled": true,
 							"git_savvy.repo_path": "/Users/heikowagner/thebigdatablog",
 							"syntax": "Packages/User/javascript_render.sublime-syntax",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1768.0,
+						"translation.y": 4244.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -600,6 +609,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"",
+				"~/thebigdatablog/js_ai_project/js_bandit/etcher.sublime-workspace"
+			]
 		],
 		"width": 380.0
 	},
