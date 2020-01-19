@@ -1,0 +1,123 @@
+{
+  "paragraphs": [
+    {
+      "text": "%pyspark\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef radial_kernel(x,y,sigma):\n    return np.exp(-sum((x-y)**2)/(2*sigma**2))\n    \nx\u003dnp.array([1,2,3])\ny\u003dnp.array([3,2,6])\n\nradial_kernel(x,y,0.5)\n\n\n#Simulation\nN\u003d10\n\nY\u003dnp.random.randint(0,1,N)\nX\u003dnp.array([np.random.normal(0,1,N)+Y*np.random.normal(3,1,N), np.random.normal(0,1,N)+Y*np.random.normal(3,1,N) ])\n#plt.plot(X)\n#plt.show()\n\n\n#Construct grid\nsp_X\u003dsc.parallelize(np.transpose(X)).zipWithIndex()\nsp_Y\u003dsc.parallelize(Y).zipWithIndex()\nsp_X.collect()\ngrid\u003dsp_X.cartesian(sp_X)\ngrid.collect()\nK\u003dgrid.map(lambda(x,y) : (radial_kernel(x[0],y[0],0.5),x[1]) )\nK.collect()\n\n\n#sp_X.collect()\n\n#from pyspark.ml.classification import LogisticRegression\n\n# Load training data\n#training\u003dsp_Y.append(K)\n\n#lr \u003d LogisticRegression(maxIter\u003d10, regParam\u003d0.3, elasticNetParam\u003d0)\n\n# Fit the model\n#lrModel \u003d lr.fit(training)\n\n# Print the coefficients and intercept for logistic regression\n#print(\"Coefficients: \" + str(lrModel.coefficients))\n#print(\"Intercept: \" + str(lrModel.intercept))",
+      "user": "anonymous",
+      "dateUpdated": "Jan 12, 2020 1:38:30 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[(1.0, 0), (0.24385882868878658, 0), (0.80593445748367865, 0), (0.0097704768616192032, 0), (0.0197479805882926, 0), (0.24385882868878658, 1), (0.80593445748367865, 2), (1.0, 1), (0.11042287176419852, 1), (0.11042287176419852, 2), (1.0, 2), (2.572195836975632e-05, 1), (8.6979562588968381e-05, 1), (0.043767640346370415, 2), (0.015922172424070982, 2), (0.0097704768616192032, 3), (0.0197479805882926, 4), (2.572195836975632e-05, 3), (0.043767640346370415, 3), (8.6979562588968381e-05, 4), (0.015922172424070982, 4), (1.0, 3), (0.015351100160065132, 3), (0.015351100160065132, 4), (1.0, 4), (0.10681833029716008, 0), (0.028943965675333236, 0), (0.00048395739175571443, 0), (0.025692725176893434, 0), (0.18127621169335772, 0), (0.6340418403229644, 1), (0.07546009331885481, 2), (0.0001167768440623006, 1), (0.061598294790497575, 1), (0.029775114760234162, 2), (0.00021041973060021479, 2), (0.23044942735674132, 1), (0.0023522207275222507, 1), (0.02496745250430488, 2), (0.18950858968254944, 2), (2.3079555202550845e-05, 3), (5.7845909559078609e-06, 4), (0.045732122638872212, 3), (1.0896137808167251e-09, 3), (0.92074836579446062, 4), (2.319096015370679e-10, 4), (7.9026636366758234e-06, 3), (0.083480502983104304, 3), (2.6978598155975443e-07, 4), (0.5628710054300512, 4), (0.10681833029716008, 5), (0.6340418403229644, 5), (0.07546009331885481, 5), (2.3079555202550845e-05, 5), (5.7845909559078609e-06, 5), (0.028943965675333236, 6), (0.00048395739175571443, 7), (0.0001167768440623006, 6), (0.029775114760234162, 6), (0.061598294790497575, 7), (0.00021041973060021479, 7), (0.045732122638872212, 6), (0.92074836579446062, 6), (1.0896137808167251e-09, 7), (2.319096015370679e-10, 7), (0.025692725176893434, 8), (0.18127621169335772, 9), (0.23044942735674132, 8), (0.02496745250430488, 8), (0.0023522207275222507, 9), (0.18950858968254944, 9), (7.9026636366758234e-06, 8), (2.6978598155975443e-07, 8), (0.083480502983104304, 9), (0.5628710054300512, 9), (1.0, 5), (1.1163355439949361e-05, 5), (0.1833596956379237, 5), (0.74878289459999969, 5), (0.00039980896415806711, 5), (1.1163355439949361e-05, 6), (0.1833596956379237, 7), (1.0, 6), (4.5025786988630442e-10, 6), (4.5025786988630442e-10, 7), (1.0, 7), (6.8701016356488888e-07, 6), (0.70809953707505779, 6), (0.25762432088362014, 7), (6.4298624764176355e-08, 7), (0.74878289459999969, 8), (0.00039980896415806711, 9), (6.8701016356488888e-07, 8), (0.25762432088362014, 8), (0.70809953707505779, 9), (6.4298624764176355e-08, 9), (1.0, 8), (4.0495906052116842e-05, 8), (4.0495906052116842e-05, 9), (1.0, 9)]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1578759164793_-1527972847",
+      "id": "20200111-161244_906731520",
+      "dateCreated": "Jan 11, 2020 4:12:44 PM",
+      "dateStarted": "Jan 12, 2020 1:37:42 PM",
+      "dateFinished": "Jan 12, 2020 1:37:46 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "",
+      "user": "anonymous",
+      "dateUpdated": "Jan 12, 2020 1:18:59 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "13\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1578831324273_1992501352",
+      "id": "20200112-121524_1912144724",
+      "dateCreated": "Jan 12, 2020 12:15:24 PM",
+      "dateStarted": "Jan 12, 2020 12:26:01 PM",
+      "dateFinished": "Jan 12, 2020 12:26:01 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "dateUpdated": "Jan 12, 2020 1:19:00 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1578831895280_1294760604",
+      "id": "20200112-122455_749738633",
+      "dateCreated": "Jan 12, 2020 12:24:55 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Kernel Methods",
+  "id": "2EYYQ9E77",
+  "angularObjects": {
+    "2EYUQF549:shared_process": [],
+    "2EXXR7TE6:shared_process": [],
+    "2EYFMDD59:shared_process": [],
+    "2EZ6R62Y1:shared_process": [],
+    "2EXE1EKBN:shared_process": [],
+    "2EXJV4V75:shared_process": [],
+    "2EZTEVQZM:shared_process": [],
+    "2EXUYYTZW:shared_process": [],
+    "2EXEAUUWE:shared_process": [],
+    "2EYBJ8MAF:shared_process": [],
+    "2F12443YN:shared_process": [],
+    "2EZCF4T8R:shared_process": [],
+    "2EXEUXN3F:shared_process": [],
+    "2EYM6N33E:shared_process": [],
+    "2F153DQMB:shared_process": [],
+    "2F16R25R7:shared_process": [],
+    "2EY7NXHAH:shared_process": [],
+    "2EWRU8E8E:shared_process": [],
+    "2EXEJ9HZG:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
