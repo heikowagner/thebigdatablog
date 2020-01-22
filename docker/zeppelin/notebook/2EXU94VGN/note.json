@@ -1,0 +1,184 @@
+{
+  "paragraphs": [
+    {
+      "text": "%pyspark\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom pyspark.mllib.regression import LabeledPoint\nfrom pyspark.mllib.regression import LinearRegressionModel, LinearRegressionWithSGD\n\ndef construct_labeled(Y,K):\n    def add_element(acc,x):\n        if type(acc[1]) \u003d\u003d list:\n            return (min(acc[0],x[0]), acc[1] + [x[1]]  )\n        else:\n            return (min(acc[0],x[0]), [acc[1]] + [x[1]]  )\n    jnd\u003dY.join(K).reduceByKey(lambda acc, x : add_element(acc,x) )\n    labeled\u003djnd.map(lambda(y,x) : LabeledPoint(x[0], x[1])  )\n    order\u003djnd.map(lambda (y,x): y)\n    return [labeled, order]\n    #return Y.join(K).reduceByKey(lambda acc, x : add_element(acc,x) ).map(lambda(y,x) : LabeledPoint(x[0], x[1])  )\n    \n\ndef construct_K_lab(Y_X,X_1,lamb):\n    sp_X\u003dY_X.map(lambda x: x.features.toArray()).zipWithIndex()\n    sp_X_1\u003dX_1.zipWithIndex()\n    sp_Y\u003dY_X.map(lambda x: x.label).zipWithIndex().map(lambda(x,y) : (y,x) )\n    grid\u003dsp_X.cartesian(sp_X_1)\n    K\u003dgrid.map(lambda(x,y) : (x[1],radial_kernel(x[0],y[0],lamb)) )\n    return [sp_Y, K]\n    \nclass KernelRegressionWithSGD(LinearRegressionWithSGD):\n    def __init__(self ,*args, **kwargs):\n        print(\u0027kernel regression\u0027)\n        LinearRegressionWithSGD.__init__(self)\n        super(LinearRegressionWithSGD, self).__init__(self, *args, **kwargs)\n #   def predict(self):\n #       LinearRegressionWithSGD.predict(self);\n    ",
+      "user": "anonymous",
+      "dateUpdated": "Jan 22, 2020 1:58:05 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1579698291180_363980855",
+      "id": "20200122-130451_2135846017",
+      "dateCreated": "Jan 22, 2020 1:04:51 PM",
+      "dateStarted": "Jan 22, 2020 1:57:49 PM",
+      "dateFinished": "Jan 22, 2020 1:57:49 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nKernelRegressionWithSGD()\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 22, 2020 1:31:50 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "kernel regression\n\u003cKernleRegressionWithSGD object at 0x7f3de0017d50\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1579698459159_953613740",
+      "id": "20200122-130739_543788940",
+      "dateCreated": "Jan 22, 2020 1:07:39 PM",
+      "dateStarted": "Jan 22, 2020 1:14:59 PM",
+      "dateFinished": "Jan 22, 2020 1:14:59 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n##Generate data\n#Simulation\nN\u003d5\n\nY\u003dnp.random.randint(0,2,N)\nX\u003dnp.array([np.random.normal(0,1,N)+Y*np.random.normal(3,1,N), np.random.normal(0,1,N)+Y*np.random.normal(3,1,N) ])\n\n#plot data\nplt.scatter(X[0], X[1], c\u003dY)\nplt.show()\n\nX_par\u003dsc.parallelize(np.transpose(X)).zipWithIndex().map(lambda(x,y) : (y,x) )\nY_par\u003dsc.parallelize(np.transpose(Y)).zipWithIndex().map(lambda(x,y) : (y,x) )\nY_X\u003d Y_par.join(X_par).map(lambda(y,x) : LabeledPoint(x[0], x[1])  )\n\nKernelRegressionWithSGD(Y_X).predict(Y_X)\n\n#lamb\u003d0.5\n#Y_K\u003dconstruct_K_lab(Y_X,sc.parallelize(np.transpose(X)),lamb)\n#construct_labeled(Y_K[0],Y_K[1])[0].collect()",
+      "user": "anonymous",
+      "dateUpdated": "Jan 22, 2020 1:57:50 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cdiv style\u003d\u0027width:auto;height:auto\u0027\u003e\u003cimg src\u003ddata:image/png;base64,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VfF+OZpzqeL9MjAwULz88stFURRFX19fsWDBgmLbtm2HvaeKn0VvlW+wjgPbt2+P1tbWOP3002PMmDGxdu3a2LJly2Hv2bJlS6xbty4iIlavXh3f+973ohjhPz53NOdSReeee25MmjTpDV/fsmVLfOxjH4tarRbnnHNO7Nu3L/bs2TOMC8txpHOpomnTpsW8efMiIuLEE0+MWbNmxe7duw97TxXvl6M5lyqq1Woxfvz4iIio1+tRr9ejVqsd9p4qfha9VQLrOLB79+447bTTXv31jBkzBv3L/tr3NDc3x8SJE+OnP/3psO4cbkdzLhERd911V8yZMydWr14du3btGs6Jx6WjPbcq2rZtW8ydOzcuuOCCeOKJJ8qeM6y6u7tj586dsXDhwsOuV/1+eaNziajm/dLf3x/t7e0xderUWLJkyZveL1X5LHqrBBYN7cMf/nB0d3fHj370o1iyZMmr/2UFrzdv3rx47rnn4rHHHouPf/zjcdFFF5U9adi88sorsWrVqrjxxhtjwoQJZc85brzZuVT1fmlqaopHH300enp6Yvv27fH444+XPalhCazjwPTp0w/75qWnpyemT5/+hu85dOhQ/PznP4/JkycP687hdjTnMnny5GhpaYmIiCuuuCJ27NgxrBuPR0dzblU0YcKEVx9/LFu2LOr1eiX+v2j1ej1WrVoVH/3oR2PlypWDXq/q/XKkc6nq/fJrJ510UixevDi2bt162PUqfha9VQLrOHD22WfH008/Hc8++2z09fXF5s2bY8WKFYe9Z8WKFfHNb34zIiLuvPPOOP/88wc9Gx9pjuZcXvuzInfffXfMmjVruGced1asWBG33357FEURjzzySEycODGmTZtW9qzSvfDCC6/+rMj27dtjYGBgxH8wFEURGzZsiFmzZsU111wz5HuqeL8czblU8X7p7e2Nffv2RUTE/v374/77748zzzzzsPdU8bPorWouewC/fI598803x9KlS6O/vz/Wr18fbW1t8bnPfS46OjpixYoVsWHDhrjsssuitbU1Jk2aFJs3by579tvuaM7lK1/5Stx9993R3NwckyZNittuu63s2W+7Sy65JB588MHYu3dvzJgxI77whS9EvV6PiIirrroqli1bFvfdd1+0trbGCSecELfeemvJi4fHkc7lzjvvjFtuuSWam5tj3LhxsXnz5hH/wfDwww/HHXfcEe9973ujvb09IiKuu+66eP755yOiuvfL0ZxLFe+XPXv2xLp166K/vz8GBgZizZo1sXz58sp/Fr1V/iR3AIBkHhECACQTWAAAyQQWAEAygQUAkExgAQAkE1gAAMkEFgBAMoEFAJBMYAEAJBNYAADJBBYAQDKBBQCQTGABACQTWAAAyQQWAEAygQUAkExgAQAkE1gAAMkEFgBAMoEFAJBMYAEAJBNYAADJBBYAQDKBBQCQTGABACQTWAAAyQQWAEAygQUAkOz/A22MAFV2mgVUAAAAAElFTkSuQmCC style\u003d\u0027width\u003dauto;height:auto\u0027\u003e\u003cdiv\u003e\nkernel regression\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark-3368910066624023545.py\", line 367, in \u003cmodule\u003e\n    raise Exception(traceback.format_exc())\nException: Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark-3368910066624023545.py\", line 360, in \u003cmodule\u003e\n    exec(code, _zcUserQueryNameSpace)\n  File \"\u003cstdin\u003e\", line 11, in \u003cmodule\u003e\n  File \"\u003cstdin\u003e\", line 25, in __init__\nTypeError: object.__init__() takes no parameters\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1579698877671_1583849930",
+      "id": "20200122-131437_375279866",
+      "dateCreated": "Jan 22, 2020 1:14:37 PM",
+      "dateStarted": "Jan 22, 2020 1:57:50 PM",
+      "dateFinished": "Jan 22, 2020 1:57:51 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\r\n\r\n\r\nclass User:\r\n    name \u003d \"\"\r\n \r\n    def __init__(self, name):\r\n        self.name \u003d name\r\n \r\n    def printName(self):\r\n        print \"Name  \u003d \" + self.name\r\n \r\nclass Programmer(User):\r\n    def __init__(self, name):\r\n        self.name \u003d name\r\n \r\n    def doPython(self):\r\n        print \"Programming Python\"\r\n \r\nbrian \u003d User(\"brian\")\r\nbrian.printName()\r\n \r\ndiana \u003d Programmer(\"Diana\")\r\ndiana.printName()\r\ndiana.doPython()\r\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 22, 2020 2:00:12 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Name  \u003d brian\nName  \u003d Diana\nProgramming Python\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1579698976720_261958334",
+      "id": "20200122-131616_959086565",
+      "dateCreated": "Jan 22, 2020 1:16:16 PM",
+      "dateStarted": "Jan 22, 2020 2:00:12 PM",
+      "dateFinished": "Jan 22, 2020 2:00:12 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 22, 2020 1:58:20 PM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1579701500836_-882267402",
+      "id": "20200122-135820_392807353",
+      "dateCreated": "Jan 22, 2020 1:58:20 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "package",
+  "id": "2EXU94VGN",
+  "angularObjects": {
+    "2F1AQHZEF:shared_process": [],
+    "2EZR4VA1U:shared_process": [],
+    "2F1VC138U:shared_process": [],
+    "2F1AQAPA4:shared_process": [],
+    "2EXC82T5Y:shared_process": [],
+    "2EXBUFZTW:shared_process": [],
+    "2EXR2NGJG:shared_process": [],
+    "2EXY54J4W:shared_process": [],
+    "2EZKG1HF6:shared_process": [],
+    "2EZVMCH1R:shared_process": [],
+    "2EXQZUST9:shared_process": [],
+    "2EZW3AKF9:shared_process": [],
+    "2EY6XXNPS:shared_process": [],
+    "2F16UYR5B:shared_process": [],
+    "2F1BV6EY4:shared_process": [],
+    "2EXY7BPJ9:shared_process": [],
+    "2EZYJQRPR:shared_process": [],
+    "2EXS4TK31:shared_process": [],
+    "2F26PNXXT:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
