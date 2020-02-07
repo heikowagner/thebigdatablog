@@ -1,0 +1,430 @@
+ WARN [2020-02-02 08:30:33,642] ({main} ZeppelinConfiguration.java[create]:97) - Failed to load configuration, proceeding with a default
+ INFO [2020-02-02 08:30:33,773] ({main} ZeppelinConfiguration.java[create]:109) - Server Host: 0.0.0.0
+ INFO [2020-02-02 08:30:33,774] ({main} ZeppelinConfiguration.java[create]:111) - Server Port: 8080
+ INFO [2020-02-02 08:30:33,776] ({main} ZeppelinConfiguration.java[create]:115) - Context Path: /
+ INFO [2020-02-02 08:30:33,793] ({main} ZeppelinConfiguration.java[create]:116) - Zeppelin Version: 0.7.2
+ INFO [2020-02-02 08:30:33,867] ({main} Log.java[initialized]:186) - Logging initialized @1606ms
+ INFO [2020-02-02 08:30:34,011] ({main} ZeppelinServer.java[setupWebAppContext]:343) - ZeppelinServer Webapp path: /zeppelin/webapps
+ INFO [2020-02-02 08:30:34,424] ({main} ZeppelinServer.java[main]:187) - Starting zeppelin server
+ INFO [2020-02-02 08:30:34,428] ({main} Server.java[doStart]:327) - jetty-9.2.15.v20160210
+ INFO [2020-02-02 08:30:38,671] ({main} StandardDescriptorProcessor.java[visitServlet]:297) - NO JSP Support for /, did not find org.eclipse.jetty.jsp.JettyJspServlet
+ WARN [2020-02-02 08:30:39,101] ({main} Helium.java[loadConf]:101) - /zeppelin/conf/helium.json does not exists
+ WARN [2020-02-02 08:30:40,264] ({main} Interpreter.java[register]:406) - Static initialization is deprecated for interpreter sql, You should change it to use interpreter-setting.json in your jar or interpreter/{interpreter}/interpreter-setting.json
+ INFO [2020-02-02 08:30:40,266] ({main} InterpreterSettingManager.java[init]:305) - Interpreter psql.sql found. class=org.apache.zeppelin.postgresql.PostgreSqlInterpreter
+ INFO [2020-02-02 08:30:41,280] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name ignite
+ INFO [2020-02-02 08:30:41,281] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name python
+ INFO [2020-02-02 08:30:41,281] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name jdbc
+ INFO [2020-02-02 08:30:41,285] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name psql
+ INFO [2020-02-02 08:30:41,285] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name lens
+ INFO [2020-02-02 08:30:41,286] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name pig
+ INFO [2020-02-02 08:30:41,287] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name flink
+ INFO [2020-02-02 08:30:41,288] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name angular
+ INFO [2020-02-02 08:30:41,289] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name livy
+ INFO [2020-02-02 08:30:41,290] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name file
+ INFO [2020-02-02 08:30:41,290] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name elasticsearch
+ INFO [2020-02-02 08:30:41,291] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name spark
+ INFO [2020-02-02 08:30:41,291] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name sh
+ INFO [2020-02-02 08:30:41,292] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name cassandra
+ INFO [2020-02-02 08:30:41,293] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name md
+ INFO [2020-02-02 08:30:41,293] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name alluxio
+ INFO [2020-02-02 08:30:41,294] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name bigquery
+ INFO [2020-02-02 08:30:41,294] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name hbase
+ INFO [2020-02-02 08:30:41,295] ({main} InterpreterSettingManager.java[init]:337) - InterpreterSettingRef name kylin
+ INFO [2020-02-02 08:30:41,343] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group livy : id=2EYA3TTMM, name=livy
+ INFO [2020-02-02 08:30:41,344] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group psql : id=2EY5SVCBR, name=psql
+ INFO [2020-02-02 08:30:41,345] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group spark : id=2F239U6UJ, name=spark
+ INFO [2020-02-02 08:30:41,346] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group elasticsearch : id=2F1KFPZ8U, name=elasticsearch
+ INFO [2020-02-02 08:30:41,348] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group jdbc : id=2EZQ5J62A, name=jdbc
+ INFO [2020-02-02 08:30:41,348] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group sh : id=2F2C83QZ5, name=sh
+ INFO [2020-02-02 08:30:41,349] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group cassandra : id=2F2R9PWSA, name=cassandra
+ INFO [2020-02-02 08:30:41,350] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group alluxio : id=2EZ9DEQMZ, name=alluxio
+ INFO [2020-02-02 08:30:41,350] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group flink : id=2EZED46C8, name=flink
+ INFO [2020-02-02 08:30:41,351] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group md : id=2EYCXZC8P, name=md
+ INFO [2020-02-02 08:30:41,352] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group pig : id=2EZBDRR55, name=pig
+ INFO [2020-02-02 08:30:41,352] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group angular : id=2F1M8NQQ5, name=angular
+ INFO [2020-02-02 08:30:41,353] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group ignite : id=2F1FYTVWW, name=ignite
+ INFO [2020-02-02 08:30:41,353] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group lens : id=2EYNB5MG3, name=lens
+ INFO [2020-02-02 08:30:41,354] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group file : id=2F2RZVEFT, name=file
+ INFO [2020-02-02 08:30:41,354] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group hbase : id=2EYHFDD55, name=hbase
+ INFO [2020-02-02 08:30:41,355] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group python : id=2F26CKDA2, name=python
+ INFO [2020-02-02 08:30:41,355] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group bigquery : id=2F2QH61MQ, name=bigquery
+ INFO [2020-02-02 08:30:41,356] ({main} InterpreterSettingManager.java[init]:366) - InterpreterSetting group kylin : id=2F2CPNT1V, name=kylin
+ INFO [2020-02-02 08:30:41,367] ({main} InterpreterFactory.java[<init>]:130) - shiroEnabled: false
+ INFO [2020-02-02 08:30:41,455] ({main} VfsLog.java[info]:138) - Using "/tmp/vfs_cache" as temporary files store.
+ INFO [2020-02-02 08:30:41,597] ({main} GitNotebookRepo.java[<init>]:63) - Opening a git repo at '/zeppelin/notebook'
+ INFO [2020-02-02 08:30:42,138] ({main} NotebookAuthorization.java[loadFromFile]:96) - /zeppelin/conf/notebook-authorization.json
+ INFO [2020-02-02 08:30:42,140] ({main} Credentials.java[loadFromFile]:102) - /zeppelin/conf/credentials.json
+ INFO [2020-02-02 08:30:42,230] ({main} StdSchedulerFactory.java[instantiate]:1184) - Using default implementation for ThreadExecutor
+ INFO [2020-02-02 08:30:42,242] ({main} SimpleThreadPool.java[initialize]:268) - Job execution threads will use class loader of thread: main
+ INFO [2020-02-02 08:30:42,278] ({main} SchedulerSignalerImpl.java[<init>]:61) - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+ INFO [2020-02-02 08:30:42,281] ({main} QuartzScheduler.java[<init>]:240) - Quartz Scheduler v.2.2.1 created.
+ INFO [2020-02-02 08:30:42,283] ({main} RAMJobStore.java[initialize]:155) - RAMJobStore initialized.
+ INFO [2020-02-02 08:30:42,285] ({main} QuartzScheduler.java[initialize]:305) - Scheduler meta-data: Quartz Scheduler (v2.2.1) 'DefaultQuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+ INFO [2020-02-02 08:30:42,286] ({main} StdSchedulerFactory.java[instantiate]:1339) - Quartz scheduler 'DefaultQuartzScheduler' initialized from default resource file in Quartz package: 'quartz.properties'
+ INFO [2020-02-02 08:30:42,286] ({main} StdSchedulerFactory.java[instantiate]:1343) - Quartz scheduler version: 2.2.1
+ INFO [2020-02-02 08:30:42,287] ({main} QuartzScheduler.java[start]:575) - Scheduler DefaultQuartzScheduler_$_NON_CLUSTERED started.
+ INFO [2020-02-02 08:30:43,058] ({main} FolderView.java[createFolder]:107) - Create folder /
+ INFO [2020-02-02 08:30:43,059] ({main} Folder.java[setParent]:168) - Set parent of / to /
+ INFO [2020-02-02 08:30:43,059] ({main} Folder.java[addNote]:184) - Add note 2EXSDX8JZ to folder /
+ INFO [2020-02-02 08:30:43,085] ({main} Folder.java[addNote]:184) - Add note 2EXSZT14S to folder /
+ INFO [2020-02-02 08:30:43,105] ({main} Folder.java[addNote]:184) - Add note 2EXU94VGN to folder /
+ INFO [2020-02-02 08:30:43,157] ({main} Folder.java[addNote]:184) - Add note 2EYJ17TMU to folder /
+ INFO [2020-02-02 08:30:43,267] ({main} Folder.java[addNote]:184) - Add note 2EYSTPP46 to folder /
+ INFO [2020-02-02 08:30:43,368] ({main} Folder.java[addNote]:184) - Add note 2EYYQ9E77 to folder /
+ INFO [2020-02-02 08:30:43,396] ({main} Folder.java[addNote]:184) - Add note 2F1S8V93V to folder /
+ INFO [2020-02-02 08:30:43,425] ({main} Folder.java[addNote]:184) - Add note 2F2F12YXW to folder /
+ INFO [2020-02-02 08:30:43,426] ({main} Notebook.java[<init>]:127) - Notebook indexing started...
+ INFO [2020-02-02 08:30:43,735] ({main} LuceneSearch.java[addIndexDocs]:305) - Indexing 8 notebooks took 308ms
+ INFO [2020-02-02 08:30:43,736] ({main} Notebook.java[<init>]:129) - Notebook indexing finished: 8 indexed in 0s
+ INFO [2020-02-02 08:30:44,025] ({main} ServerImpl.java[initDestination]:94) - Setting the server's publish address to be /
+ INFO [2020-02-02 08:30:44,995] ({main} ContextHandler.java[doStart]:744) - Started o.e.j.w.WebAppContext@2698dc7{/,file:/zeppelin/webapps/webapp/,AVAILABLE}{/zeppelin/zeppelin-web-0.7.2.war}
+ INFO [2020-02-02 08:30:45,017] ({main} AbstractConnector.java[doStart]:266) - Started ServerConnector@607da0a1{HTTP/1.1}{0.0.0.0:8080}
+ INFO [2020-02-02 08:30:45,018] ({main} Server.java[doStart]:379) - Started @12763ms
+ INFO [2020-02-02 08:30:45,018] ({main} ZeppelinServer.java[main]:194) - Done, zeppelin server started
+ WARN [2020-02-02 08:30:59,906] ({qtp1632392469-18} SecurityRestApi.java[ticket]:87) - {"status":"OK","message":"","body":{"principal":"anonymous","ticket":"anonymous","roles":"[]"}}
+ INFO [2020-02-02 08:31:00,103] ({qtp1632392469-14} NotebookServer.java[onOpen]:156) - New connection from 172.22.0.1 : 54636
+ INFO [2020-02-02 08:31:11,132] ({qtp1632392469-15} FolderView.java[onNoteNameChanged]:205) - Note name changed:  -> Binning Example
+ INFO [2020-02-02 08:31:11,133] ({qtp1632392469-15} Folder.java[addNote]:184) - Add note 2EYVKJDMN to folder /
+ INFO [2020-02-02 08:31:11,356] ({qtp1632392469-14} NotebookServer.java[sendNote]:705) - New operation from 172.22.0.1 : 54636 : anonymous : GET_NOTE : 2EYVKJDMN
+ WARN [2020-02-02 08:31:11,517] ({qtp1632392469-14} GitNotebookRepo.java[revisionHistory]:157) - No Head found for 2EYVKJDMN, No HEAD exists and no explicit starting revision was specified
+ INFO [2020-02-02 08:31:11,658] ({qtp1632392469-19} InterpreterFactory.java[createInterpretersForNote]:188) - Create interpreter instance spark for note 2EYVKJDMN
+ INFO [2020-02-02 08:31:11,664] ({qtp1632392469-19} InterpreterFactory.java[createInterpretersForNote]:221) - Interpreter org.apache.zeppelin.spark.SparkInterpreter 71939078 created
+ INFO [2020-02-02 08:31:11,665] ({qtp1632392469-19} InterpreterFactory.java[createInterpretersForNote]:221) - Interpreter org.apache.zeppelin.spark.SparkSqlInterpreter 690229177 created
+ INFO [2020-02-02 08:31:11,666] ({qtp1632392469-19} InterpreterFactory.java[createInterpretersForNote]:221) - Interpreter org.apache.zeppelin.spark.DepInterpreter 1327163533 created
+ INFO [2020-02-02 08:31:11,668] ({qtp1632392469-19} InterpreterFactory.java[createInterpretersForNote]:221) - Interpreter org.apache.zeppelin.spark.PySparkInterpreter 1292524637 created
+ INFO [2020-02-02 08:31:11,670] ({qtp1632392469-19} InterpreterFactory.java[createInterpretersForNote]:221) - Interpreter org.apache.zeppelin.spark.SparkRInterpreter 69875838 created
+ INFO [2020-02-02 08:31:30,342] ({qtp1632392469-14} NotebookServer.java[broadcastNewParagraph]:641) - Broadcasting paragraph on run call instead of note.
+ INFO [2020-02-02 08:31:30,463] ({pool-2-thread-2} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:31:30,465] ({pool-2-thread-2} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:31:30,481] ({pool-2-thread-2} RemoteInterpreterManagedProcess.java[start]:126) - Run interpreter process [/zeppelin/bin/interpreter.sh, -d, /zeppelin/interpreter/spark, -p, 34075, -l, /zeppelin/local-repo/2F239U6UJ]
+ INFO [2020-02-02 08:31:31,086] ({pool-2-thread-2} RemoteInterpreter.java[init]:221) - Create remote interpreter org.apache.zeppelin.spark.SparkInterpreter
+ INFO [2020-02-02 08:31:31,300] ({pool-2-thread-2} RemoteInterpreter.java[pushAngularObjectRegistryToRemote]:551) - Push local angular object registry from ZeppelinServer to remote interpreter group 2F239U6UJ:shared_process
+ INFO [2020-02-02 08:31:31,324] ({pool-2-thread-2} RemoteInterpreter.java[init]:221) - Create remote interpreter org.apache.zeppelin.spark.SparkSqlInterpreter
+ INFO [2020-02-02 08:31:31,333] ({pool-2-thread-2} RemoteInterpreter.java[init]:221) - Create remote interpreter org.apache.zeppelin.spark.DepInterpreter
+ INFO [2020-02-02 08:31:31,339] ({pool-2-thread-2} RemoteInterpreter.java[init]:221) - Create remote interpreter org.apache.zeppelin.spark.PySparkInterpreter
+ INFO [2020-02-02 08:31:31,359] ({pool-2-thread-2} RemoteInterpreter.java[init]:221) - Create remote interpreter org.apache.zeppelin.spark.SparkRInterpreter
+ WARN [2020-02-02 08:31:57,580] ({pool-2-thread-2} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 344, in <module>
+    code = compile('\n'.join(final_code), '<stdin>', 'exec', ast.PyCF_ONLY_AST, 1)
+  File "<stdin>", line 3
+    __zeppelin__._displayhook()
+               ^
+SyntaxError: invalid syntax
+
+ INFO [2020-02-02 08:31:57,677] ({pool-2-thread-2} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:32:12,720] ({pool-2-thread-2} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:32:12,723] ({pool-2-thread-2} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:32:12,734] ({pool-2-thread-2} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 360, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 2, in <module>
+TypeError: 'module' object is not callable
+
+
+ INFO [2020-02-02 08:32:12,821] ({pool-2-thread-2} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ WARN [2020-02-02 08:32:20,078] ({qtp1632392469-14} SecurityRestApi.java[ticket]:87) - {"status":"OK","message":"","body":{"principal":"anonymous","ticket":"anonymous","roles":"[]"}}
+ INFO [2020-02-02 08:32:20,135] ({qtp1632392469-15} NotebookServer.java[onOpen]:156) - New connection from 172.22.0.1 : 54666
+ INFO [2020-02-02 08:32:26,964] ({qtp1632392469-14} NotebookServer.java[sendNote]:705) - New operation from 172.22.0.1 : 54666 : anonymous : GET_NOTE : 2F2F12YXW
+ WARN [2020-02-02 08:32:27,014] ({qtp1632392469-15} GitNotebookRepo.java[revisionHistory]:157) - No Head found for 2F2F12YXW, No HEAD exists and no explicit starting revision was specified
+ WARN [2020-02-02 08:32:27,663] ({qtp1632392469-51} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ WARN [2020-02-02 08:32:28,419] ({qtp1632392469-14} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ WARN [2020-02-02 08:32:28,425] ({qtp1632392469-18} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ WARN [2020-02-02 08:32:28,427] ({qtp1632392469-18} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ WARN [2020-02-02 08:32:28,429] ({qtp1632392469-18} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ WARN [2020-02-02 08:32:28,431] ({qtp1632392469-18} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ WARN [2020-02-02 08:32:28,432] ({qtp1632392469-18} InterpreterSettingManager.java[getEditorSetting]:523) - Couldn't get interpreter editor setting
+ INFO [2020-02-02 08:32:58,404] ({pool-2-thread-3} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:32:58,406] ({pool-2-thread-3} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:32:58,429] ({pool-2-thread-3} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:32:58,523] ({pool-2-thread-3} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:33:12,516] ({pool-2-thread-2} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:33:12,517] ({pool-2-thread-2} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:33:12,538] ({pool-2-thread-2} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:33:12,622] ({pool-2-thread-2} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:33:37,480] ({pool-2-thread-4} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:33:37,482] ({pool-2-thread-4} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:33:37,494] ({pool-2-thread-4} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 360, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 4, in <module>
+AttributeError: 'module' object has no attribute 'range'
+
+
+ INFO [2020-02-02 08:33:37,567] ({pool-2-thread-4} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:33:52,126] ({pool-2-thread-3} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:33:52,128] ({pool-2-thread-3} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:33:52,142] ({pool-2-thread-3} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:33:52,203] ({pool-2-thread-3} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:03,288] ({pool-2-thread-5} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:03,289] ({pool-2-thread-5} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:34:03,319] ({pool-2-thread-5} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text [ 0.9076249   0.17323194  0.21260039  0.11378048  0.22871955  0.92616004
+  0.67179153  0.9489892   0.17669097  0.56712587  0.44109439  0.78645866
+  0.50578997  0.93435616  0.33564833  0.64961412  0.78558846  0.00571274
+  0.75774053  0.30163293  0.73159056  0.14630709  0.0517985   0.87717254
+  0.23741522  0.30496674  0.49416143  0.70194731  0.18737012  0.8139002
+  0.83905828  0.08393713  0.37061611  0.11080771  0.72703701  0.74657081
+  0.77935254  0.34802499  0.45345422  0.52298751  0.61778689  0.83119053
+  0.35260421  0.48639334  0.41024426  0.95670833  0.80637901  0.37288107
+  0.14607488  0.86416682  0.06707094  0.90739586  0.51348899  0.53792083
+  0.20772063  0.27363122  0.34787404  0.92454481  0.19285244  0.38808814
+  0.43615368  0.08949309  0.96948641  0.92571787  0.56145686  0.93246552
+  0.26462523  0.94024917  0.96166967  0.57420837  0.92149127  0.82804651
+  0.40684518  0.34231955  0.44241874  0.38086097  0.99946105  0.72357612
+  0.82467656  0.5446096   0.0036843   0.58689548  0.77103384  0.58723973
+  0.30927539  0.65401611  0.73514552  0.35717956  0.39150578  0.60121039
+  0.94715692  0.39931737  0.4345027   0.32263694  0.22828074  0.65845957
+  0.90416333  0.04284884  0.73255596  0.28486943]
+
+%text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 360, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 6, in <module>
+NameError: name 'binning' is not defined
+
+
+ INFO [2020-02-02 08:34:03,409] ({pool-2-thread-5} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:08,800] ({pool-2-thread-2} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:08,802] ({pool-2-thread-2} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:34:08,823] ({pool-2-thread-2} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:34:08,941] ({pool-2-thread-2} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:40,058] ({pool-2-thread-6} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:40,060] ({pool-2-thread-6} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:34:40,078] ({pool-2-thread-6} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text [ 0.55923896  0.19264034  0.67178981  0.71706153  0.89043318  0.89577296
+  0.95575783  0.36416514  0.87663246  0.78412554  0.52388839  0.00184178
+  0.23279685  0.37437394  0.23432034  0.1115725   0.43785446  0.18013009
+  0.30967329  0.01470603  0.943815    0.98202996  0.97746018  0.52711984
+  0.97091479  0.53989746  0.50235531  0.11672769  0.74723047  0.07845318
+  0.92085056  0.22425755  0.70861571  0.46105648  0.14704326  0.73602843
+  0.17458736  0.07430931  0.81515814  0.71521377  0.92281836  0.9180696
+  0.93507878  0.18125171  0.76916592  0.81579017  0.46230468  0.29788511
+  0.02004437  0.23821386  0.57361642  0.05713473  0.280961    0.48403212
+  0.68550532  0.98128394  0.16152388  0.5218904   0.11720458  0.64450457
+  0.73546954  0.50411852  0.52995229  0.68355543  0.11698091  0.62790515
+  0.11078178  0.11174584  0.44151271  0.79948517  0.09979831  0.72005267
+  0.68908525  0.33085416  0.46251619  0.86277703  0.58130035  0.98075996
+  0.66500119  0.29336571  0.86327824  0.97485963  0.15666146  0.6056259
+  0.73675378  0.31343218  0.95261124  0.90317677  0.79238199  0.30100047
+  0.04245608  0.56631756  0.91242016  0.7315247   0.62404082  0.94435418
+  0.20075224  0.77452536  0.51829375  0.93297828]
+
+%text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 355, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 5, in <module>
+ZeroDivisionError: division by zero
+
+
+ INFO [2020-02-02 08:34:40,157] ({pool-2-thread-6} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:47,750] ({pool-2-thread-4} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:34:47,752] ({pool-2-thread-4} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:34:47,780] ({pool-2-thread-4} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:34:47,855] ({pool-2-thread-4} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:35:41,187] ({pool-2-thread-7} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:35:41,189] ({pool-2-thread-7} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:35:41,215] ({pool-2-thread-7} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:35:41,286] ({pool-2-thread-7} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:35:45,479] ({pool-2-thread-3} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:35:45,481] ({pool-2-thread-3} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:35:45,492] ({pool-2-thread-3} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ WARN [2020-02-02 08:35:45,552] ({pool-2-thread-3} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 344, in <module>
+    code = compile('\n'.join(final_code), '<stdin>', 'exec', ast.PyCF_ONLY_AST, 1)
+  File "<stdin>", line 5
+    binnning= np.arange(0,N)./N
+                             ^
+SyntaxError: invalid syntax
+
+ INFO [2020-02-02 08:35:45,614] ({pool-2-thread-3} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:35:57,440] ({pool-2-thread-8} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:35:57,441] ({pool-2-thread-8} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:35:57,462] ({pool-2-thread-8} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ WARN [2020-02-02 08:35:57,539] ({pool-2-thread-8} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-083111_1077009015 is finished, status: ERROR, exception: null, result: %text [ 0.61556113  0.09645792  0.83529436  0.3352977   0.74304346  0.64814744
+  0.60461983  0.21844989  0.97482398  0.13884819  0.33532786  0.34055775
+  0.63226186  0.51833264  0.71607544  0.49318127  0.53036503  0.91279207
+  0.29890638  0.07196617  0.21790026  0.10637514  0.04274924  0.09181091
+  0.45266243  0.72251881  0.29252523  0.07542048  0.6891239   0.0068234
+  0.65318979  0.87118515  0.01996139  0.33656599  0.34840841  0.40623835
+  0.9096995   0.8045444   0.94496794  0.52971001  0.32188072  0.17184883
+  0.40961172  0.81922545  0.2749043   0.60673306  0.16281016  0.46098395
+  0.50324634  0.04694704  0.69684488  0.1210197   0.79804678  0.76117963
+  0.97837373  0.40957894  0.06381527  0.58789829  0.1584646   0.35072666
+  0.65719366  0.28253287  0.52253097  0.79056758  0.69127999  0.94049551
+  0.57152331  0.18255321  0.42360514  0.04569605  0.03989642  0.35348015
+  0.64516896  0.40302648  0.0147895   0.11852946  0.02371517  0.14724809
+  0.92557358  0.69293653  0.65751059  0.8802928   0.32533586  0.17488526
+  0.05907624  0.42616348  0.85668544  0.91498809  0.39054867  0.96608652
+  0.24913372  0.93289654  0.46614763  0.12743971  0.42100907  0.36385499
+  0.19993351  0.64713055  0.05847058  0.40635856]
+
+%text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 355, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 5, in <module>
+NameError: name 'true_divide' is not defined
+
+
+ INFO [2020-02-02 08:35:57,616] ({pool-2-thread-8} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:36:02,024] ({pool-2-thread-5} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:36:02,026] ({pool-2-thread-5} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:36:02,057] ({pool-2-thread-5} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:36:02,133] ({pool-2-thread-5} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:36:15,289] ({pool-2-thread-9} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:36:15,290] ({pool-2-thread-9} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:36:15,316] ({pool-2-thread-9} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:36:15,385] ({pool-2-thread-9} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:36:30,347] ({pool-2-thread-2} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:36:30,349] ({pool-2-thread-2} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:36:30,373] ({pool-2-thread-2} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:36:30,437] ({pool-2-thread-2} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:25,841] ({qtp1632392469-18} NotebookServer.java[broadcastNewParagraph]:641) - Broadcasting paragraph on run call instead of note.
+ INFO [2020-02-02 08:40:30,142] ({qtp1632392469-14} NotebookServer.java[broadcastNewParagraph]:641) - Broadcasting paragraph on run call instead of note.
+ INFO [2020-02-02 08:40:41,778] ({pool-2-thread-10} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632830083_-1179564219 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:41,779] ({pool-2-thread-10} Paragraph.java[jobRun]:362) - run paragraph 20200202-084030_539041740 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:40:41,791] ({pool-2-thread-10} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-084030_539041740 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 360, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 1, in <module>
+NameError: name 'cartesian' is not defined
+
+
+ INFO [2020-02-02 08:40:41,858] ({pool-2-thread-10} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632830083_-1179564219 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:43,581] ({pool-2-thread-6} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:43,583] ({pool-2-thread-6} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:40:43,606] ({pool-2-thread-6} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:40:43,698] ({pool-2-thread-6} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:45,448] ({pool-2-thread-11} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632290340_227496446 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:45,450] ({pool-2-thread-11} Paragraph.java[jobRun]:362) - run paragraph 20200202-083130_206812215 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:40:45,459] ({pool-2-thread-11} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083130_206812215 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:40:45,525] ({pool-2-thread-11} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632290340_227496446 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:46,489] ({pool-2-thread-4} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632830083_-1179564219 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:46,490] ({pool-2-thread-4} Paragraph.java[jobRun]:362) - run paragraph 20200202-084030_539041740 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:40:46,500] ({pool-2-thread-4} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-084030_539041740 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 360, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 1, in <module>
+NameError: name 'binning' is not defined
+
+
+ INFO [2020-02-02 08:40:46,565] ({pool-2-thread-4} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632830083_-1179564219 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:57,170] ({pool-2-thread-12} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:57,171] ({pool-2-thread-12} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:40:57,205] ({pool-2-thread-12} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:40:57,291] ({pool-2-thread-12} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:57,999] ({pool-2-thread-7} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632290340_227496446 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:58,000] ({pool-2-thread-7} Paragraph.java[jobRun]:362) - run paragraph 20200202-083130_206812215 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:40:58,010] ({pool-2-thread-7} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083130_206812215 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:40:58,089] ({pool-2-thread-7} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632290340_227496446 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:58,602] ({pool-2-thread-13} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632830083_-1179564219 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:40:58,603] ({pool-2-thread-13} Paragraph.java[jobRun]:362) - run paragraph 20200202-084030_539041740 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ WARN [2020-02-02 08:40:58,613] ({pool-2-thread-13} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-084030_539041740 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 360, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 2, in cartesian
+NameError: global name 'numpy' is not defined
+
+
+ INFO [2020-02-02 08:40:58,677] ({pool-2-thread-13} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632830083_-1179564219 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:41:07,108] ({pool-2-thread-3} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632290340_227496446 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:41:07,112] ({pool-2-thread-3} Paragraph.java[jobRun]:362) - run paragraph 20200202-083130_206812215 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:41:07,124] ({pool-2-thread-3} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083130_206812215 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:41:07,188] ({pool-2-thread-3} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632290340_227496446 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:41:08,132] ({pool-2-thread-14} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632830083_-1179564219 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:41:08,134] ({pool-2-thread-14} Paragraph.java[jobRun]:362) - run paragraph 20200202-084030_539041740 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:41:08,144] ({pool-2-thread-14} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084030_539041740 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:41:08,197] ({pool-2-thread-14} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632830083_-1179564219 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:41:14,841] ({pool-2-thread-8} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632830083_-1179564219 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:41:14,843] ({pool-2-thread-8} Paragraph.java[jobRun]:362) - run paragraph 20200202-084030_539041740 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:41:14,857] ({pool-2-thread-8} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084030_539041740 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:41:14,926] ({pool-2-thread-8} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632830083_-1179564219 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:04,699] ({qtp1632392469-18} NotebookServer.java[broadcastNewParagraph]:641) - Broadcasting paragraph on run call instead of note.
+ INFO [2020-02-02 08:45:16,832] ({pool-2-thread-15} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:16,834] ({pool-2-thread-15} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:45:16,860] ({pool-2-thread-15} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:45:16,974] ({pool-2-thread-15} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:19,737] ({pool-2-thread-5} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:19,739] ({pool-2-thread-5} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:45:19,760] ({pool-2-thread-5} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:45:19,831] ({pool-2-thread-5} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:26,168] ({qtp1632392469-14} NotebookServer.java[broadcastNewParagraph]:641) - Broadcasting paragraph on run call instead of note.
+ INFO [2020-02-02 08:45:26,234] ({pool-2-thread-16} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:26,236] ({pool-2-thread-16} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:45:26,248] ({pool-2-thread-16} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ WARN [2020-02-02 08:45:26,323] ({pool-2-thread-16} NotebookServer.java[afterStatusChange]:2058) - Job 20200202-084504_1383688841 is finished, status: ERROR, exception: null, result: %text Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 367, in <module>
+    raise Exception(traceback.format_exc())
+Exception: Traceback (most recent call last):
+  File "/tmp/zeppelin_pyspark-6726935194166151407.py", line 355, in <module>
+    exec(code, _zcUserQueryNameSpace)
+  File "<stdin>", line 1, in <module>
+NameError: name 'numpy' is not defined
+
+
+ INFO [2020-02-02 08:45:26,402] ({pool-2-thread-16} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:35,089] ({pool-2-thread-9} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:35,091] ({pool-2-thread-9} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:45:35,108] ({pool-2-thread-9} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:45:35,189] ({pool-2-thread-9} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:47,950] ({pool-2-thread-17} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:45:47,952] ({pool-2-thread-17} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:45:47,963] ({pool-2-thread-17} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:45:48,038] ({pool-2-thread-17} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:46:00,250] ({pool-2-thread-2} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:46:00,255] ({pool-2-thread-2} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:46:00,278] ({pool-2-thread-2} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:46:00,355] ({pool-2-thread-2} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:46:37,601] ({pool-2-thread-18} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:46:37,603] ({pool-2-thread-18} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:46:37,626] ({pool-2-thread-18} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:46:37,699] ({pool-2-thread-18} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:38,906] ({pool-2-thread-10} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:38,907] ({pool-2-thread-10} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:47:38,929] ({pool-2-thread-10} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:47:39,027] ({pool-2-thread-10} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:51,382] ({pool-2-thread-19} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:51,383] ({pool-2-thread-19} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:47:51,418] ({pool-2-thread-19} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:47:51,507] ({pool-2-thread-19} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:53,154] ({pool-2-thread-6} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:53,155] ({pool-2-thread-6} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:47:53,182] ({pool-2-thread-6} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:47:53,259] ({pool-2-thread-6} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:59,543] ({pool-2-thread-20} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580632271126_1960005419 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:47:59,544] ({pool-2-thread-20} Paragraph.java[jobRun]:362) - run paragraph 20200202-083111_1077009015 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:47:59,590] ({pool-2-thread-20} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-083111_1077009015 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:47:59,666] ({pool-2-thread-20} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580632271126_1960005419 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:48:01,987] ({pool-2-thread-11} SchedulerFactory.java[jobStarted]:131) - Job paragraph_1580633104631_31267405 started by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
+ INFO [2020-02-02 08:48:01,989] ({pool-2-thread-11} Paragraph.java[jobRun]:362) - run paragraph 20200202-084504_1383688841 using pyspark org.apache.zeppelin.interpreter.LazyOpenInterpreter@4d0a5c5d
+ INFO [2020-02-02 08:48:02,017] ({pool-2-thread-11} NotebookServer.java[afterStatusChange]:2056) - Job 20200202-084504_1383688841 is finished successfully, status: FINISHED
+ INFO [2020-02-02 08:48:02,084] ({pool-2-thread-11} SchedulerFactory.java[jobFinished]:137) - Job paragraph_1580633104631_31267405 finished by scheduler org.apache.zeppelin.interpreter.remote.RemoteInterpretershared_session912798402
