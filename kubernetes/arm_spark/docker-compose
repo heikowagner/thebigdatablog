@@ -1,2 +1,0 @@
-enviroment:
-	-spark_type: start-master

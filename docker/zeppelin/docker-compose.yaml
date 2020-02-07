@@ -4,12 +4,9 @@ services:
     image: apache/zeppelin:0.7.2
     ports:
       - "8080:8080"
-      - "4040:4040"
     volumes:
       - ./logs:/zeppelin/logs
       - ./notebook:/zeppelin/notebook
-      - ./data:/data
     environment:
       -ZEPPELIN_LOG_DIR: /zeppelin/logs
       -ZEPPELIN_NOTEBOOK_DIR: /zeppelin/notebook
-    command: bash -c "pip install git+https://github.com/heikowagner/ApplyKernel.git && /zeppelin/bin/zeppelin.sh" 

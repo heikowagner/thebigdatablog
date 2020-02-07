@@ -1,3 +1,1 @@
 ./docker/zeppelin/logs/
-*.csv
-*.log
