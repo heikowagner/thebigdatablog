@@ -1,0 +1,113 @@
+{
+  "paragraphs": [
+    {
+      "text": "from numpy.fft import fft, ifft, fft2, ifft2, fftshift\nimport numpy as np\n\ndef fft_convolve2d(x,y):\n    \"\"\" 2D convolution, using FFT\"\"\"\n    fr \u003d fft2(x)\n    fr2 \u003d fft2(np.flipud(np.fliplr(y)))\n    m,n \u003d fr.shape\n    cc \u003d np.real(ifft2(fr*fr2))\n    cc \u003d np.roll(cc, -m/2+1,axis\u003d0)\n    cc \u003d np.roll(cc, -n/2+1,axis\u003d1)\n    return cc\n\ndef fft_convolve1d(x,y): #1d cross correlation, fft\n    \"\"\" 1D convolution, using FFT \"\"\"\n    fr\u003dfft(x)\n    fr2\u003dfft(np.flipud(y))\n    cc\u003dnp.real(ifft(fr*fr2))\n    return fftshift(cc)",
+      "user": "anonymous",
+      "dateUpdated": "Feb 13, 2020 9:00:58 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\n\n\n\u003cconsole\u003e:1: error: \u0027;\u0027 expected but \u0027.\u0027 found.\nfrom numpy.fft import fft, ifft, fft2, ifft2, fftshift\n          ^\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1581627539570_-679082298",
+      "id": "20200213-205859_615674193",
+      "dateCreated": "Feb 13, 2020 8:58:59 PM",
+      "dateStarted": "Feb 13, 2020 9:00:58 PM",
+      "dateFinished": "Feb 13, 2020 9:02:19 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nimport numpy as np\n\nN\u003d200\nY\u003dnp.random.normal(3,1,N)\nt\u003dnp.linspace(1,0,100)\nX\u003dnp.dot(Y,t**2)\n\n",
+      "user": "anonymous",
+      "dateUpdated": "Feb 13, 2020 9:10:54 PM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python"
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark-5647962129052008986.py\", line 367, in \u003cmodule\u003e\n    raise Exception(traceback.format_exc())\nException: Traceback (most recent call last):\n  File \"/tmp/zeppelin_pyspark-5647962129052008986.py\", line 360, in \u003cmodule\u003e\n    exec(code, _zcUserQueryNameSpace)\n  File \"\u003cstdin\u003e\", line 5, in \u003cmodule\u003e\nValueError: shapes (200,) and (100,) not aligned: 200 (dim 0) !\u003d 100 (dim 0)\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1581627658548_-1268548261",
+      "id": "20200213-210058_971140176",
+      "dateCreated": "Feb 13, 2020 9:00:58 PM",
+      "dateStarted": "Feb 13, 2020 9:10:44 PM",
+      "dateFinished": "Feb 13, 2020 9:10:44 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1581627955689_923211337",
+      "id": "20200213-210555_1004216984",
+      "dateCreated": "Feb 13, 2020 9:05:55 PM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "covolution example",
+  "id": "2F26E5GTQ",
+  "angularObjects": {
+    "2EZHHJ8DC:shared_process": [],
+    "2F2ZQXTPF:shared_process": [],
+    "2F23GGGYA:shared_process": [],
+    "2F1DNG8NR:shared_process": [],
+    "2EZ1WM2AQ:shared_process": [],
+    "2F2E5PFU2:shared_process": [],
+    "2F31JZQ1K:shared_process": [],
+    "2F1JDD454:shared_process": [],
+    "2F1H51BQC:shared_process": [],
+    "2F3KPH6E5:shared_process": [],
+    "2EZMUM7KB:shared_process": [],
+    "2F3QKW7VY:shared_process": [],
+    "2EZQPNFNA:shared_process": [],
+    "2F34A8HUC:shared_process": [],
+    "2EZWHCPPM:shared_process": [],
+    "2EZE7P224:shared_process": [],
+    "2F1SFVMHG:shared_process": [],
+    "2EZU5ERUF:shared_process": [],
+    "2EZ85J7XU:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
