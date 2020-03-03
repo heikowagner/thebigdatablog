@@ -1,1 +1,3 @@
-./docker/zeppelin/logs/
+./docker/zeppelin/logs/*
+*.log
+*.log.*
