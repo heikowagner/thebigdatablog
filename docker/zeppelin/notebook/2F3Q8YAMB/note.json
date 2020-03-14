@@ -1,0 +1,89 @@
+{
+  "paragraphs": [
+    {
+      "text": "%spark\nI\u003d100\ncomp\u003d0.1*I\n\nstart\u003d0.1\n#for x in I:\n#    start \u003d start + 0.1\n\nprint(start-comp)\n    ",
+      "user": "anonymous",
+      "dateUpdated": "Feb 27, 2020 7:31:10 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/scala",
+        "tableHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\n\n\n\u003cconsole\u003e:27: error: not found: value I\nval $ires7 \u003d I\n             ^\n\n\n\n\u003cconsole\u003e:25: error: not found: value I\n       I\u003d100\n       ^\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1582788065680_-2065568115",
+      "id": "20200227-072105_1749973606",
+      "dateCreated": "Feb 27, 2020 7:21:05 AM",
+      "dateStarted": "Feb 27, 2020 7:31:10 AM",
+      "dateFinished": "Feb 27, 2020 7:31:11 AM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "user": "anonymous",
+      "dateUpdated": "Feb 27, 2020 7:23:11 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "scala"
+        },
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1582788127111_91257598",
+      "id": "20200227-072207_533586885",
+      "dateCreated": "Feb 27, 2020 7:22:07 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "floating example",
+  "id": "2F3Q8YAMB",
+  "angularObjects": {
+    "2EZHHJ8DC:shared_process": [],
+    "2F2ZQXTPF:shared_process": [],
+    "2F23GGGYA:shared_process": [],
+    "2F1DNG8NR:shared_process": [],
+    "2EZ1WM2AQ:shared_process": [],
+    "2F2E5PFU2:shared_process": [],
+    "2F31JZQ1K:shared_process": [],
+    "2F1JDD454:shared_process": [],
+    "2F1H51BQC:shared_process": [],
+    "2F3KPH6E5:shared_process": [],
+    "2EZMUM7KB:shared_process": [],
+    "2F3QKW7VY:shared_process": [],
+    "2EZQPNFNA:shared_process": [],
+    "2F34A8HUC:shared_process": [],
+    "2EZWHCPPM:shared_process": [],
+    "2EZE7P224:shared_process": [],
+    "2F1SFVMHG:shared_process": [],
+    "2EZU5ERUF:shared_process": [],
+    "2EZ85J7XU:shared_process": []
+  },
+  "config": {},
+  "info": {}
+}
