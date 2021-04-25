@@ -52,11 +52,19 @@ def schnelltest_calculator(inzidenz=200, sensitivity=0.97, specificity=0.99, gro
     p_chart = (
         alt.Chart(
             pd.DataFrame(
-                {"x": axis2, "y": anteil_positiv * normal_dens(0, 1, axis2 - shift_fn)}
+                {
+                    "x": axis2, 
+                    "y": anteil_positiv * normal_dens(0, 1, axis2 - shift_fn),
+                    "tp":tp
+                }
             )
         )
         .mark_area(opacity=0.5, color="red")
-        .encode(x="x", y="y")
+        .encode(
+            x="x", 
+            y="y",
+            tooltip = [alt.Tooltip('tp', title='Anzahl positiver Test und positv (TP)')]
+        )
     )
 
     fn_chart = (
@@ -67,11 +75,16 @@ def schnelltest_calculator(inzidenz=200, sensitivity=0.97, specificity=0.99, gro
                     "y": anteil_positiv
                     * normal_dens(0, 1, axis2 - shift_fn)
                     * (axis2 > 0),
+                    "fn": fn
                 }
             )
         )
         .mark_area(opacity=0.5, color="darkred")
-        .encode(x="x", y="y")
+        .encode(
+            x="x", 
+            y="y",
+            tooltip = [alt.Tooltip('fn', title='Anzahl negativer Test obwohl positv (FN)')]
+        )
     )
 
     n_chart = (
@@ -80,11 +93,16 @@ def schnelltest_calculator(inzidenz=200, sensitivity=0.97, specificity=0.99, gro
                 {
                     "x": axis2,
                     "y": (1 - anteil_positiv) * normal_dens(0, 1, axis2 - shift_fp),
+                    "tn":tn
                 }
             )
         )
         .mark_area(opacity=0.5, color="blue")
-        .encode(x="x", y="y")
+        .encode(
+            x="x", 
+            y="y",
+            tooltip = [alt.Tooltip('tn', title='Anzahl negativer Test und negativ (TN)')]
+        )
     )
 
     fp_chart = (
@@ -95,6 +113,7 @@ def schnelltest_calculator(inzidenz=200, sensitivity=0.97, specificity=0.99, gro
                     "y": (1 - anteil_positiv)
                     * normal_dens(0, 1, axis2 - shift_fp)
                     * (axis2 < 0),
+                    "fp":fp
                 }
             )
         )
@@ -102,10 +121,16 @@ def schnelltest_calculator(inzidenz=200, sensitivity=0.97, specificity=0.99, gro
         .encode(
             alt.X("x", axis=alt.Axis(title="Maßeinheit des Tests")),
             alt.Y("y", axis=alt.Axis(title="Anteil")),
+            tooltip = [alt.Tooltip('fp', title='Anzahl positver Test obwohl negativ (FP)')]
         )
     )
 
-    cutoff = alt.Chart(pd.DataFrame({"x": [0]})).mark_rule().encode(x="x")
+    cutoff = alt.Chart(pd.DataFrame({"x": [0]})).mark_rule().encode(
+        x="x",
+        tooltip = [alt.Tooltip('x', title='cutoff')]
+    )
+    
+
 
     (p_chart + fn_chart + n_chart + fp_chart + cutoff).display()
 
