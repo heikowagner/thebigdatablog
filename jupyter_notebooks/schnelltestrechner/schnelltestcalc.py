@@ -20,13 +20,15 @@ def normal_dens(mu, sigma, x):
     specificity=(0.0, 0.99, 0.01),
     group_size=(1, 100_000),
 )
-def schnelltest_calculator(inzidenz=200, sensitivity=0.97, specificity=0.99, group_size=5_000):
+def schnelltest_calculator(inzidenz=200, sensitivity=97.0, specificity=99.9, group_size=5_000):
 
     # inzident bedeutet infizierte je 100.000 Einwohner. 
     # Richtigerweise müssten wir die tatsächliche Anzahl infizierter wissen, 
     # da dies jedoch unbekannt ist nehmen wir die Inzidenz als Schätzer.
     
     anteil_positiv = inzidenz / 100_000
+    sensitivity = sensitivity / 100
+    specificity = specificity / 100
 
     # => tp je 100_000 Einwohner
     p = anteil_positiv * group_size
