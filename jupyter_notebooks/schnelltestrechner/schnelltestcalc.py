@@ -16,8 +16,8 @@ def normal_dens(mu, sigma, x):
 
 @interact(
     inzidenz=(1, 100_000),
-    sensitivity=(0.0, 0.99, 0.01),
-    specificity=(0.0, 0.99, 0.01),
+    sensitivity=(0.0, 99.99, 0.01),
+    specificity=(0.0, 99.99, 0.01),
     group_size=(1, 100_000),
 )
 def schnelltest_calculator(inzidenz=200, sensitivity=97.0, specificity=99.9, group_size=5_000):
