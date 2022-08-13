@@ -2,8 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 import yfinance as yf
-from scipy.integrate import quad, dblquad
-from forex_python.converter import CurrencyRates 
+from scipy.integrate import quad
 import numpy as np
 import logging
 from datetime import timedelta, datetime
