@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 import yfinance as yf
 from scipy.integrate import quad
-from forex_python.converter import CurrencyRates 
 import numpy as np
 
 
