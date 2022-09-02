@@ -3,3 +3,4 @@ scipy
 altair
 matplotlib
 yfinance
+voila
