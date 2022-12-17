@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  jupyter:
+    build: ./Dockerfiles/jupyter
+    ports:
+      - "8000:8000"
+      - "8888:8888"
+      - "8866:8866"
+    volumes:
+      - .:/notebooks
+  streamlit:
+    build: ./Dockerfiles/streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./optimal_limits:/app
