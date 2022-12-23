@@ -14,3 +14,14 @@ services:
       - "8501:8501"
     volumes:
       - ./optimal_limits:/app
+  tensorflor:
+    image: tensorflow/tensorflow:latest-gpu
+    tty: true
+    volumes:
+      - ./transformer:/app
+      - ./transformer/root:/root
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
