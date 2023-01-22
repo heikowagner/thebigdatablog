@@ -18,8 +18,8 @@ services:
     image: tensorflow/tensorflow:latest-gpu
     tty: true
     volumes:
-      - ./transformer:/app
-      - ./transformer/root:/root
+      - ./neuronalnets:/app
+      - ./neuronalnets/root:/root
     deploy:
       resources:
         reservations:

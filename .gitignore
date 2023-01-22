@@ -2,4 +2,4 @@
 *.log
 *.log.*
 *__pycache__*
-jupyter_notebooks/transformer/root
+jupyter_notebooks/neuronalnets/root
