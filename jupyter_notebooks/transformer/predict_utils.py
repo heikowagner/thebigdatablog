@@ -1,7 +1,7 @@
 from keras import Sequential
 from keras.preprocessing.text import Tokenizer
 import matplotlib.pyplot as plt
-from utils import add_spaces, pad_and_tokenize
+from data_preparation import add_spaces, pad_and_tokenize
 import numpy as np
 
 def plt_props(vals, preds):

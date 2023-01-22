@@ -1,4 +1,6 @@
 import keras.utils as ku 
+import pandas as pd
+import tensorflow as tf
 
 def construct_subsequences(df, limit=None):
     '''
@@ -27,3 +29,13 @@ def ff_labels(tok_sequence, vocab_size):
 
 def rnn_labels(tok_sequence, vocab_size):
     return tok_sequence[:,:-1], ku.to_categorical(tok_sequence[:,-1], num_classes=vocab_size)
+
+def add_spaces(x):
+    return " ".join(x)
+
+# We load the list, add a space between each letter and add an EOP (End of Passwort) Symbol pp. Since this is the only 2 letter "word" the EOP is unique.
+def transform_password(df_in: pd.DataFrame) -> pd.DataFrame:
+    return df_in[0].dropna().apply(lambda x: add_spaces(x) + ' eof' )
+
+def pad_and_tokenize(sequences, tokenizer, max_length):
+    return tf.keras.preprocessing.sequence.pad_sequences( tokenizer.texts_to_sequences(sequences) , maxlen = max_length, padding='pre')
