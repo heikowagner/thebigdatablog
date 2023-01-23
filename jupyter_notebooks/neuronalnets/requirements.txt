@@ -1,0 +1,5 @@
+pandas
+matplotlib
+pydot
+tensorflow-text
+joblib

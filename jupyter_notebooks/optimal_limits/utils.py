@@ -98,3 +98,4 @@ To learn more visit https://www.thebigdatablog.com.
 Find more symbols: https://de.finance.yahoo.com/lookup.""")
     plt.legend(['actual stock price', 'longtime trend'])
     plt.show()
+    return plt
