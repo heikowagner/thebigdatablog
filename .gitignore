@@ -3,3 +3,4 @@
 *.log.*
 *__pycache__*
 jupyter_notebooks/neuronalnets/root
+*.ipynb_checkpoints*
