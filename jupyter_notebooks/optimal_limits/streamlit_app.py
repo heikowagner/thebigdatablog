@@ -10,16 +10,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import datetime as dt
 
-st.write("""
-# Stockmarket Oracle
-At what price should i buy or sell my stock?
-""")
-
-choices = ["^GDAXI", "^DJI", "GC=F", "BTC-EUR", "META" ,"AMZN","DTE.DE"]
-
-selected_stock = st.selectbox("stock", choices)
-
-st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def get_prices(symbol, days, start=None, end=None):
     st.write("loading...")
@@ -56,9 +46,36 @@ def get_prices(symbol, days, start=None, end=None):
     #buy, sell, prop_buy, prop_sell = utils.optimal_limits_exact(mu_est, sigma_est, price[-1], days)   #10 days in advance
     return (trend, buy, sell, prop_buy, prop_sell, time, np.array(list(price) + [np.nan]*len(days)) )
 
+
+st.write("""
+# Stockmarket Oracle
+At what price should i buy or sell my stock?
+""")
+
+choices = ["^GDAXI", "^DJI", "GC=F", "BTC-EUR", "META" ,"AMZN","DTE.DE"]
+
+selected_stock = st.selectbox("stock", choices)
+
+st.set_option('deprecation.showPyplotGlobalUse', False)
+
 st.write(f"""
 The best prices for {selected_stock}
 """)
+
+st.write("What is your timeframe where you want to buy or sell your stock?")
+days_in_advance = st.textbox("")
+st.write("How many historical data do you want to use to fit the model?")
+start_date = st.datepicker("")
+
+
+result = get_prices(selected_stock, days_in_advance, start_date)
+
+st.write(f"""
+The best limit to sell the  {selected_stock} within the next {days_in_advance} is {result.sell} the order will be fullfilled with a probability of {result.sell_prop}.
+The best limit to buy the  {selected_stock} within the next {days_in_advance} is {result.buy} the order will be fullfilled with a probability of {result.sell_buy}.
+""")
+
+st.write("Based on the assumtions to be verified here. This is no financial advise.")
 
 trend, buy, sell, prop_buy, prop_sell, time, price = get_prices(selected_stock, [1,2,3,4,5,10,20,30]) # stock 5 days ahead
 
@@ -72,3 +89,9 @@ fig1 = px.line({ "date": time, "stockprice": price}, x="date", y="stockprice")
 fig2 = px.line({ "date": time, "stockprice": trend}, x="date", y="stockprice")
 fig = go.Figure(data = fig1.data + fig2.data)
 st.plotly_chart(fig, use_container_width=True)
+
+# fig = plt.plot(result.trend)
+# st.pyplot(fig=fig)
+
+st.write("To learn more about the theoretical foundation of this calculations check out my blogpost at thebigdatablog.com.")
+
