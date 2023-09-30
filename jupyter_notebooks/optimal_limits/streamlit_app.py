@@ -159,7 +159,8 @@ fig.data[1].line.color = 'blue'
 fig.data[2].line.color = 'orange'
 #fig.data[3].line.color = 'red'
 #fig.data[4].line.color = 'red'
-#fig.configure(background='#D9E9F0')
+
+fig.update_layout(title_text=f'{selected_stock}', paper_bgcolor="white",  plot_bgcolor="white")
 
 st.plotly_chart(fig, use_container_width=True)
 st.write("""
