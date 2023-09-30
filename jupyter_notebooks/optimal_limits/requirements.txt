@@ -1,0 +1,5 @@
+plotly
+numpy
+pandas
+pytickersymbols
+yfinance
