@@ -4,3 +4,4 @@ pandas
 pytickersymbols
 yfinance
 matplotlib
+scipy
