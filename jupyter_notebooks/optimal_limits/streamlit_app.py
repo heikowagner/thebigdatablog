@@ -2,7 +2,6 @@ import streamlit as st
 import utils
 import yfinance as yf
 import numpy as np
-
 import streamlit as st
 import numpy as np
 import plotly.figure_factory as ff
@@ -11,6 +10,8 @@ import plotly.graph_objects as go
 import datetime as datetime
 from pytickersymbols import PyTickerSymbols
 import pandas as pd
+import math
+
 
 stock_data = PyTickerSymbols()
 german_stocks = stock_data.get_stocks_by_index('DAX')
@@ -76,7 +77,8 @@ def get_prices(symbol, days, start=None, end=None):
 
     #buy, sell, prop_buy, prop_sell = utils.optimal_limits_exact(mu_est, sigma_est, price[-1], days)   #10 days in advance
     return (trend, buy, sell, prop_buy, prop_sell, time, 
-            np.array(list(price) + [np.nan]*len(days)) #Here i need the full prices
+            np.array(list(price) + [np.nan]*len(days)), #Here i need the full prices
+            mu_est, sigma_est
             )
 
 
@@ -113,11 +115,21 @@ d = st.date_input(
 start_date = d[0]
 end_date = d[1]
 
-trend, buy, sell, prop_buy, prop_sell, time, price = get_prices(selected_stock, [np.floor(x**2.5) for x in range(1,20) ], start_date, end_date) # stock 5 days ahead
+trend, buy, sell, prop_buy, prop_sell, time, price, mu, sigma= get_prices(selected_stock, [np.floor(x**2.5) for x in range(1,20) ], start_date, end_date) # stock 5 days ahead
 
 def convert_to_percentage(x):
     return [ str(round(y*100,2)) + ' %' for y in x]
 
+# Stockprice informations
+st.markdown(
+    f"""
+**Yahoo Symbol: {selected_stock}**
+
+$\mu$: {mu} \n
+$\sigma$: {sigma} \n
+$S_0$= {[np.round(item, 2) for item in list(price) if item is not None and not math.isnan(item)][-1]} € (reference price)
+    """
+)
 
 result_df = pd.DataFrame({
     'Days in Advance': [str( (day - datetime.datetime.now().date()).days ) for day in time],
@@ -173,8 +185,8 @@ st.write("""
 # fig = plt.plot(result.trend)
 # st.pyplot(fig=fig)
 
-st.write("""
-         Based on the assumptions to be verified [here](https://www.thebigdatablog.com/does-my-stock-trading-strategy-work/). *This is no financial advise.*
+st.markdown("""
+         Based on the assumptions to be verified [here](https://www.thebigdatablog.com/does-my-stock-trading-strategy-work/). **This is no financial advise.**
 
          To learn more about the theoretical backgound of this calculations check out my blogpost at [thebigdatablog.com](https://www.thebigdatablog.com).
          """)
