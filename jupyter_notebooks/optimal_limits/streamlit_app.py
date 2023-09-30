@@ -122,15 +122,15 @@ def convert_to_percentage(x):
 result_df = pd.DataFrame({
     'Days in Advance': [str( (day - datetime.datetime.now().date()).days ) for day in time],
     'Trendbased price': np.round(trend,2),
-    'Buy Limit': np.round(buy,2),
+    'Buy limit': np.round(buy,2),
     'Propability to buy':  convert_to_percentage(prop_buy),
-    'Sell Limit': np.round(sell,2),
+    'Sell limit': np.round(sell,2),
     'Propability to sell': convert_to_percentage(prop_sell),
 })
 
 # Results as Table
 st.write( 
-    result_df[result_df["Buy Price"].isnull()==False]
+    result_df[result_df["Buy limit"].isnull()==False]
 )
 
 stock =  yf.Ticker(selected_stock)
@@ -159,6 +159,7 @@ fig.data[1].line.color = 'blue'
 fig.data[2].line.color = 'orange'
 #fig.data[3].line.color = 'red'
 #fig.data[4].line.color = 'red'
+#fig.configure(background='#D9E9F0')
 
 st.plotly_chart(fig, use_container_width=True)
 st.write("""
