@@ -122,9 +122,9 @@ def convert_to_percentage(x):
 result_df = pd.DataFrame({
     'Days in Advance': [str( (day - datetime.datetime.now().date()).days ) for day in time],
     'Trendbased price': np.round(trend,2),
-    'Buy Price': np.round(buy,2),
+    'Buy Limit': np.round(buy,2),
     'Propability to buy':  convert_to_percentage(prop_buy),
-    'Sell price': np.round(sell,2),
+    'Sell Limit': np.round(sell,2),
     'Propability to sell': convert_to_percentage(prop_sell),
 })
 
