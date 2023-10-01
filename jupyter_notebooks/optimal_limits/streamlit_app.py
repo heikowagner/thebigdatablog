@@ -82,11 +82,11 @@ def get_prices(symbol, days, start=None, end=None):
             )
 
 
-st.write("""
-# Stockmarket Oracle
-At what price should i buy or sell a stock? 
+st.markdown("""
+# Stockmarket Oracle :wink:
+At what price should i buy or sell a stock?
          
-This app gives an indication how to set limits for a given stock based on statistical insights.
+This app gives an indication how to set limits for a given stock based on [statistical insights](https://www.thebigdatablog.com/does-my-stock-trading-strategy-work/).
 For a given stock the app will give you the expected maximal and minimal price based on the last trading day as reference as
 well as the propability that the order is fullfilled for that price.
 """)
@@ -121,15 +121,27 @@ def convert_to_percentage(x):
     return [ str(round(y*100,2)) + ' %' for y in x]
 
 # Stockprice informations
-st.markdown(
-    f"""
-**Yahoo Symbol: {selected_stock}**
 
-$\mu$: {mu} \n
-$\sigma$: {sigma} \n
-$S_0$= {[np.round(item, 2) for item in list(price) if item is not None and not math.isnan(item)][-1]} € (reference price)
-    """
-)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown(
+        f"""
+    **Yahoo Symbol: {selected_stock}**
+
+    $\hat{{\mu}}$= {mu} \n
+    $\hat{{\sigma}}$= {sigma} \n
+    $S_0$= {[np.round(item, 2) for item in list(price) if item is not None and not math.isnan(item)][-1]} € (reference price)
+        """)
+
+with col2:
+    st.write("""
+             
+             """)
+    st.latex(r"S_t = S_0 \exp \left(\left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t \right)"
+        )
+
 
 result_df = pd.DataFrame({
     'Days in Advance': [str( (day - datetime.datetime.now().date()).days ) for day in time],
@@ -162,21 +174,18 @@ fig0 = px.line(df, x=df.index, y="Close")
 
 fig1 = px.line({ "date": time, "stockprice": price}, x="date", y="stockprice")
 fig2 = px.line({ "date": time, "trend": trend}, x="date", y="trend")
-
 fig3 = px.scatter({ "date": time, "buy": buy, "propability" : prop_buy}, x="date", y="buy", color = "propability")
 fig4 = px.scatter({ "date": time, "sell": sell, "propability" : prop_sell}, x="date", y="sell", color = "propability")
 fig = go.Figure(data = fig0.data + fig1.data + fig2.data + fig3.data + fig4.data)
 fig.data[0].line.color = 'lightgrey'
 fig.data[1].line.color = 'blue'
 fig.data[2].line.color = 'orange'
-#fig.data[3].line.color = 'red'
-#fig.data[4].line.color = 'red'
 
 fig.update_layout(title_text=f'{selected_stock}', paper_bgcolor="white",  plot_bgcolor="white")
 
 st.plotly_chart(fig, use_container_width=True)
 st.write("""
-         The dots are the expected maximal and minimal price based on the last trading day as reference.
+         The dots are the expected maximal and minimal price in a given interval based on the last trading day as reference.
          The color of the dots indicates the propability to buy or sell for this price.
          The orange line is the trend curve.
          The blue curve are the observed historical prices (grey stands for discarded observations).
