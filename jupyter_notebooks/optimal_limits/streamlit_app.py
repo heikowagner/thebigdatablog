@@ -12,10 +12,6 @@ from pytickersymbols import PyTickerSymbols
 import pandas as pd
 import math
 
-
-stock_data = PyTickerSymbols()
-german_stocks = stock_data.get_stocks_by_index('DAX')
-
 @st.cache_data
 def download_prices(symbol, days, start=None, end=None):
     stock =  yf.Ticker(symbol)
@@ -91,9 +87,38 @@ For a given stock the app will give you the expected maximal and minimal price b
 well as the propability that the order is fullfilled for that price.
 """)
 
-choices = german_stocks # [f["name"] for f in german_stocks]
+stock_data = PyTickerSymbols()
 
-selected_stock = st.selectbox("Which stock do you want to analyze", choices, format_func= lambda x: x["name"])
+col1, col2 = st.columns(2)
+
+with col1:
+    indexes = (
+"DAX",
+"AEX",
+"BEL 20",
+"CAC 40",
+"DOW JONES",
+"FTSE 100",
+"IBEX 35",
+"MDAX",
+"NASDAQ 100",
+"OMX Helsinki 15",
+"OMX Helsinki 25",
+"OMX Stockholm 30",
+"S&P 100",
+"S&P 500",
+"SDAX",
+"SMI",
+"TECDAX",
+"MOEX",
+)
+    index_choice = st.selectbox("Select an index", indexes)
+
+with col2:
+    german_stocks = stock_data.get_stocks_by_index(index_choice)
+    choices = german_stocks # [f["name"] for f in german_stocks]
+    selected_stock = st.selectbox("Which stock do you want to analyze", choices, format_func= lambda x: x["name"])
+
 selected_stock = selected_stock["symbols"][0]["yahoo"]
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
