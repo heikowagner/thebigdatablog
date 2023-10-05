@@ -53,7 +53,7 @@ def optimal_limits_exact(mu, sigma, current_price, n_days):
 
     buy =  quad(min_props, 0, limit,   args=(X0, mu_hat, sigma, llambda, T))[0]
     sell =  quad(max_props, 0, limit,  args=(X0, mu_hat, sigma, llambda, T))[0]
-    prop_buy = min_props(buy, X0, mu_hat, sigma, llambda, T)
+    prop_buy = 1-min_props(buy, X0, mu_hat, sigma, llambda, T)
     prop_sell = max_props(sell, X0, mu_hat, sigma, llambda, T)
     return(buy,sell, prop_buy, prop_sell)
 
