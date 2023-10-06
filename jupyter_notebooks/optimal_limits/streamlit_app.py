@@ -252,7 +252,7 @@ with st.container():
 
 st.plotly_chart(fig, use_container_width=True)
 st.write("""
-         The dots are the expected maximal and minimal price in a given interval based on the last trading day as reference.
+         The dots are the expected maximal and minimal price within a given interval spanned by the last trading day.
          The color of the dots indicates the propability to buy or sell for this price.
          The orange line is the trend curve.
          The blue curve are the observed historical prices (grey stands for discarded observations).
