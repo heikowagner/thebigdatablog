@@ -174,9 +174,9 @@ if trend[0]:
         result_df = pd.DataFrame({
             'Days in Advance (total)': [str( (day - datetime.datetime.now().date()).days +1 ) for day in time],
             'Trendbased price': np.round(trend,2),
-            'Buy limit': np.round(buy,2),
+            'Optimal buy limit': np.round(buy,2),
             'Propability to buy':  convert_to_percentage(prop_buy),
-            'Sell limit': np.round(sell,2),
+            'Optimal sell limit': np.round(sell,2),
             'Propability to sell': convert_to_percentage(prop_sell),
         })
 
@@ -199,7 +199,7 @@ if trend[0]:
             target_price = st.number_input('Targetprice', value=S0)
 
         with col3:
-            days = st.number_input(f"Timehorizont to {sellbuy}", step=1, value=5 ) # Here we look at trading days, in the table days in total
+            days = st.number_input(f"Timehorizont to {sellbuy} in workingdays", step=1, value=5 ) # Here we look at trading days, in the table days in total
             days = days
 
         with col4:
