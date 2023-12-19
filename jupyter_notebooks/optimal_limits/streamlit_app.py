@@ -42,7 +42,7 @@ def get_prices(symbol, days, start=None, end=None):
 
     if len(df)==0:
         st.write(f"There was an error downloading the data for {symbol}")
-        return (False, [0], [0], [0], [0], [datetime.date(2000,1,1)], 
+        return ([False], [0], [0], [0], [0], [datetime.date(2000,1,1)], 
             [0], #Here i need the full prices
             0, 0
             )
@@ -140,7 +140,7 @@ end_date = d[1]
 
 trend, buy, sell, prop_buy, prop_sell, time, price, mu, sigma= get_prices(selected_stock, [np.floor(x**2.5) for x in range(1,20) ], start_date, end_date) # stock 5 days ahead
 
-if trend:
+if trend[0]:
     def convert_to_percentage(x):
         return [ str(round(y*100,2)) + ' %' for y in x]
 
