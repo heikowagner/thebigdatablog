@@ -30,6 +30,7 @@ def download_prices(symbol, days, start=None, end=None):
         else:
             start_date = start
         df = stock.history(start=start_date, end=current_date)
+        print(df)
     return df
 
 @st.cache_data
@@ -38,33 +39,29 @@ def get_prices(symbol, days, start=None, end=None):
     # Determine minimal date  
     price = df['Close']
     price = price.values
-    
-    mu_est, sigma_est = utils.compute_parameter(price ,price.size) # The last var is how many days we are looking at
-    #time = np.concatenate( ([x.date() for x in df.index] , [df.index[-1].date() + dt.timedelta(day) for day in days]), axis=0)
-    
-    #trend_ahead = [[df.index[-1].date() + datetime.timedelta(day), day] for day in days if (df.index[-1].date() + datetime.timedelta(day)).isoweekday()]
-    #time = [x.date() for x in df.index] + [day[0] for day in trend_ahead]
-    #days_ahead = np.array( list( range(0,price.size) )  + [day[1] + price.size for day in trend_ahead] )  #days ahead should be more dense
-    #trend = price[0]*np.exp( days_ahead *(mu_est -0.5*sigma_est**2))
 
+    if len(df)==0:
+        st.write(f"There was an error downloading the data for {symbol}")
+        return (False, [0], [0], [0], [0], [datetime.date(2000,1,1)], 
+            [0], #Here i need the full prices
+            0, 0
+            )
+    mu_est, sigma_est = utils.compute_parameter(price ,price.size) # The last var is how many days we are looking at
     time = [x.date() for x in df.index] + [(df.index[-1].date() + 
                                            #datetime.timedelta(day) # Hier darf timedelta workday
                                            pd.tseries.offsets.BDay(day)).date()
                                            for day in days] #<- Days ahead darf nur auf eine Liste mit handelstagen angewendet werden
 
     days_ahead = np.array( list( range(0,price.size) )  + [day + price.size for day in days] )  #days ahead should be more dense
-
-    print(days_ahead)
     trend = price[0]*np.exp( days_ahead *(mu_est -0.5*sigma_est**2))
     
-    # construct an array of 0 for price lengt
+    # construct an array of 0 for price length
 
     buy = [np.nan]*price.size
     sell = [np.nan]*price.size
     prop_buy = [np.nan]*price.size
     prop_sell = [np.nan]*price.size
 
-    print(price[-1])
     for day in days:  #atm we only get the last
         buy_d, sell_d, prop_buy_d, prop_sell_d = utils.optimal_limits_exact(mu_est, sigma_est, price[-1], day)
         buy.append(buy_d)
@@ -143,126 +140,127 @@ end_date = d[1]
 
 trend, buy, sell, prop_buy, prop_sell, time, price, mu, sigma= get_prices(selected_stock, [np.floor(x**2.5) for x in range(1,20) ], start_date, end_date) # stock 5 days ahead
 
-def convert_to_percentage(x):
-    return [ str(round(y*100,2)) + ' %' for y in x]
+if trend:
+    def convert_to_percentage(x):
+        return [ str(round(y*100,2)) + ' %' for y in x]
 
-# Stockprice informations
-S0 = [np.round(item, 2) for item in list(price) if item is not None and not math.isnan(item)][-1]
+    # Stockprice informations
+    S0 = [np.round(item, 2) for item in list(price) if item is not None and not math.isnan(item)][-1]
 
-with st.container():
-    col1, col2 = st.columns(2)
+    with st.container():
+        col1, col2 = st.columns(2)
 
-    with col1:
-        st.markdown(
-            f"""
-        **Yahoo Symbol: {selected_stock}**
+        with col1:
+            st.markdown(
+                f"""
+            **Yahoo Symbol: {selected_stock}**
 
-        $\hat{{\mu}}$= {mu} \n
-        $\hat{{\sigma}}$= {sigma} \n
-        $S_0$= {S0} € (reference price)
+            $\hat{{\mu}}$= {mu} \n
+            $\hat{{\sigma}}$= {sigma} \n
+            $S_0$= {S0} € (reference price)
+                """)
+
+        with col2:
+            st.write("""
+                    
+                    """)
+            st.latex(r"S_t = S_0 \exp \left(\left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t \right)"
+                )
+
+
+        result_df = pd.DataFrame({
+            'Days in Advance (total)': [str( (day - datetime.datetime.now().date()).days +1 ) for day in time],
+            'Trendbased price': np.round(trend,2),
+            'Buy limit': np.round(buy,2),
+            'Propability to buy':  convert_to_percentage(prop_buy),
+            'Sell limit': np.round(sell,2),
+            'Propability to sell': convert_to_percentage(prop_sell),
+        })
+
+
+    with st.container():
+        st.markdown("**Price calculator**")
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        sellbuy = "buy"
+
+        with col1:
+            sellbuy = st.radio(
+                "Do you decide to buy or sell a stock?",
+                ["Buy","Sell"])
+            
+            sellbuy = sellbuy.lower()
+
+        with col2:
+            target_price = st.number_input('Targetprice', value=S0)
+
+        with col3:
+            days = st.number_input(f"Timehorizont to {sellbuy}", step=1, value=5 ) # Here we look at trading days, in the table days in total
+            days = days
+
+        with col4:
+            try:
+                mu_hat =  (mu - sigma**2/2)
+                llambda = mu_hat/sigma**2
+
+                if sellbuy =="buy":
+                    prop =  1-utils.min_props(target_price, S0, mu_hat, sigma, llambda, days)
+                else:
+                    prop = utils.max_props(target_price, S0, mu_hat, sigma, llambda, days)
+                prop = round(prop*100,2)
+                #st.number_input(f"""Propability to {sellbuy}""", value=prop)
+                st.write(f"""Propability to {sellbuy}: {prop}%""")
+            except:
+                st.write("Calculation not possible")
+
+    with st.container():
+        st.markdown("**Optimal prices**")
+
+        # Results as Table
+        st.write( 
+            result_df[result_df["Buy limit"].isnull()==False]
+        )
+
+        stock =  yf.Ticker(selected_stock)
+        df = stock.history(period="max")
+
+        log_scale = st.checkbox('Log scale')
+
+        if log_scale:
+            price =np.log(price)
+            buy =np.log(buy)
+            sell =np.log(sell)
+            trend =np.log(trend)
+            df["Close"] = np.log(df["Close"])
+
+        fig = go.Figure()
+        fig0 = px.line(df, x=df.index, y="Close")
+
+        fig1 = px.line({ "date": time, "stockprice": price}, x="date", y="stockprice")
+        fig2 = px.line({ "date": time, "trend": trend}, x="date", y="trend")
+        fig3 = px.scatter({ "date": time, "buy": buy, "propability" : prop_buy}, x="date", y="buy", color = "propability")
+        fig4 = px.scatter({ "date": time, "sell": sell, "propability" : prop_sell}, x="date", y="sell", color = "propability")
+        fig = go.Figure(data = fig0.data + fig1.data + fig2.data + fig3.data + fig4.data)
+        fig.data[0].line.color = 'lightgrey'
+        fig.data[1].line.color = 'blue'
+        fig.data[2].line.color = 'orange'
+
+        fig.update_layout(title_text=f'{selected_stock}', paper_bgcolor="white",  plot_bgcolor="white")
+
+    st.plotly_chart(fig, use_container_width=True)
+    st.write("""
+            The dots are the expected maximal and minimal price within a given interval spanned by the last trading day.
+            The color of the dots indicates the propability to buy or sell for this price.
+            The orange line is the trend curve.
+            The blue curve are the observed historical prices (grey stands for discarded observations).
             """)
 
-    with col2:
-        st.write("""
-                
-                """)
-        st.latex(r"S_t = S_0 \exp \left(\left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t \right)"
-            )
+    # fig = plt.plot(result.trend)
+    # st.pyplot(fig=fig)
 
+    st.markdown("""
+            Based on the assumptions to be verified [here](https://www.thebigdatablog.com/does-my-stock-trading-strategy-work/). **This is no financial advise.**
 
-    result_df = pd.DataFrame({
-        'Days in Advance (total)': [str( (day - datetime.datetime.now().date()).days +1 ) for day in time],
-        'Trendbased price': np.round(trend,2),
-        'Buy limit': np.round(buy,2),
-        'Propability to buy':  convert_to_percentage(prop_buy),
-        'Sell limit': np.round(sell,2),
-        'Propability to sell': convert_to_percentage(prop_sell),
-    })
-
-
-with st.container():
-    st.markdown("**Price calculator**")
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    sellbuy = "buy"
-
-    with col1:
-        sellbuy = st.radio(
-            "Do you decide to buy or sell a stock?",
-            ["Buy","Sell"])
-        
-        sellbuy = sellbuy.lower()
-
-    with col2:
-        target_price = st.number_input('Targetprice', value=S0)
-
-    with col3:
-        days = st.number_input(f"Timehorizont to {sellbuy}", step=1, value=5 ) # Here we look at trading days, in the table days in total
-        days = days
-
-    with col4:
-        try:
-            mu_hat =  (mu - sigma**2/2)
-            llambda = mu_hat/sigma**2
-
-            if sellbuy =="buy":
-                prop =  1-utils.min_props(target_price, S0, mu_hat, sigma, llambda, days)
-            else:
-                prop = utils.max_props(target_price, S0, mu_hat, sigma, llambda, days)
-            prop = round(prop*100,2)
-            #st.number_input(f"""Propability to {sellbuy}""", value=prop)
-            st.write(f"""Propability to {sellbuy}: {prop}%""")
-        except:
-            st.write("Calculation not possible")
-
-with st.container():
-    st.markdown("**Optimal prices**")
-
-    # Results as Table
-    st.write( 
-        result_df[result_df["Buy limit"].isnull()==False]
-    )
-
-    stock =  yf.Ticker(selected_stock)
-    df = stock.history(period="max")
-
-    log_scale = st.checkbox('Log scale')
-
-    if log_scale:
-        price =np.log(price)
-        buy =np.log(buy)
-        sell =np.log(sell)
-        trend =np.log(trend)
-        df["Close"] = np.log(df["Close"])
-
-    fig = go.Figure()
-    fig0 = px.line(df, x=df.index, y="Close")
-
-    fig1 = px.line({ "date": time, "stockprice": price}, x="date", y="stockprice")
-    fig2 = px.line({ "date": time, "trend": trend}, x="date", y="trend")
-    fig3 = px.scatter({ "date": time, "buy": buy, "propability" : prop_buy}, x="date", y="buy", color = "propability")
-    fig4 = px.scatter({ "date": time, "sell": sell, "propability" : prop_sell}, x="date", y="sell", color = "propability")
-    fig = go.Figure(data = fig0.data + fig1.data + fig2.data + fig3.data + fig4.data)
-    fig.data[0].line.color = 'lightgrey'
-    fig.data[1].line.color = 'blue'
-    fig.data[2].line.color = 'orange'
-
-    fig.update_layout(title_text=f'{selected_stock}', paper_bgcolor="white",  plot_bgcolor="white")
-
-st.plotly_chart(fig, use_container_width=True)
-st.write("""
-         The dots are the expected maximal and minimal price within a given interval spanned by the last trading day.
-         The color of the dots indicates the propability to buy or sell for this price.
-         The orange line is the trend curve.
-         The blue curve are the observed historical prices (grey stands for discarded observations).
-         """)
-
-# fig = plt.plot(result.trend)
-# st.pyplot(fig=fig)
-
-st.markdown("""
-         Based on the assumptions to be verified [here](https://www.thebigdatablog.com/does-my-stock-trading-strategy-work/). **This is no financial advise.**
-
-         To learn more about the theoretical backgound of this calculations check out my blogpost at [thebigdatablog.com](https://www.thebigdatablog.com).
-         """)
+            To learn more about the theoretical backgound of this calculations check out my blogpost at [thebigdatablog.com](https://www.thebigdatablog.com).
+            """)
