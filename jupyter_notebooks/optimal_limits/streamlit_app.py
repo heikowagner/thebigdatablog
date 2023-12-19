@@ -120,7 +120,7 @@ with col2:
 selected_stock = selected_stock["symbols"][0]["yahoo"]
 
 if selected_stock=="DPW.F":
-    selected_stock=="DHL.DE"
+    selected_stock="DHL.DE"
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
