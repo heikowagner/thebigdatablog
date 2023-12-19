@@ -119,6 +119,9 @@ with col2:
 
 selected_stock = selected_stock["symbols"][0]["yahoo"]
 
+if selected_stock=="DPW.F":
+    selected_stock=="DHL.DE"
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # st.write("What is your timeframe in days where you want to buy or sell your stock?")
