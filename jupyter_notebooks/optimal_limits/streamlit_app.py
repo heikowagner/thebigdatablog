@@ -220,9 +220,9 @@ if trend[0]:
         st.markdown("**Optimal prices**")
 
         # Results as Table
-        st.write( 
-            result_df[result_df["Optimal buy limit"].isnull()==False]
-        )
+
+        styler = result_df[result_df["Optimal buy limit"].isnull()==False].style.hide_index().format(subset=['mean'], decimal=',', precision=2).bar(subset=['mean'], align="mid")
+        st.write(styler.to_html(), unsafe_allow_html=True)
 
         stock =  yf.Ticker(selected_stock)
         df = stock.history(period="max")
