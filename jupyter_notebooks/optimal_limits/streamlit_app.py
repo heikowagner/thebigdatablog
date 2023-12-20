@@ -221,7 +221,7 @@ if trend[0]:
 
         # Results as Table
 
-        styler = result_df[result_df["Optimal buy limit"].isnull()==False].style.hide_index().format(subset=['mean'], decimal=',', precision=2).bar(subset=['mean'], align="mid")
+        styler = result_df[result_df["Optimal buy limit"].isnull()==False].style.hide()
         st.write(styler.to_html(), unsafe_allow_html=True)
 
         stock =  yf.Ticker(selected_stock)
