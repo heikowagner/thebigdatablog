@@ -172,10 +172,10 @@ if trend[0]:
 
         result_df = pd.DataFrame({
             'Days in Advance (total)': [str( (day - datetime.datetime.now().date()).days +1 ) for day in time],
-            'Trendbased price': np.round(trend,2),
-            'Optimal buy limit': np.round(buy,2),
+            'Trendbased price': trend,
+            'Optimal buy limit': buy,
             'Propability to buy':  convert_to_percentage(prop_buy),
-            'Optimal sell limit': np.round(sell,2),
+            'Optimal sell limit': sell,
             'Propability to sell': convert_to_percentage(prop_sell),
         })
 
