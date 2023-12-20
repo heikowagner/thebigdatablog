@@ -30,7 +30,6 @@ def download_prices(symbol, days, start=None, end=None):
         else:
             start_date = start
         df = stock.history(start=start_date, end=current_date)
-        print(df)
     return df
 
 @st.cache_data
