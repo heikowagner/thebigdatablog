@@ -222,7 +222,7 @@ if trend[0]:
 
         # Results as Table
         st.write( 
-            result_df[result_df["Buy limit"].isnull()==False]
+            result_df[result_df["Optimal buy limit"].isnull()==False]
         )
 
         stock =  yf.Ticker(selected_stock)
