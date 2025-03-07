@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import timeit
 from scipy.interpolate import interp1d
  
+np.random.seed(0)
+
 # Simulation
 T = 500
 X = np.linspace(-5, 5, T) 
@@ -33,8 +35,22 @@ start = timeit.default_timer()
 t = grid
 h= Tout**(-1/5)
 kernel = [epan_kernel(x, h) for x in t]
+print(kernel)
+plt.plot(t, kernel)
+# %%
 kernel_ft = np.fft.fft(kernel)
+print(kernel_ft)
+# %%
 func_tmp = kernel_ft* np.fft.fft(Ynew)
+print(func_tmp)
+# %%
+
+plt.plot( np.fft.ifft(func_tmp).real )
+
+# %%
+
+np.fft.ifft([0 +1j, 0+1j, 4+3j, 0+1j])
+# %%
 m_fft = (max(X)-min(X))*np.fft.fftshift(np.fft.ifft(func_tmp).real)/Tout
 plt.plot(t, m_fft)
  

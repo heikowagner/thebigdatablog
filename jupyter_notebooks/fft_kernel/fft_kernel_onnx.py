@@ -3,9 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import timeit
 from scipy.interpolate import interp1d
-import spox.opset.ai.onnx.v20 as op
 import ndonnx as ndx
-from ndonnx._propagation import eager_propagate
+from polyfills import ndx_elementwise_max_0, ndx_elementwise_complex_multiply, fft, ifft  # Hinzugefügte Importe
+
+np.random.seed(0)
 
 # Initializing an array with data
 # Simulation
@@ -31,40 +32,66 @@ ndx_grid = ndx.asarray(grid)
 
 ndx_Ynew = ndx.asarray(Ynew)
 
-def ndx_elementwise_max_0(y):
-    xy = y.__array_namespace__()
-    return (y-xy.abs(y))/2
-
 ndx_elementwise_max_0(ndx_X)
+
 # %%
+# Elementwise multiplication
+# Entferne die Definition von ndx_elementwise_complex_multiply
+
+# %%
+# Entferne die Definition von epan_kernel
 def epan_kernel(u, b):
     u = u / b
     return ndx_elementwise_max_0( 1. / b * 3. / 4 * (1 - u ** 2) )
 
-epan_kernel(X, 0.5)
+kernel = epan_kernel(ndx_grid, 0.32)
+
+plt.plot(ndx_grid, kernel)
+
 # %%
 
-@eager_propagate
-def fft(x: ndx.Array, inverse: int=0, onesided: int=0) -> ndx.Array:
-    var = x.spox_var()
-    fft_var = op.dft(var, inverse=inverse, onesided=onesided)
-    return ndx.from_spox_var(fft_var)
+# Entferne die Definition von fft und ifft
 
-def ifft(x):
-    return fft(x, inverse=1, onesided=0)
+onnx_result = fft(ndx.reshape(kernel, (1, -1, 1)))
 
-onnx_result = fft(ndx.reshape(ndx_Ynew, (-1, 1)))
 onnx_result2 = ifft(onnx_result)
-#print(onnx_result.to_numpy())
-print(onnx_result2.to_numpy()[:,0,0])
+#print(onnx_result.to_numpy()[:,0,:])
+print(onnx_result2.to_numpy()[0,:,:])
 
 # %%
+onnx_result = fft(ndx.reshape(kernel, (1, -1, 1)))
+onnx_result_y = fft(ndx.reshape(ndx_Ynew, (1, -1, 1)))
+
+mult_res = ndx_elementwise_complex_multiply(onnx_result, onnx_result_y)
+
+to_test = mult_res.to_numpy()  #Bis hier hin ziemlich identisch
+# %%
+
+as_complex = to_test[:,0]+ to_test[:,1]*1j
+# %%
+plt.plot(np.fft.ifft(as_complex).real)
+# %%
+inv = ifft(mult_res)[0,:,0]  # realteil
+
+plt.plot(inv)
+
+# %%
+ifft(ndx.asarray([[0. ,1.], [0., 1.], [4., 3.], [0.,1. ]]))[:,:1,0]
+# %%
+arr = np.array([[2, 4, 6, 8],[7, 3, 5, 9]])
+arr1 = np.array([[3, 7, 5, 4],[8, 6, 9, 2]])
+arr2 = arr * arr1
+# %%
+# Entferne die Definition von fftshift
 def fftshift(x):
     xy = x.__array_namespace__()
-    min_index =  len(x)//2- xy.argmin(xy.abs(x))-1
-    return xy.roll(x, min_index)
+    shift_index =  len(x)//2#- xy.argmin(xy.abs(x))-1
+    return xy.roll(x, shift_index)
 
 fftshift(ndx_X)
+
+# %%
+plt.plot(fftshift(inv))
 # %%
 epan_kernel(ndx_grid, 3)
 # %%
@@ -75,11 +102,10 @@ start = timeit.default_timer()
 def kernel_regression(ndx_grid, ndx_Ynew, ndx_X, h):
     xy = ndx_grid.__array_namespace__()
     kernel = epan_kernel(ndx_grid, h)
-    print(kernel)
-    kernel_ft = fft(xy.reshape(kernel, (-1, 1)))
-    print(kernel_ft.to_numpy())
-    func_tmp = kernel_ft * fft(xy.reshape(ndx_Ynew, (-1, 1)))
-    m_fft = (xy.max(ndx_X)-xy.min(ndx_X))*fftshift(ifft(func_tmp)[:,0,0])/Tout
+    kernel_ft = fft(ndx.reshape(kernel, (1, -1, 1)))
+    y_ft = fft(ndx.reshape(ndx_Ynew, (1, -1, 1)))
+    func_tmp = ndx_elementwise_complex_multiply(kernel_ft, y_ft)
+    m_fft = (xy.max(ndx_X)-xy.min(ndx_X))*fftshift(ifft(func_tmp)[0,:,0])/Tout   # realteil
     return m_fft
 
 kernel_result = kernel_regression(ndx_grid, ndx_Ynew, ndx_X, Tout**(-1/5))
@@ -89,23 +115,18 @@ kernel_result = kernel_regression(ndx_grid, ndx_Ynew, ndx_X, Tout**(-1/5))
 #np_kernel_result = kernel_regression(grid, Ynew, X, Tout**(-1/5))
 
 plt.plot(ndx_grid, kernel_result)
- 
+
 stop = timeit.default_timer()
 print('Time: ', stop - start)
  
 plt.show()
 # %%
 
-import ndonnx as ndx
-import numpy as np
 
-def mean_drop_outliers(a, low=-5, high=5):
-    xp = a.__array_namespace__()
-    return xp.mean(a[(low < a) & (a < high)])
+# Instantiate placeholder ndonnx array
+x = ndx.array(shape=("N",), dtype=ndx.int64)
+y = mean_drop_outliers(x)
 
-np_result = mean_drop_outliers(np.asarray([-10, 0.5, 1, 4]))
-onnx_result = mean_drop_outliers(ndx.asarray([-10, 0.5, 1, 4]))
-np.testing.assert_equal(np_result, onnx_result.to_numpy())
-print(onnx_result.to_numpy())
-
-# %%
+# Build and save my ONNX model to disk
+model = ndx.build({"x": x}, {"y": y})
+onnx.save(model, "mean_drop_outliers.onnx")
