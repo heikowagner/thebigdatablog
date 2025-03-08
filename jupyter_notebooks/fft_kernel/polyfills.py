@@ -1,6 +1,7 @@
 import spox.opset.ai.onnx.v20 as op
 from ndonnx._propagation import eager_propagate
 import ndonnx as ndx
+import numpy as np
 
 def ndx_elementwise_max_0(y):
     """
@@ -79,3 +80,17 @@ def ifft(x: ndx.Array) -> ndx.Array:
     ndx.Array: The transformed array after applying the IFFT.
     """
     return fft(x, inverse=1, onesided=0)
+
+def fftshift(x):
+    """
+    Shift the zero-frequency component to the center of the spectrum.
+
+    Parameters:
+    x (ndx.Array): Input array.
+
+    Returns:
+    ndx.Array: The shifted array.
+    """
+    xy = x.__array_namespace__()
+    shift_index =xy.floor(x.size /  2 )
+    return xy.roll(x, shift_index)
