@@ -92,5 +92,5 @@ def fftshift(x):
     ndx.Array: The shifted array.
     """
     xy = x.__array_namespace__()
-    shift_index =xy.floor(x.size /  2 )
+    shift_index =xy.floor(x.size / 2)
     return xy.roll(x, shift_index)
