@@ -13,6 +13,14 @@ import pandas as pd
 import math
 from copy import deepcopy
 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
 def get_symbol_by_company_name(company_name, companies):
     for company in companies:
         if company.get("name") == company_name:
