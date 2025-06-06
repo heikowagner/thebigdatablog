@@ -11,6 +11,13 @@ import datetime as datetime
 from pytickersymbols import PyTickerSymbols
 import pandas as pd
 import math
+from copy import deepcopy
+
+def get_symbol_by_company_name(company_name, companies):
+    for company in companies:
+        if company.get("name") == company_name:
+            return company.get("symbols")[0].get("yahoo")
+    return None  # or raise an error if preferred
 
 @st.cache_data
 def download_prices(symbol, days, start=None, end=None):
@@ -113,15 +120,15 @@ with col1:
 
 with col2:
     german_stocks = stock_data.get_stocks_by_index(index_choice)
-    choices = german_stocks # [f["name"] for f in german_stocks]
-    selected_stock = st.selectbox("Which stock do you want to analyze", choices, format_func= lambda x: x["name"])
+    choices = deepcopy(german_stocks) # [f["name"] for f in german_stocks]
+    selected_stock = st.selectbox("Which stock do you want to analyze", choices, format_func= lambda x: x)
 
-selected_stock = selected_stock["symbols"][0]["yahoo"]
+selected_stock = get_symbol_by_company_name(selected_stock, german_stocks)
 
 if selected_stock=="DPW.F":
     selected_stock="DHL.DE"
 
-st.set_option('deprecation.showPyplotGlobalUse', False)
+#st.set_option('deprecation.showPyplotGlobalUse', False)
 
 # st.write("What is your timeframe in days where you want to buy or sell your stock?")
 # days_in_advance = st.number_input("What is your timeframe where you want to buy or sell your stock?", step = 1, value=5 )

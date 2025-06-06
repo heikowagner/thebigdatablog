@@ -5,4 +5,4 @@ pytickersymbols
 yfinance
 matplotlib
 scipy
-streamlit==1.27.0
+streamlit
