@@ -6,4 +6,4 @@ yfinance
 matplotlib
 scipy
 streamlit
-altair
+altair<5
