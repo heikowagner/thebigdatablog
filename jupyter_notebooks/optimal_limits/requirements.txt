@@ -6,3 +6,4 @@ yfinance
 matplotlib
 scipy
 streamlit
+altair
