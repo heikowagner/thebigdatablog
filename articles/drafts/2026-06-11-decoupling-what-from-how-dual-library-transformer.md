@@ -14,7 +14,7 @@ tags:
 title: 'Decoupling "What" from "How": Applying the Brain''s Dual-Library Mechanism
   to Transformer Architectures'
 wp_id: 4835
-wp_modified: '2026-06-11T20:26:24'
+wp_modified: '2026-06-11T20:31:38'
 ---
 
 Current large language models (LLMs) operate on a principle of global integration. When a prompt is processed, system instructions, historical context, and immediate factual data are concatenated into the same token sequence and processed through the same attention layers. Through successive layers of self-attention, these distinct inputs intertwine. This monolithic blending creates significant hurdles for complex execution workflows, such as autonomous software engineering. As discussed in [NELA: Beyond Human Syntax – The Logic of Future Coding Agents](/nela-beyond-human-syntax-the-logic-of-future-coding-agents), scaling future AI systems past superficial text completion requires architectures that decouple core logical reasoning from surface-level token syntax.
@@ -29,14 +29,20 @@ Most neurons responded to one dimension or the other, not both. Of the 597 cells
 
 The interaction between the two populations is directional. Cross-correlogram analysis showed that firing of stimulus-selective cells in the entorhinal cortex predicted firing of context-selective cells in the hippocampus 40 ms later; the reverse direction was not significant. The temporal lag is consistent with synaptic strengthening via spike-timing-dependent plasticity, and the correlation appeared only during and after the experiment — absent in the baseline period — suggesting it was acquired rather than pre-existing. The authors interpret this as the stimulus cuing retrieval of the relevant task context from memory, rather than the two being encoded as a pair from the start.
 
-There is also a modulatory effect on the context side: context neurons showed higher baseline excitability after their preferred question was presented, which amplified the subsequent stimulus-driven reinstatement. This is the gating property the architecture below attempts to approximate.
+There is also a modulatory effect on the context side: context neurons showed higher baseline excitability after their preferred question was presented. When a stimulus then arrived, that pre-activation amplified how much of the relevant context representation was reinstated — the question, in effect, opened a channel through which the picture could pull in the right interpretive frame.
+
+Three properties of this system motivate the architecture below:
+
+1. **Separate populations.** Content and context are encoded in distinct neuronal sets — not a shared representational space. This maps to keeping the two token streams in separate weight matrices that are never concatenated.
+2. **Asymmetric direction.** Content (stimulus) queries context, not the other way around. Context does not chase content; it waits to be retrieved. This maps to unidirectional cross-attention: content tokens attend to the context stream, but context tokens do not attend back.
+3. **Multiplicative gate.** The strength of context reinstatement depends on the excitability state of context neurons at the moment the stimulus arrives — a product of two signals, not a sum. This maps to a sigmoid gate $\mathbf{G}_\ell$ conditioned on the content representation, which scales how much retrieved context enters the content path.
 
 ## Architectural Proposal: The Dual-Stream Transformer
 
 The idea is to give the model two separate token sequences rather than one. Instead of prepending a system prompt to the user message and hoping the model treats them differently, the architecture routes them through distinct processing paths from the embedding layer onward:
 
-- **Content stream** — user input, documents, code, factual data
-- **Context stream** — system instructions, persona, output constraints
+- **Content stream** — user input, documents, code, factual data (analogous to stimulus neurons)
+- **Context stream** — system instructions, persona, output constraints (analogous to context neurons)
 
 Each stream has its own weight matrices and is never concatenated with the other.
 
@@ -51,7 +57,7 @@ The two streams need different inductive biases. Content tokens are causally mas
 
 ### Gatekeeper Cross-Attention
 
-The streams need to interact eventually. After each stream has been updated independently through self-attention and a feed-forward block, content tokens query the context stream via cross-attention. The retrieved context is then filtered by a sigmoid gate conditioned on the content stream:
+This is the architectural analogue of stimulus-driven context reinstatement. After each stream has been updated independently through self-attention and a feed-forward block, content tokens issue queries into the context stream — matching the biological direction, where stimulus activity predicted context activity, not the reverse. The retrieved context is then scaled by a sigmoid gate $\mathbf{G}_\ell$ whose value is determined by the content representation alone, matching the biological finding that reinstatement strength depends on the excitability of context neurons at the moment the stimulus arrives:
 
 $$\mathbf{R}_\ell = \text{MHA}\!\left(\mathbf{H}^{cnt}_\ell,\ \mathbf{H}^{ctx}_\ell,\ \mathbf{H}^{ctx}_\ell\right)$$
 
