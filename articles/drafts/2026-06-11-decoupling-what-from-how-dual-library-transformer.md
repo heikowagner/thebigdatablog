@@ -14,7 +14,7 @@ tags:
 title: 'Decoupling "What" from "How": Applying the Brain''s Dual-Library Mechanism
   to Transformer Architectures'
 wp_id: 4835
-wp_modified: '2026-06-11T20:12:47'
+wp_modified: '2026-06-11T20:24:58'
 ---
 
 Current large language models (LLMs) operate on a principle of global integration. When a prompt is processed, system instructions, historical context, and immediate factual data are concatenated into the same token sequence and processed through the same attention layers. Through successive layers of self-attention, these distinct inputs intertwine. This monolithic blending creates significant hurdles for complex execution workflows, such as autonomous software engineering. As discussed in [NELA: Beyond Human Syntax – The Logic of Future Coding Agents](/nela-beyond-human-syntax-the-logic-of-future-coding-agents), scaling future AI systems past superficial text completion requires architectures that decouple core logical reasoning from surface-level token syntax.
@@ -23,18 +23,13 @@ When context and content share a vector space, models struggle to isolate object
 
 ## The Biological Paradigm: Separate Neural Libraries
 
-Bausch et al. recorded from **3,109 neurons** across the amygdala, parahippocampal cortex, entorhinal cortex, and hippocampus of 16 neurosurgical patients. Patients viewed pairs of pictures under five different task questions (contexts such as *"Bigger?"* or *"Last seen in real life?"*), requiring them to compare the pictures according to the current context.
+The data come from 16 neurosurgical patients undergoing invasive epilepsy monitoring at the University of Bonn, all with depth electrodes implanted in medial temporal lobe structures. Bausch et al. recorded 3,109 single neurons in the amygdala, parahippocampal cortex, entorhinal cortex, and hippocampus while patients performed a comparison task: pairs of pictures appeared on screen, and a question shown at the start of each trial specified the comparison rule — *"Which is bigger?"*, *"Which did you see more recently in real life?"*, *"Which is brighter?"*, and so on. The question defined the task context; the pictures were the content.
 
-The study identified two largely distinct neuronal populations in the medial temporal lobe:
+Most neurons responded to one dimension or the other, not both. Of the 597 cells that fired selectively to particular pictures, 88% did so regardless of which question was active — the picture triggered them, but the task context made no difference. Of the 200 neurons selective for a particular question, 63.5% were indifferent to which pictures appeared. Only 50 neurons out of 3,109 (1.6%) responded to specific picture–question combinations, which is the conjunctive representation one might expect if the brain stored content and context in a shared code. It mostly does not.
 
-- **Stimulus neurons** (597 identified) — fire selectively to specific picture content, regardless of which question context is active. Most (88%) are invariant to context.
-- **Context neurons** (200 identified) — fire selectively to a particular task context (question), regardless of which picture is shown. Most (63.5%) are invariant to stimulus identity.
+The interaction between the two populations is directional. Cross-correlogram analysis showed that firing of stimulus-selective cells in the entorhinal cortex predicted firing of context-selective cells in the hippocampus roughly 40 ms later; the reverse direction was not significant. The temporal lag is consistent with synaptic strengthening via spike-timing-dependent plasticity, and the correlation appeared only during and after the experiment — absent in the baseline period — suggesting it was acquired rather than pre-existing. The authors interpret this as the stimulus cuing retrieval of the relevant task context from memory, rather than the two being jointly encoded from the start.
 
-**Core Finding:** The human brain does not primarily merge content and context into conjunctive representations. Across all 3,109 neurons, only **50 (1.61%)** showed significant stimulus–context interaction — i.e., responded to specific picture–question combinations. Instead, separate orthogonal populations represent content and context independently, combining them via *co-activation* and *reinstatement*.
-
-Crucially, the connection between the two populations is **asymmetric and directional**: during the experiment, firing of stimulus neurons in the *entorhinal cortex* predicted firing of context neurons in the *hippocampus* after approximately **40 milliseconds** — but not the reverse. This lag is consistent with synaptic modification via spike-timing-dependent plasticity. Cross-correlations were absent before the experiment began and persisted after it ended, suggesting a learned stimulus–context association.
-
-Further, context neurons showed increased excitability after pre-activation by their preferred question — a **gating mechanism** where prior context exposure guides which hippocampal context representations are reinstated when a stimulus is subsequently encountered. This asymmetry is the key property this architectural proposal translates into a transformer layer.
+There is also a modulatory effect on the context side: context neurons showed higher baseline excitability after their preferred question was presented, which amplified the subsequent stimulus-driven reinstatement. This is the gating property the architecture below attempts to approximate.
 
 ## Architectural Proposal: The Dual-Stream Transformer
 
