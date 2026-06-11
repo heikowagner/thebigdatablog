@@ -1,17 +1,20 @@
 ---
-title: "Decoupling \"What\" from \"How\": Applying the Brain's Dual-Library Mechanism to Transformer Architectures"
-date: 2026-06-11
-status: draft
-slug: decoupling-what-from-how-dual-library-transformer
 categories:
-  - Deep Learning
-  - NLP
+- Deep Learning
+- NLP
+date: 2026-06-11
+slug: decoupling-what-from-how-dual-library-transformer
+status: draft
 tags:
-  - transformer
-  - architecture
-  - prompt-injection
-  - LLM
-  - neuroscience
+- transformer
+- architecture
+- prompt-injection
+- LLM
+- neuroscience
+title: 'Decoupling "What" from "How": Applying the Brain''s Dual-Library Mechanism
+  to Transformer Architectures'
+wp_id: 4835
+wp_modified: '2026-06-11T19:55:18'
 ---
 
 Current large language models (LLMs) operate on a principle of global integration. When a prompt is processed, system instructions, historical context, and immediate factual data are mapped into the same hidden dimensions. Through successive layers of self-attention, these distinct inputs intertwine. This monolithic blending creates significant hurdles for complex execution workflows, such as autonomous software engineering. As discussed in [NELA: Beyond Human Syntax – The Logic of Future Coding Agents](/nela-beyond-human-syntax-the-logic-of-future-coding-agents), scaling future AI systems past superficial text completion requires architectures that decouple core logical reasoning from surface-level token syntax.
