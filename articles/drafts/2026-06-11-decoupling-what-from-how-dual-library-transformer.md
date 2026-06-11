@@ -14,7 +14,7 @@ tags:
 title: 'Decoupling "What" from "How": Applying the Brain''s Dual-Library Mechanism
   to Transformer Architectures'
 wp_id: 4835
-wp_modified: '2026-06-11T20:24:58'
+wp_modified: '2026-06-11T20:26:24'
 ---
 
 Current large language models (LLMs) operate on a principle of global integration. When a prompt is processed, system instructions, historical context, and immediate factual data are concatenated into the same token sequence and processed through the same attention layers. Through successive layers of self-attention, these distinct inputs intertwine. This monolithic blending creates significant hurdles for complex execution workflows, such as autonomous software engineering. As discussed in [NELA: Beyond Human Syntax – The Logic of Future Coding Agents](/nela-beyond-human-syntax-the-logic-of-future-coding-agents), scaling future AI systems past superficial text completion requires architectures that decouple core logical reasoning from surface-level token syntax.
@@ -25,9 +25,9 @@ When context and content share a vector space, models struggle to isolate object
 
 The data come from 16 neurosurgical patients undergoing invasive epilepsy monitoring at the University of Bonn, all with depth electrodes implanted in medial temporal lobe structures. Bausch et al. recorded 3,109 single neurons in the amygdala, parahippocampal cortex, entorhinal cortex, and hippocampus while patients performed a comparison task: pairs of pictures appeared on screen, and a question shown at the start of each trial specified the comparison rule — *"Which is bigger?"*, *"Which did you see more recently in real life?"*, *"Which is brighter?"*, and so on. The question defined the task context; the pictures were the content.
 
-Most neurons responded to one dimension or the other, not both. Of the 597 cells that fired selectively to particular pictures, 88% did so regardless of which question was active — the picture triggered them, but the task context made no difference. Of the 200 neurons selective for a particular question, 63.5% were indifferent to which pictures appeared. Only 50 neurons out of 3,109 (1.6%) responded to specific picture–question combinations, which is the conjunctive representation one might expect if the brain stored content and context in a shared code. It mostly does not.
+Most neurons responded to one dimension or the other, not both. Of the 597 cells that fired selectively to particular pictures, 88% did so regardless of which question was active — the picture triggered them, but the task context made no difference. Of the 200 neurons selective for a particular question, 63.5% were indifferent to which pictures appeared. Only 50 neurons out of 3,109 (1.6%) responded to specific picture–question combinations, which is the conjunctive representation one might expect if the brain stored content and context in a shared code. It does not.
 
-The interaction between the two populations is directional. Cross-correlogram analysis showed that firing of stimulus-selective cells in the entorhinal cortex predicted firing of context-selective cells in the hippocampus roughly 40 ms later; the reverse direction was not significant. The temporal lag is consistent with synaptic strengthening via spike-timing-dependent plasticity, and the correlation appeared only during and after the experiment — absent in the baseline period — suggesting it was acquired rather than pre-existing. The authors interpret this as the stimulus cuing retrieval of the relevant task context from memory, rather than the two being jointly encoded from the start.
+The interaction between the two populations is directional. Cross-correlogram analysis showed that firing of stimulus-selective cells in the entorhinal cortex predicted firing of context-selective cells in the hippocampus 40 ms later; the reverse direction was not significant. The temporal lag is consistent with synaptic strengthening via spike-timing-dependent plasticity, and the correlation appeared only during and after the experiment — absent in the baseline period — suggesting it was acquired rather than pre-existing. The authors interpret this as the stimulus cuing retrieval of the relevant task context from memory, rather than the two being encoded as a pair from the start.
 
 There is also a modulatory effect on the context side: context neurons showed higher baseline excitability after their preferred question was presented, which amplified the subsequent stimulus-driven reinstatement. This is the gating property the architecture below attempts to approximate.
 
@@ -59,7 +59,7 @@ $$\mathbf{G}_\ell = \sigma\!\left(\mathbf{H}^{cnt}_\ell \mathbf{W}_g + \mathbf{b
 
 $$\mathbf{F}_\ell = \text{LayerNorm}\!\left(\mathbf{H}^{cnt}_\ell + \mathbf{G}_\ell \odot \mathbf{R}_\ell\right)$$
 
-If the content representation has nothing to do with the current context, the gate tends toward zero and the content stream passes through largely unaffected. The injection-resistance property follows from the same structure: since $\mathbf{G}_\ell$ depends only on $\mathbf{H}^{cnt}_\ell$, an adversarial instruction placed in the content stream cannot write into $\mathbf{H}^{ctx}_\ell$. At worst it opens the gate wider, which only exposes more of the legitimate context.
+If the content representation has nothing to do with the current context, the gate tends toward zero and the content stream passes through without modification. The injection-resistance property follows from the same structure: since $\mathbf{G}_\ell$ is a function of $\mathbf{H}^{cnt}_\ell$ alone, an adversarial instruction placed in the content stream cannot write into $\mathbf{H}^{ctx}_\ell$. At worst it opens the gate wider, exposing more of the legitimate context.
 
 ### Information Flow Diagram
 
@@ -151,20 +151,20 @@ Training this architecture is not straightforward with standard pre-training cor
 
 To encourage the content stream to learn context-invariant representations — analogous to the stimulus neurons in the Bonn study — the same factual content should appear across many different context configurations during training. Varying the metadata, document style, or task framing while holding the underlying data constant pushes the content stream weights toward stable semantic representations and prevents the model from encoding context-specific shortcuts.
 
-The attention masks during training follow the same asymmetry as at inference: the context stream sees the full instruction sequence bidirectionally, while content tokens are causally masked.
+The attention masks during training follow the same asymmetry as at inference: the context stream uses bidirectional attention over the full instruction sequence, while content tokens are causally masked.
 
 ## Preliminary Experiments
 
 ### Language Modelling Perplexity
 
-As a sanity check, I trained both a standard GPT-2-style baseline and the dual-stream model on the same structured JSONL corpus, matching parameter counts at roughly 6.7M (`d_model=64`, `nhead=4`, `num_layers=3`). The main question was whether the additional architectural complexity hurts perplexity.
+As a sanity check, I trained both a standard GPT-2-style baseline and the dual-stream model on the same structured JSONL corpus, matching parameter counts at ~6.7M (`d_model=64`, `nhead=4`, `num_layers=3`). The main question was whether the additional architectural complexity hurts perplexity.
 
 | Model | Val PPL (best) | Train loss (ep 80) | Val loss (ep 80) | Train/Val gap |
 |-------|---------------|--------------------|-----------------|---------------|
 | Baseline (monolithic) | **0.0919** | 0.1276 | 0.0919 | 0.036 |
 | Dual-Stream | **0.0917** | 0.1900 | 0.0917 | 0.098 |
 
-Both models reach essentially the same validation loss after 80 epochs. The dual-stream model converges more slowly in early training, which is expected given the added cross-attention routing overhead, but closes the gap entirely by epoch 80. The larger train/val gap (0.098 vs 0.036) is probably a sign that the dual-stream model generalises better across context variants rather than memorising specific phrasings — which is exactly what the augmentation strategy was designed to produce.
+Both models reach the same validation loss after 80 epochs. The dual-stream model is slower to converge in early training — expected, given the added cross-attention routing overhead — but closes the gap by epoch 80. The larger train/val gap (0.098 vs 0.036) may reflect that the dual-stream model generalises better across context variants rather than memorising specific phrasings, which is what the augmentation strategy was designed to produce.
 
 > **Caveat:** 120 training samples is a memorisation-regime scale. These numbers confirm the architecture trains without obvious failure modes; they say nothing about generalisation at realistic data scales.
 
