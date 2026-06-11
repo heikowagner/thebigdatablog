@@ -142,7 +142,7 @@ def _extract_math(text: str) -> tuple[str, dict]:
 
     def replace(m: re.Match, block: bool) -> str:
         nonlocal idx
-        key   = f"__WPMATH_{idx:04d}__"
+        key   = f"WPMATHx{idx:04d}x"
         inner = m.group(1).strip()
         store[key] = f"$$\n{inner}\n$$" if block else f"${inner}$"
         idx += 1
@@ -176,14 +176,14 @@ def markdown_to_html(text: str) -> str:
 
     def protect_block(m: re.Match) -> str:
         nonlocal idx
-        key        = f"__WPMATH_{idx:04d}__"
+        key        = f"WPMATHx{idx:04d}x"
         store[key] = f"\\[{m.group(1).strip()}\\]"
         idx += 1
         return key
 
     def protect_inline(m: re.Match) -> str:
         nonlocal idx
-        key        = f"__WPMATH_{idx:04d}__"
+        key        = f"WPMATHx{idx:04d}x"
         store[key] = f"\\({m.group(1).strip()}\\)"
         idx += 1
         return key
@@ -193,8 +193,28 @@ def markdown_to_html(text: str) -> str:
 
     html = markdown(text, extensions=["tables", "fenced_code", "toc"])
 
+    # Restore math placeholders
     for key, math in store.items():
         html = html.replace(key, math)
+
+    # Convert <pre><code class="language-X"> → Gutenberg wp:code block
+    # (renders with syntax highlighting + copy button in WordPress 5.0+ natively)
+    def _to_gutenberg_code(m: re.Match) -> str:
+        lang    = m.group(1) or ""
+        content = m.group(2)
+        lang_attr = f' class="language-{lang}"' if lang else ""
+        return (
+            f'<!-- wp:code -->\n'
+            f'<pre class="wp-block-code"><code{lang_attr}>{content}</code></pre>\n'
+            f'<!-- /wp:code -->'
+        )
+
+    html = re.sub(
+        r'<pre><code(?:\s+class="language-([\w-]+)")?>(.*?)</code></pre>',
+        _to_gutenberg_code,
+        html,
+        flags=re.DOTALL,
+    )
 
     return html
 

@@ -8,10 +8,10 @@ tags:
 - test
 title: '[SYNC TEST] Markdown & Math Rendering Test'
 wp_id: 4831
-wp_modified: '2026-06-11T18:49:23'
+wp_modified: '2026-06-11T18:54:06'
 ---
 
-> **Hinweis:** Dies ist ein automatisch erstellter Test-Entwurf zur Prüfung des WordPress-Markdown-Sync. Kann nach dem Test wieder gelöscht werden.
+> **Hinweis:** Dies ist ein automatisch erstellter Test-Entwurf zur Prüfung des WordPress-Markdown-Sync. Kann nach dem Test wieder gelöscht werden. *(v2 — math + code fix)*
 
 ## Text-Formatierung
 
