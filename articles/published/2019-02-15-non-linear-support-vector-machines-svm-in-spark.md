@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: Non-Linear Support Vector Machines (SVM)
 wp_id: 1274
-wp_modified: '2023-10-01T10:12:11'
+wp_modified: '2026-06-11T18:47:30'
 ---
 
 # 1. Introduction

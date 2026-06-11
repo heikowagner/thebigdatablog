@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: 2. Coding the &#8220;Educated Guess Procedure&#8221;
 wp_id: 967
-wp_modified: '2023-10-01T10:12:47'
+wp_modified: '2026-06-11T18:46:57'
 ---
 
 ## 1. Perform the Analyze

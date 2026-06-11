@@ -10,7 +10,7 @@ status: publish
 tags: []
 title: 1. Setting up the OrangePi
 wp_id: 421
-wp_modified: '2023-10-01T10:13:10'
+wp_modified: '2026-06-11T18:46:35'
 ---
 
 ### 1. Requirements

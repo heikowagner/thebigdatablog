@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: 2. Install Hadoop and Spark
 wp_id: 795
-wp_modified: '2023-10-01T10:13:06'
+wp_modified: '2026-06-11T18:46:37'
 ---
 
 ### 1. Requirements

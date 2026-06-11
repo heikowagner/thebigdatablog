@@ -10,7 +10,7 @@ tags: []
 title: Estimating Multivariate Functions and Derivatives using Local Polynomial Regression
   in Matlab
 wp_id: 494
-wp_modified: '2023-10-01T10:13:31'
+wp_modified: '2026-06-11T18:46:21'
 ---
 
 ## 1. Theoretical Background

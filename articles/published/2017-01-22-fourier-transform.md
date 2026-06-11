@@ -8,7 +8,7 @@ status: publish
 tags: []
 title: Fourier Transform
 wp_id: 654
-wp_modified: '2023-10-01T10:13:20'
+wp_modified: '2026-06-11T18:46:29'
 ---
 
 ## 1. The Fourier Transform

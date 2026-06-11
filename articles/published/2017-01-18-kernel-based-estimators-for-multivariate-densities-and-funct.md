@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: Kernel based Estimators for Multivariate Densities and Functions
 wp_id: 635
-wp_modified: '2023-10-01T10:13:25'
+wp_modified: '2026-06-11T18:46:25'
 ---
 
 ## 1. Kernel Functions

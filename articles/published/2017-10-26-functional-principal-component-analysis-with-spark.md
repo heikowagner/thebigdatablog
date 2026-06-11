@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: Functional Principal Component Analysis with Spark
 wp_id: 1099
-wp_modified: '2023-10-01T10:12:34'
+wp_modified: '2026-06-11T18:47:13'
 ---
 
 ## 1.) Functional Principal Component Analysis

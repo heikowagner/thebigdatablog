@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: An introduction to the Registration Problem
 wp_id: 1512
-wp_modified: '2023-10-01T10:12:07'
+wp_modified: '2026-06-11T18:47:33'
 ---
 
 \

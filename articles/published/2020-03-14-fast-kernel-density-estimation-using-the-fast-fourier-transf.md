@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: Fast Kernel Density Estimation using the Fast Fourier Transform
 wp_id: 2121
-wp_modified: '2023-10-23T21:10:17'
+wp_modified: '2026-06-11T18:47:58'
 ---
 
 ## 1. Setup

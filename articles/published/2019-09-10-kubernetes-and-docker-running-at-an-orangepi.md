@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: Kubernetes at an OrangePi
 wp_id: 1194
-wp_modified: '2023-10-01T10:11:48'
+wp_modified: '2026-06-11T18:47:46'
 ---
 
 # 1. Install k3s at the OrangePI

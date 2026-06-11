@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: 3. Build the Cluster
 wp_id: 815
-wp_modified: '2023-10-01T10:13:01'
+wp_modified: '2026-06-11T18:46:41'
 ---
 
 ### 1. Requirements

@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: 3. A more sophisticated approach using Markov chains.
 wp_id: 998
-wp_modified: '2023-10-01T10:12:42'
+wp_modified: '2026-06-11T18:47:05'
 ---
 
 ## 1. Generalize the Procedure

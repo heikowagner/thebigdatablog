@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: Functional Regression with Spark
 wp_id: 1208
-wp_modified: '2023-11-01T15:39:48'
+wp_modified: '2026-06-11T18:47:19'
 ---
 
 # 1. Functional Regression

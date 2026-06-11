@@ -10,7 +10,7 @@ status: publish
 tags: []
 title: An AI with less than 200 lines of code
 wp_id: 1824
-wp_modified: '2023-10-01T10:11:53'
+wp_modified: '2026-06-11T18:47:43'
 ---
 
 In the last two articles we covered the topics [“How to teach a computer gamerules”](https://www.thebigdatablog.com/teaching-a-computer-gamerules/) and [“The Multiarmed Bandit Problem”.](https://www.thebigdatablog.com/solving-the-multiarmed-bandit-problem-with-javascript/)  Indeed these two articles where intended to be an introduction to create a very basic AI. Some people might remember the 1984 movie [WarGames](https://en.wikipedia.org/wiki/WarGames). (Spoiler Alert) In WarGames a supercomputer gone mad and intend to nuke the world. In the end David Lightman can saved the world by teaching the computer the concept of a zero sum game, in particular due to the tic-tac-toe game which was covered in a previous [article](http://thebigdatablog.com/solving-the-multiarmed-bandit-problem-with-javascript/(opens in a new tab)). Therefore this post is about creating an AI, using JavaScript, that can play tic-tac-toe. However our AI is not limited to tic-tac-toe, by replacing the *gamerules* function by any other game, like chess or go, our AI will also be able to compete in these games.

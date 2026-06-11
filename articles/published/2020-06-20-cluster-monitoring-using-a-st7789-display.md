@@ -8,7 +8,7 @@ status: publish
 tags: []
 title: Cluster Monitoring using a ST7789 Display
 wp_id: 2283
-wp_modified: '2023-10-01T10:11:32'
+wp_modified: '2026-06-11T18:48:03'
 ---
 
 In the articles [Kuberentes at an OrangePi](https://www.thebigdatablog.com/kubernetes-and-docker-running-at-an-orangepi/) and [Setting up the OrangePi](https://www.thebigdatablog.com/1-setting-up-the-orangepi/) it was described how I build my toy cluster. Meanwhile the cluster received some updates. Two more nodes were added, a Raspberry Pi 3 B+ and a Orange Pi One Plus. Outside temperature and humidity is now measured with a DHT22 sensor. As an NFS storage for persistent volumes I also added a 500GB HDD (leftover from replacing the HDD in my PS4 with an SSD). Finally a 12cm cooler running at 5 V now keeps the cluster temperature low. In addition I added a ST7789 Display to show the cluster status as well as node health and temperature. This article will cover how to connect the display to the cluster and how to manage the communication between the cluster nodes using [DeamonSets](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/).

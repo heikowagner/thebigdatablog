@@ -9,7 +9,7 @@ status: publish
 tags: []
 title: Teaching a Computer Gamerules
 wp_id: 1699
-wp_modified: '2023-10-01T10:11:57'
+wp_modified: '2026-06-11T18:47:40'
 ---
 
 ## Sequential games with perfect information

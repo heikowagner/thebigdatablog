@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: Non-Linear Classification Methods in Spark
 wp_id: 1942
-wp_modified: '2023-10-01T10:11:43'
+wp_modified: '2026-06-11T18:47:52'
 ---
 
 In a [previous post](https://www.thebigdatablog.com/non-linear-support-vector-machines-svm-in-spark/) I covered how to apply classical linear estimators like support vector machines or logistic regression to a non-linear dataset using the kernel method. This article can be considered as a second part. While the previous article concerns about the theoretical foundation this article is about implementation issues and examples.

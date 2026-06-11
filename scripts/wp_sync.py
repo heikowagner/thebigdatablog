@@ -28,6 +28,7 @@ import re
 import json
 import sys
 import argparse
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -274,10 +275,42 @@ def cmd_pull(args) -> None:
     print(f"\nDone — {written} written, {skipped} unchanged.")
 
 
+def _git_dirty_articles() -> set[Path]:
+    """Return absolute paths of article files that are new or locally modified.
+
+    A file is considered dirty when:
+    - it is untracked (new article without wp_id), OR
+    - it has uncommitted changes vs. HEAD.
+    """
+    dirty: set[Path] = set()
+    try:
+        # Modified / staged files relative to HEAD
+        modified = subprocess.check_output(
+            ["git", "diff", "--name-only", "HEAD", "--", "articles/"],
+            cwd=BASE_DIR, text=True,
+        ).splitlines()
+        # Untracked new files
+        untracked = subprocess.check_output(
+            ["git", "ls-files", "--others", "--exclude-standard", "articles/"],
+            cwd=BASE_DIR, text=True,
+        ).splitlines()
+        for rel in modified + untracked:
+            dirty.add(BASE_DIR / rel)
+    except subprocess.CalledProcessError:
+        pass  # Not a git repo or git not available — fall through (push all)
+    return dirty
+
+
 def cmd_push(args) -> None:
-    """Local Markdown → WordPress."""
+    """Local Markdown → WordPress.
+
+    By default only pushes files that are new (no wp_id) or locally modified
+    (git-dirty).  Pass --all to push every file regardless.
+    """
     state   = load_state()
-    pushed  = created = conflicts = 0
+    pushed  = created = skipped = conflicts = 0
+
+    dirty = None if args.all else _git_dirty_articles()
 
     for subdir in ("published", "drafts"):
         dirpath = ARTICLES / subdir
@@ -289,6 +322,11 @@ def cmd_push(args) -> None:
             meta    = post.metadata
             wp_id   = meta.get("wp_id")
             wp_stat = "publish" if subdir == "published" else "draft"
+
+            # Skip unmodified files unless --all was requested
+            if dirty is not None and wp_id and filepath not in dirty:
+                skipped += 1
+                continue
 
             payload: dict = {
                 "title":   meta.get("title", filepath.stem),
@@ -334,7 +372,7 @@ def cmd_push(args) -> None:
                 frontmatter.dump(updated, f)
 
     save_state(state)
-    print(f"\nDone — {pushed} updated, {created} created, {conflicts} conflicts.")
+    print(f"\nDone — {pushed} updated, {created} created, {skipped} skipped (unchanged), {conflicts} conflicts.")
 
 
 def cmd_status(args) -> None:
@@ -387,6 +425,8 @@ def main() -> None:
     p_push = sub.add_parser("push",   help="Local Markdown → WordPress")
     p_push.add_argument("--force", action="store_true",
                         help="Push even when WordPress has newer changes (overwrite)")
+    p_push.add_argument("--all", action="store_true",
+                        help="Push ALL files, not just git-dirty ones")
 
     sub.add_parser("status", help="Show sync status without changes")
 

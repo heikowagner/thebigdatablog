@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: 5. Running some tests
 wp_id: 944
-wp_modified: '2023-10-01T10:12:52'
+wp_modified: '2026-06-11T18:46:50'
 ---
 
 ## 1. Test the Enviroment

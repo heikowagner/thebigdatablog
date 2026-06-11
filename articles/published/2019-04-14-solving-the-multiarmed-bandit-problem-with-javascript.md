@@ -11,7 +11,7 @@ status: publish
 tags: []
 title: Solving the Multiarmed Bandit problem with JavaScript
 wp_id: 1663
-wp_modified: '2023-10-01T10:12:02'
+wp_modified: '2026-06-11T18:47:37'
 ---
 
 ## 1. Formulation of the Multiarmed Bandit Problem
