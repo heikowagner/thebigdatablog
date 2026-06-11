@@ -4,3 +4,10 @@
 *__pycache__*
 jupyter_notebooks/neuronalnets/root
 *.ipynb_checkpoints*
+
+# WordPress sync
+.env
+articles/.sync_state.json
+
+# Virtual environment
+.venv/

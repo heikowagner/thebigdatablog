@@ -1,0 +1,91 @@
+name: WordPress Sync
+
+on:
+  # Auto-push to WordPress when article files are committed
+  push:
+    branches: [main, master]
+    paths:
+      - "articles/**"
+
+  # Weekly pull from WordPress → commit back (Mondays 05:00 UTC)
+  schedule:
+    - cron: "0 5 * * 1"
+
+  # Manual trigger with explicit direction
+  workflow_dispatch:
+    inputs:
+      direction:
+        description: "Sync direction"
+        required: true
+        default: "push"
+        type: choice
+        options:
+          - pull
+          - push
+          - status
+      force:
+        description: "Force overwrite (ignore conflicts)"
+        type: boolean
+        default: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # needed for git-auto-commit on pull
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Full history so git-auto-commit can push
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # ── Determine direction & flags ────────────────────────────────────────
+      - name: Resolve sync options
+        id: opts
+        run: |
+          EVENT="${{ github.event_name }}"
+          if   [[ "$EVENT" == "schedule" ]]; then
+            echo "direction=pull"  >> "$GITHUB_OUTPUT"
+            echo "flags="          >> "$GITHUB_OUTPUT"
+          elif [[ "$EVENT" == "workflow_dispatch" ]]; then
+            echo "direction=${{ inputs.direction }}" >> "$GITHUB_OUTPUT"
+            if [[ "${{ inputs.force }}" == "true" ]]; then
+              echo "flags=--force" >> "$GITHUB_OUTPUT"
+            else
+              echo "flags="        >> "$GITHUB_OUTPUT"
+            fi
+          else
+            # push event → push local articles to WordPress
+            echo "direction=push"  >> "$GITHUB_OUTPUT"
+            echo "flags="          >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Run the sync script ────────────────────────────────────────────────
+      - name: Run wp_sync
+        env:
+          WP_URL:          ${{ secrets.WP_URL }}
+          WP_USER:         ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+        run: |
+          python scripts/wp_sync.py \
+            ${{ steps.opts.outputs.direction }} \
+            ${{ steps.opts.outputs.flags }}
+
+      # ── Commit pulled articles back to the repo ────────────────────────────
+      - name: Commit pulled articles
+        if: steps.opts.outputs.direction == 'pull'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: sync articles from WordPress [skip ci]"
+          file_pattern: "articles/**"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
