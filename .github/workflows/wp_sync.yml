@@ -15,10 +15,11 @@ on:
       direction:
         description: "Command to run"
         required: true
-        default: "push --new-only"
+        default: "push"
         type: choice
         options:
-          - "push --new-only"
+          - "push"
+          - "push --all"
           - "status"
 
 jobs:
@@ -43,7 +44,7 @@ jobs:
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "cmd=${{ inputs.direction }}" >> "$GITHUB_OUTPUT"
           else
-            echo "cmd=push --new-only"          >> "$GITHUB_OUTPUT"
+            echo "cmd=push"                    >> "$GITHUB_OUTPUT"
           fi
 
       # ── Run the sync script ────────────────────────────────────────────────

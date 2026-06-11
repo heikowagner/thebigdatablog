@@ -41,9 +41,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_DIR   = Path(__file__).resolve().parent.parent
-ARTICLES   = BASE_DIR / "articles"
-STATE_FILE = ARTICLES / ".sync_state.json"
+BASE_DIR        = Path(__file__).resolve().parent.parent
+ARTICLES        = BASE_DIR / "articles"
+STATE_FILE      = ARTICLES / ".sync_state.json"
+FROZEN_IDS_FILE = ARTICLES / ".frozen_ids"
+
+
+def _load_frozen_ids() -> set[int]:
+    """IDs of legacy articles that must never be pushed to WordPress."""
+    if not FROZEN_IDS_FILE.exists():
+        return set()
+    return {int(x) for x in FROZEN_IDS_FILE.read_text().splitlines() if x.strip()}
 
 
 # ── Auth / low-level REST helpers ─────────────────────────────────────────────
@@ -332,11 +340,13 @@ def _git_dirty_articles() -> set[Path]:
 def cmd_push(args) -> None:
     """Local Markdown → WordPress.
 
-    By default only pushes files that are new (no wp_id) or locally modified
-    (git-dirty).  Pass --all to push every file regardless.
+    Skips articles listed in articles/.frozen_ids (the 67 legacy imported posts).
+    All other articles (new ones) are pushed; if they already have a wp_id they
+    are only pushed when git-dirty, unless --all is given.
     """
-    state   = load_state()
-    pushed  = created = skipped = conflicts = 0
+    state      = load_state()
+    frozen_ids = _load_frozen_ids()
+    pushed     = created = skipped = conflicts = 0
 
     dirty = None if args.all else _git_dirty_articles()
 
@@ -351,13 +361,14 @@ def cmd_push(args) -> None:
             wp_id   = meta.get("wp_id")
             wp_stat = "publish" if subdir == "published" else "draft"
 
-            # --new-only: skip every file that already has a wp_id
-            if args.new_only and wp_id:
+            # Never touch legacy imported articles
+            if wp_id and int(wp_id) in frozen_ids:
                 skipped += 1
                 continue
 
-            # Skip unmodified files unless --all was requested
-            if not args.new_only and dirty is not None and wp_id and filepath not in dirty:
+            # For new (non-frozen) articles that already have a wp_id:
+            # only push when git-dirty, unless --all
+            if wp_id and dirty is not None and filepath not in dirty:
                 skipped += 1
                 continue
 
@@ -459,9 +470,7 @@ def main() -> None:
     p_push.add_argument("--force", action="store_true",
                         help="Push even when WordPress has newer changes (overwrite)")
     p_push.add_argument("--all", action="store_true",
-                        help="Push ALL files, not just git-dirty ones")
-    p_push.add_argument("--new-only", action="store_true",
-                        help="Only push files without a wp_id (new articles); never touch existing posts")
+                        help="Push all non-frozen files, not just git-dirty ones")
 
     sub.add_parser("status", help="Show sync status without changes")
 
