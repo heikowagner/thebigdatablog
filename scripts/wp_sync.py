@@ -351,8 +351,13 @@ def cmd_push(args) -> None:
             wp_id   = meta.get("wp_id")
             wp_stat = "publish" if subdir == "published" else "draft"
 
+            # --new-only: skip every file that already has a wp_id
+            if args.new_only and wp_id:
+                skipped += 1
+                continue
+
             # Skip unmodified files unless --all was requested
-            if dirty is not None and wp_id and filepath not in dirty:
+            if not args.new_only and dirty is not None and wp_id and filepath not in dirty:
                 skipped += 1
                 continue
 
@@ -455,6 +460,8 @@ def main() -> None:
                         help="Push even when WordPress has newer changes (overwrite)")
     p_push.add_argument("--all", action="store_true",
                         help="Push ALL files, not just git-dirty ones")
+    p_push.add_argument("--new-only", action="store_true",
+                        help="Only push files without a wp_id (new articles); never touch existing posts")
 
     sub.add_parser("status", help="Show sync status without changes")
 

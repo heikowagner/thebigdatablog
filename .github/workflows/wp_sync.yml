@@ -1,44 +1,32 @@
 name: WordPress Sync
 
+# Only new articles (no wp_id in frontmatter) are ever pushed to WordPress.
+# Existing articles stay untouched in WordPress.
 on:
-  # Auto-push to WordPress when article files are committed
+  # Publish new Markdown articles when committed to main/master
   push:
     branches: [main, master]
     paths:
       - "articles/**"
 
-  # Weekly pull from WordPress → commit back (Mondays 05:00 UTC)
-  schedule:
-    - cron: "0 5 * * 1"
-
-  # Manual trigger with explicit direction
+  # Manual trigger for status checks or one-off pushes
   workflow_dispatch:
     inputs:
       direction:
-        description: "Sync direction"
+        description: "Command to run"
         required: true
-        default: "push"
+        default: "push --new-only"
         type: choice
         options:
-          - pull
-          - push
-          - status
-      force:
-        description: "Force overwrite (ignore conflicts)"
-        type: boolean
-        default: false
+          - "push --new-only"
+          - "status"
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write   # needed for git-auto-commit on pull
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          # Full history so git-auto-commit can push
-          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -48,25 +36,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # ── Determine direction & flags ────────────────────────────────────────
-      - name: Resolve sync options
+      # ── Resolve command ────────────────────────────────────────────────────
+      - name: Resolve command
         id: opts
         run: |
-          EVENT="${{ github.event_name }}"
-          if   [[ "$EVENT" == "schedule" ]]; then
-            echo "direction=pull"  >> "$GITHUB_OUTPUT"
-            echo "flags="          >> "$GITHUB_OUTPUT"
-          elif [[ "$EVENT" == "workflow_dispatch" ]]; then
-            echo "direction=${{ inputs.direction }}" >> "$GITHUB_OUTPUT"
-            if [[ "${{ inputs.force }}" == "true" ]]; then
-              echo "flags=--force" >> "$GITHUB_OUTPUT"
-            else
-              echo "flags="        >> "$GITHUB_OUTPUT"
-            fi
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "cmd=${{ inputs.direction }}" >> "$GITHUB_OUTPUT"
           else
-            # push event → push local articles to WordPress
-            echo "direction=push"  >> "$GITHUB_OUTPUT"
-            echo "flags="          >> "$GITHUB_OUTPUT"
+            echo "cmd=push --new-only"          >> "$GITHUB_OUTPUT"
           fi
 
       # ── Run the sync script ────────────────────────────────────────────────
@@ -75,17 +52,4 @@ jobs:
           WP_URL:          ${{ secrets.WP_URL }}
           WP_USER:         ${{ secrets.WP_USER }}
           WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
-        run: |
-          python scripts/wp_sync.py \
-            ${{ steps.opts.outputs.direction }} \
-            ${{ steps.opts.outputs.flags }}
-
-      # ── Commit pulled articles back to the repo ────────────────────────────
-      - name: Commit pulled articles
-        if: steps.opts.outputs.direction == 'pull'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: sync articles from WordPress [skip ci]"
-          file_pattern: "articles/**"
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+        run: python scripts/wp_sync.py ${{ steps.opts.outputs.cmd }}
