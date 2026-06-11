@@ -29,6 +29,7 @@ import json
 import sys
 import argparse
 import subprocess
+import html as _html
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -170,7 +171,13 @@ def html_to_markdown(html: str) -> str:
 
 
 def markdown_to_html(text: str) -> str:
-    """Convert Markdown with $…$ math → HTML for WordPress (MathJax-compatible)."""
+    """Convert Markdown → HTML for WordPress.
+
+    - Math:  $…$  → \\(…\\),  $$…$$ → \\[…\\]   (WP QuickLaTeX)
+    - Code:  ```lang…```  → [sourcecode language="lang"]…[/sourcecode]
+             (SyntaxHighlighter Evolved plugin)
+    - Strikethrough: ~~text~~ → <del>text</del>
+    """
     store: dict[str, str] = {}
     idx = 0
 
@@ -188,8 +195,12 @@ def markdown_to_html(text: str) -> str:
         idx += 1
         return key
 
+    # Extract math before any other processing
     text = re.sub(r"\$\$(.*?)\$\$", protect_block,  text, flags=re.DOTALL)
     text = re.sub(r"(?<!\$)\$(?!\$)(.*?)(?<!\$)\$(?!\$)", protect_inline, text)
+
+    # Strikethrough: ~~text~~ → <del>text</del>  (not in stdlib markdown)
+    text = re.sub(r"~~(.+?)~~", r"<del>\1</del>", text)
 
     html = markdown(text, extensions=["tables", "fenced_code", "toc"])
 
@@ -197,21 +208,18 @@ def markdown_to_html(text: str) -> str:
     for key, math in store.items():
         html = html.replace(key, math)
 
-    # Convert <pre><code class="language-X"> → Gutenberg wp:code block
-    # (renders with syntax highlighting + copy button in WordPress 5.0+ natively)
-    def _to_gutenberg_code(m: re.Match) -> str:
-        lang    = m.group(1) or ""
-        content = m.group(2)
-        lang_attr = f' class="language-{lang}"' if lang else ""
-        return (
-            f'<!-- wp:code -->\n'
-            f'<pre class="wp-block-code"><code{lang_attr}>{content}</code></pre>\n'
-            f'<!-- /wp:code -->'
-        )
+    # Convert <pre><code class="language-X">…</code></pre>
+    # → [sourcecode language="X"]…[/sourcecode]  (SyntaxHighlighter Evolved)
+    # The markdown library HTML-encodes code content; we unescape it so the
+    # shortcode handler receives plain text (it does its own escaping for display).
+    def _to_syntaxhighlighter(m: re.Match) -> str:
+        lang    = m.group(1) or "text"
+        content = _html.unescape(m.group(2)).rstrip("\n")
+        return f'[sourcecode language="{lang}"]{content}[/sourcecode]'
 
     html = re.sub(
         r'<pre><code(?:\s+class="language-([\w-]+)")?>(.*?)</code></pre>',
-        _to_gutenberg_code,
+        _to_syntaxhighlighter,
         html,
         flags=re.DOTALL,
     )
