@@ -4,3 +4,10 @@ altair
 matplotlib
 yfinance
 voila
+
+# WordPress sync (scripts/wp_sync.py)
+requests
+markdownify
+Markdown
+python-frontmatter
+python-dotenv
