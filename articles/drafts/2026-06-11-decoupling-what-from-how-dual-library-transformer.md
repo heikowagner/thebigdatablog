@@ -11,7 +11,7 @@ tags:
 - prompt-injection
 - LLM
 - neuroscience
-title: 'Decoupling "What" from "How": Applying the Brain''s Dual-Library Mechanism
+title: Applying the Brain''s Dual-Library Mechanism
   to Transformer Architectures'
 wp_id: 4835
 wp_modified: '2026-06-11T20:31:38'
@@ -148,7 +148,7 @@ class ContentContextLayer(nn.Module):
 
 ## Training
 
-Training this architecture is not straightforward with standard transformer pre-training, which are unstructured text streams where the boundary between instructions and data is undefined. The network requires paired inputs at the data level — structured triples of context, content, and target:
+Training this architecture is different from standard transformer pre-training, which are unstructured text streams where the boundary between instructions and data is undefined. The network requires paired inputs at the data level — structured triples of context, content, and target:
 
 ```json
 {
@@ -177,29 +177,6 @@ Both models reach the same validation loss after 80 epochs. The dual-stream mode
 
 > **Caveat:** 120 training samples is a memorisation-regime scale. These numbers confirm the architecture trains without obvious failure modes; they say nothing about generalisation at realistic data scales.
 
-## Interaction Paradigms
-
-Separating context and content at the architectural level implies a different API surface. A single text box no longer makes sense as the primary interface; the two input channels need to be populated separately. In a chat interface this would look like a distinct "System" and "Input" panel that map directly to the two token streams, rather than a prepended system message that gets concatenated at the tokeniser level.
-
-For API usage, a tag-based protocol is the most natural approach:
-
-```xml
-<context>
-Act as a Senior Python Engineer. Optimize the following code for memory
-efficiency. Return ONLY the optimized function and a short Markdown bullet
-list of changes.
-</context>
-
-<content>
-def process_large_list(data):
-    result = []
-    for item in data:
-        if item % 2 == 0:
-            result.append(item * 2)
-    return result
-</content>
-```
-
 ### Prompt Injection
 
 The injection-resistance argument is worth spelling out concretely. If a malicious instruction is placed inside the request, standard models process it as an update to their operational parameters due to dense entanglement. Consider a content stream that contains:
@@ -222,7 +199,7 @@ Because the content stream cannot write to or modify the context matrix, the att
 
 To sum up, moving away from monolithic attention toward a dual-library system addresses three core limitations of modern language models.
 
-**Alignment and Prompt Injection Defence** — Indirect prompt injection vectors are closed at the hardware-software boundary. Isolating the system instructions within a parallel context stream ensures consistent behavioural alignment, preventing untrusted user data from hijacking the core execution loop.
+**Alignment and Prompt Injection Defence** — Indirect prompt injection vectors are mitigated. Isolating the system instructions within a parallel context stream ensures consistent behavioural alignment, preventing untrusted user data from hijacking the context stream.
 
 **Mitigation of "Lost in the Middle"** — As context windows expand to millions of tokens, models increasingly overlook information placed in the centre of the input. This occurs because the attention mechanism distributes its weights across a massive, undifferentiated token pool. Separating the operational context reduces the effective sequence length the model must parse to understand its instructions, maintaining sharp retrieval performance across long content sequences.
 
@@ -230,27 +207,4 @@ To sum up, moving away from monolithic attention toward a dual-library system ad
 
 ## References
 
-[bibtex file=https://raw.githubusercontent.com/heikowagner/thebigdatablog/refs/heads/fix-streamlit/articles/refs/bausch2026.bib]
-
----
-
-**BibTeX** (für Literaturverwaltung):
-
-```bibtex
-@article{bausch2026distinct,
-  author    = {Bausch, Marcel and Niediek, Johannes and Reber, Thomas P.
-               and Mackay, Sina and Bostr{\"o}m, Jan and Elger, Christian E.
-               and Mormann, Florian},
-  title     = {Distinct neuronal populations in the human brain combine
-               content and context},
-  journal   = {Nature},
-  volume    = {650},
-  pages     = {690--700},
-  year      = {2026},
-  month     = feb,
-  doi       = {10.1038/s41586-025-09910-2},
-  url       = {https://doi.org/10.1038/s41586-025-09910-2},
-  note      = {Received 10 August 2023; Accepted 12 November 2025;
-               Published 07 January 2026}
-}
-```
+[bibshow file=http://www.thebigdatablog.com/lit.bib] [/bibshow]
