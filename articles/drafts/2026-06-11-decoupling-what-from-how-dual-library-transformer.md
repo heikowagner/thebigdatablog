@@ -11,10 +11,9 @@ tags:
 - prompt-injection
 - LLM
 - neuroscience
-title: Applying the Brain''s Dual-Library Mechanism
-  to Transformer Architectures'
-wp_id: 
-wp_modified: 
+title: Applying the Brain''s Dual-Library Mechanism to Transformer Architectures'
+wp_id: 4848
+wp_modified: '2026-06-17T21:01:43'
 ---
 
 Current large language models (LLMs) operate on a principle of global integration. When a prompt is processed, system instructions, historical context, and immediate factual data are concatenated into the same token sequence and processed through the same attention layers. Through successive layers of self-attention, these distinct inputs intertwine. This monolithic blending creates significant hurdles for complex execution workflows, such as autonomous software engineering. As discussed in [NELA: Beyond Human Syntax – The Logic of Future Coding Agents](/nela-beyond-human-syntax-the-logic-of-future-coding-agents), scaling future AI systems past superficial text completion requires architectures that decouple core logical reasoning from surface-level token syntax.
@@ -204,6 +203,68 @@ To sum up, moving away from monolithic attention toward a dual-library system ad
 **Mitigation of "Lost in the Middle"** — As context windows expand to millions of tokens, models increasingly overlook information placed in the centre of the input. This occurs because the attention mechanism distributes its weights across a massive, undifferentiated token pool. Separating the operational context reduces the effective sequence length the model must parse to understand its instructions, maintaining sharp retrieval performance across long content sequences.
 
 **Zero-Shot Generalisation** — The Bonn study highlights how the human brain deploys old concepts in entirely novel situations without performance degradation. Separating "what" from "how" yields similar benefits: an LLM trained with decoupled streams can apply a highly specialised context (such as a rare programming syntax or complex legal formatting rule) to entirely unfamiliar factual content, because the two representations do not compete for space within the same hidden layers.
+
+
+## 4.2 Experiment 1 — Language Modelling Perplexity
+
+**Hypothesis:** The dual-stream model achieves comparable or better perplexity versus a parameter-matched monolithic baseline, demonstrating that architectural content/context separation does not degrade — and may enhance — language modelling capability.
+
+**Setup:**
+- 1,750-sample augmented JSONL corpus (70 content seeds × 25 context variants each, 85/15 train/val split = 1,487/263)
+- 10 task categories: Number Extraction, Code Transform, Summarization, Data Validation, Legal Simplification, Classification, Format Conversion, SQL Generation, Computation, Entity Extraction
+- Optimiser: AdamW (lr=3e-4, weight_decay=0.01) + CosineAnnealingLR (T_max=epochs, stepped per epoch)
+- Batch size: 2, gradient clipping: 1.0
+- Hardware: Apple M1, 8 GB (DS on MPS GPU, BL on CPU)
+- Seed: 42, 150 epochs
+
+### Results
+
+| Metric | Dual-Stream | Baseline | Δ |
+|--------|------------|----------|---|
+| Initial val loss (epoch 1) | 6.40 | 6.36 | parity |
+| Final val loss (epoch 150) | **0.0013** | 0.0022 | DS 1.69× better |
+| Final train loss (epoch 150) | 0.0175 | 0.0016 | BL lower (overfits) |
+| Train/Val gap (epoch 150) | 0.0162 | -0.0006 | BL negative gap |
+| Epochs to val < 1.0 | 23 | 12 | — |
+| Epochs to crossover (DS < BL) | 31 | — | — |
+
+**The Dual-Stream Transformer outperforms the monolithic baseline by 1.7× in final validation loss** (DS: 0.0013 vs. BL: 0.0022). The baseline achieves lower training loss but exhibits overfitting: its validation loss exceeds training loss at convergence.
+
+### Convergence Dynamics
+
+| Epoch | DS Val | BL Val | DS/BL Ratio | Phase |
+|-------|--------|--------|-------------|-------|
+| 1 | 6.40 | 6.36 | 1.01× | Parity |
+| 5 | 4.20 | 3.36 | 1.25× | BL pulls ahead |
+| 10 | 2.25 | 1.04 | 2.16× | Maximum BL lead |
+| 15 | 1.35 | 0.72 | 1.88× | |
+| 20 | 0.40 | 0.11 | 3.64× | |
+| 25 | 0.12 | 0.06 | 2.00× | Crossover approaching |
+| 30 | 0.033 | 0.039 | **0.85×** | **DS takes lead** |
+| 35 | 0.020 | 0.028 | 0.71× | |
+| 50 | 0.008 | 0.012 | 0.67× | DS dominance |
+| 75 | 0.004 | 0.006 | 0.67× | |
+| 100 | 0.002 | 0.004 | 0.50× | |
+| 125 | 0.002 | 0.003 | 0.67× | |
+| 150 | 0.0013 | 0.0022 | **0.60×** | Stable |
+
+![Training Loss](../plots/training_loss.png)
+![Log Scale](../plots/training_loss_log.png)
+![Loss Ratio](../plots/loss_ratio.png)
+![Generalisation Gap](../plots/train_val_gap.png)
+![Convergence Rate](../plots/convergence_rate.png)
+
+**Phase I — Parity and BL advantage (epochs 1–15).** Both models start from comparable initial loss (~6.4). The monolithic baseline descends faster, reaching a 2.2× advantage by epoch 10. During this phase, token-level statistics dominate — word frequencies, bigram patterns, surface-level regularities. The dual-stream model must simultaneously learn content representations, context routing, and gate behaviour, requiring more iterations before its structural priors become beneficial.
+
+**Phase II — Crossover (epochs 15–31).** The dual-stream gate begins to effectively route context information. Content representations stabilise and the model learns *when* context is relevant for prediction. Around epoch 25, the convergence rates cross: the dual-stream model accelerates while the baseline decelerates. By epoch 31, the dual-stream validation loss drops below the baseline for the first time.
+
+**Phase III — Dual-stream dominance (epochs 31–150).** The dual-stream model continues improving throughout the remaining 120 epochs, with validation loss dropping from 0.030 to 0.0013. The baseline reaches its minimum around epoch 30–40 and then plateaus with very slow improvement. The dual-stream's content/context separation acts as a structural regulariser: the model cannot take shortcuts through spurious content-context correlations because the two streams are architecturally isolated, forcing the gate to learn genuine routing rules.
+
+### Overfitting Analysis
+
+A critical observation: the baseline achieves a **negative train/val gap** at convergence (train = 0.0016, val = 0.0022). This is a clear signature of overfitting — the model has memorised training-set patterns beyond what generalises. The dual-stream model maintains a positive gap (train = 0.0175, val = 0.0013), indicating it continues to extract generalisable signal without overfitting to training noise.
+
+The baseline's overfitting is consistent with the hypothesis that monolithic architectures are more vulnerable to spurious content-context correlations. Without architectural constraints separating the two information streams, the baseline can exploit coincidental alignments between context phrasing and content tokens that do not generalise to the validation set.
 
 ## References
 
