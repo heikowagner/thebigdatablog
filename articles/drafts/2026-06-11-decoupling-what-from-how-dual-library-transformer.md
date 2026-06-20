@@ -13,12 +13,14 @@ tags:
 - neuroscience
 title: Applying the Brain''s Dual-Library Mechanism to Transformer Architectures
 wp_id: 4848
-wp_modified: '2026-06-20T08:10:24'
+wp_modified: '2026-06-20T08:16:40'
+seopress_title: Applying the Brain's Dual-Library Mechanism to Transformer Architectures
+seopress_description: A dual-stream Transformer architecture that decouples content from context, offering mathematically guaranteed prompt injection resistance, 1.7× better validation loss, and mitigation of lost-in-the-middle degradation. Inspired by single-neuron recordings in the human medial temporal lobe.
 ---
 
 Current large language models (LLMs) concatenate system instructions, historical context, and factual data into the same token sequence. Through successive layers of self-attention, these distinct inputs intertwine — a monolithic blending that creates hurdles for complex execution workflows like autonomous software engineering. Scaling AI past superficial text completion requires architectures that decouple logical reasoning from surface-level token syntax.
 
-This dense entanglement introduces structural vulnerabilities: context drift, prompt injection, and the "lost in the middle" phenomenon. A landmark single-neuron recording study from the University of Bonn (Bausch et al., 2026) [cite key=bausch2026distinct] suggests a biological alternative: human memory maintains a functional separation between *what* occurs (content) and the framework within which it occurs (context).
+This dense entanglement introduces structural vulnerabilities: context drift, prompt injection, and the "lost in the middle" phenomenon. A landmark single-neuron recording study from the University of Bonn (Bausch et al., 2026) [bibcite key=bausch2026distinct] suggests a biological alternative: human memory maintains a functional separation between *what* occurs (content) and the framework within which it occurs (context).
 
 This article proposes a dual-stream Transformer that mirrors this separation. Isolated content and context streams yield three concrete benefits: mathematically guaranteed prompt injection resistance, mitigation of lost-in-the-middle degradation, and improved zero-shot generalisation through content-invariant representations.
 
@@ -39,7 +41,7 @@ Further, context neurons showed increased excitability after pre-activation by t
 
 ## Dual-Stream Transformer
 
-In standard Transformer models (Vaswani et al., 2017) [cite key=vaswani2017attention], this separation does not exist. The query ($Q$), key ($K$), and value ($V$) matrices are computed across the entire token sequence simultaneously.
+In standard Transformer models (Vaswani et al., 2017) [bibcite key=Vaswani2017AttentionIA], this separation does not exist. The query ($Q$), key ($K$), and value ($V$) matrices are computed across the entire token sequence simultaneously.
 
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
