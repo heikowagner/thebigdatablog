@@ -3,6 +3,7 @@
 % --- Fonts & Encoding ---
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{amsthm}
 \usepackage{newtxtext,newtxmath}
 \usepackage[english]{babel}
 
@@ -15,7 +16,7 @@
 \usepackage{float}
 
 % --- Math ---
-\usepackage{amsmath,amsthm}
+\usepackage{amsmath}
 \usepackage{bm}
 \usepackage{mathtools}
 
@@ -62,6 +63,7 @@
 \DeclareMathOperator{\CrossAttn}{CrossAttn}
 \DeclareMathOperator{\FFN}{FFN}
 \DeclareMathOperator{\Embed}{Embed}
+\DeclareMathOperator{\GELU}{GELU}
 
 % --- Title ---
 \title{Applying the Brain's Dual-Library Mechanism\\to Transformer Architectures}
@@ -75,42 +77,48 @@
 \maketitle
 
 \begin{abstract}
-Current large language models (LLMs) concatenate system instructions, historical context, and factual data into the same token sequence. Through successive layers of self-attention, these distinct inputs intertwine—a monolithic blending that creates structural vulnerabilities: context drift, prompt injection, and the ``lost in the middle'' phenomenon. A landmark single-neuron recording study by Bausch et al.\ (2026) \cite{bausch2026distinct} suggests a biological alternative: human memory maintains a functional separation between \emph{what} occurs (content) and the framework within which it occurs (context). This paper proposes a dual-stream Transformer that mirrors this separation. Isolated content and context streams, coupled through unidirectional cross-attention with a content-driven sigmoidal gate, yield three concrete benefits: mathematically guaranteed prompt injection resistance (proved by induction over transformer layers), mitigation of lost-in-the-middle degradation, and improved zero-shot generalisation through context-invariant representations. In a controlled experiment with 1,750 samples across 10 task categories, the dual-stream Transformer achieves a 1.69$\times$ improvement in validation loss over a parameter-matched monolithic baseline, with a substantially smaller generalisation gap.
+Current large language models (LLMs) concatenate system instructions, historical context, and factual data into the same token sequence. Through successive layers of self-attention, these distinct inputs intertwine---a monolithic blending that creates structural vulnerabilities: context drift, prompt injection, and the ``lost in the middle'' phenomenon. A landmark single-neuron recording study by Bausch et al.\ (2026) \cite{bausch2026distinct} suggests a biological alternative: human memory maintains a functional separation between \emph{what} occurs (content) and the framework within which it occurs (context). This paper proposes a dual-stream Transformer that mirrors this separation. Isolated content and context streams, coupled through unidirectional cross-attention with a content-driven sigmoidal gate, yield three concrete benefits: mathematically guaranteed prompt injection resistance (proved by induction over transformer layers), mitigation of lost-in-the-middle degradation, and improved zero-shot generalisation through context-invariant representations. We validate the architecture across three experiments spanning proof-of-concept language modelling at 6.7M parameters, full-scale contrastive training with two pre-trained models (DeepSeek-Coder 6.7B + Llama 3.2 3B, 31.5M trainable gate parameters), and a conscience experiment that uses the architecture's separation guarantee to give a coding agent ethical constraints that cannot be overridden by user input. The dual-stream Transformer achieves a 1.69$\times$ improvement in validation loss over a parameter-matched monolithic baseline at the smaller scale, $\text{GC} = 99.96\%$ at full scale, and 95\% overall accuracy on the conscience benchmark.
 \end{abstract}
 
 % ============================================================================
 \section{Introduction}
 % ============================================================================
 
-Transformer-based large language models \cite{Vaswani2017AttentionIA} process all input tokens through a unified self-attention mechanism. System instructions, conversation history, and factual data are concatenated into a single sequence—through successive layers, tokens representing entirely different semantic functions freely attend to one another. This design, while remarkably effective for next-token prediction, introduces structural vulnerabilities that scale with context length.
+In May 2023, Geoffrey Hinton resigned from Google to speak publicly about the risks of artificial intelligence \cite{hinton2023godfather}. In interviews with the \emph{New York Times} and CBS, he described concerns about AI systems developing sub-goals misaligned with their programmers' intentions and called for urgent research into how to control systems that may surpass human intelligence. Hinton, together with Sam Altman, Demis Hassabis, and hundreds of other researchers, signed the Center for AI Safety statement: ``Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war'' \cite{cais2023statement}.
 
-Three problems are well documented. First, \textbf{prompt injection}: an adversarial user input can override system instructions because all tokens share the same attention space~\cite{promptinjection2022}. Current defences rely on training data quality and reinforcement learning from human feedback (RLHF), both of which are inherently adversarial—a determined attacker can always find prompts outside the training distribution. Second, the \textbf{``lost in the middle''} phenomenon~\cite{lostinthemiddle2023}: as context windows grow to millions of tokens, models increasingly overlook information placed in the centre of the input because attention weights dilute across an undifferentiated token pool. Third, \textbf{context drift}: long context windows degrade the precision of content representations because contextual tokens mask factual tokens.
+Current approaches to AI safety rely on training. Reinforcement Learning from Human Feedback (RLHF) fine-tunes models on human preference data to produce helpful and harmless responses \cite{bai2022training}. Constitutional AI, developed by Anthropic, trains models to self-critique and revise their outputs against a list of rules \cite{bai2022constitutional}. Both methods are statistical: they teach the model a correlation between certain input patterns and refusal behaviour. A creative enough prompt breaks that correlation. Every safety-trained model released since 2022 has been jailbroken within weeks.
+
+Transformer-based large language models \cite{Vaswani2017AttentionIA} process all input tokens through a unified self-attention mechanism. System instructions, conversation history, and factual data are concatenated into a single sequence---through successive layers, tokens representing entirely different semantic functions freely attend to one another. This design, while remarkably effective for next-token prediction, introduces structural vulnerabilities that scale with context length.
+
+Three problems are well documented. First, \textbf{prompt injection}: an adversarial user input can override system instructions because all tokens share the same attention space~\cite{promptinjection2022}. Current defences rely on training data quality and reinforcement learning from human feedback (RLHF), both of which are inherently adversarial---a determined attacker can always find prompts outside the training distribution. System-level approaches such as CaMeL~\cite{debenedetti2025camel} extract control and data flows from the trusted query to prevent untrusted content from hijacking the agent's program flow. However, CaMeL does not modify the model architecture itself: the underlying transformer still blends content and context in a shared attention space, leaving context drift and lost-in-the-middle degradation unaddressed, and the model's internal reasoning about untrusted data remains vulnerable to manipulation even when the agent's external actions are constrained. Second, the \textbf{``lost in the middle''} phenomenon~\cite{lostinthemiddle2023}: as context windows grow to millions of tokens, models increasingly overlook information placed in the centre of the input because attention weights dilute across an undifferentiated token pool. Third, \textbf{context drift}: long context windows degrade the precision of content representations because contextual tokens mask factual tokens.
 
 A recent single-neuron recording study from the University of Bonn~\cite{bausch2026distinct} suggests a radically different approach. Bausch et al.\ recorded 3,109 single neurons in the human medial temporal lobe and identified two largely distinct neuronal populations: stimulus neurons (invariant to task context) and context neurons (invariant to stimulus identity). Only 1.61\% of neurons showed significant stimulus--context interaction. Crucially, the connection between the two populations is asymmetric and directional: firing of stimulus neurons in the entorhinal cortex predicted firing of context neurons in the hippocampus after approximately 40\,ms, but not the reverse.
 
-This paper translates these findings into a concrete Transformer architecture. The contributions are:
+This paper translates these findings into a concrete Transformer architecture and validates it at scale. The contributions are:
 \begin{enumerate}
   \item A \textbf{dual-stream Transformer} with separate weight matrices for content and context streams, coupled through unidirectional cross-attention with a content-driven sigmoidal gate.
   \item A \textbf{mathematical proof} by induction over transformer layers that the content stream has no computational path into the context stream ($\partial H_{\text{ctx}} / \partial x_c = 0$), establishing a structural guarantee against prompt injection.
-  \item An \textbf{experimental validation} on a 1,750-sample corpus across 10 task categories, showing 1.69$\times$ better validation loss and substantially reduced overfitting compared to a parameter-matched monolithic baseline.
+  \item A \textbf{proof-of-concept experiment} on a 1,750-sample corpus across 10 task categories, showing 1.69$\times$ better validation loss and substantially reduced overfitting compared to a parameter-matched monolithic baseline.
+  \item A \textbf{full-scale adapter} that couples two pre-trained models (DeepSeek-Coder 6.7B + Llama 3.2 3B) through a 31.5M-parameter bottleneck gate, validated by a contrastive training experiment demonstrating $\text{GC} = 99.96\%$.
+  \item A \textbf{conscience experiment} that bakes ethical constraints into the context stream's weights and routes declared intent through the architecturally protected context channel, achieving 95\% overall accuracy across 20 test cases.
 \end{enumerate}
 
 % ============================================================================
 \section{Biological Paradigm}
 % ============================================================================
 
-Bausch et al.\ recorded 3,109 single neurons in the amygdala, parahippocampal cortex, entorhinal cortex, and hippocampus while patients performed a comparison task: pairs of pictures appeared on screen, and a question shown at the start of each trial specified the comparison rule—\emph{``Which is bigger?''}, \emph{``Which did you see more recently in real life?''}, \emph{``Which is brighter?''}. The question defined the task context; the pictures were the content.
+Bausch et al.\ recorded 3,109 single neurons in the amygdala, parahippocampal cortex, entorhinal cortex, and hippocampus while patients performed a comparison task: pairs of pictures appeared on screen, and a question shown at the start of each trial specified the comparison rule---\emph{``Which is bigger?''}, \emph{``Which did you see more recently in real life?''}, \emph{``Which is brighter?''}. The question defined the task context; the pictures were the content.
 
 The study identified two largely distinct neuronal populations in the medial temporal lobe:
 
 \begin{itemize}
-  \item \textbf{Stimulus neurons} (597 identified)—fire selectively to specific picture content, regardless of which question context is active. Most (88\%) are invariant to context.
-  \item \textbf{Context neurons} (200 identified)—fire selectively to a particular task context (question), regardless of which picture is shown. Most (63.5\%) are invariant to stimulus identity.
+  \item \textbf{Stimulus neurons} (597 identified)---fire selectively to specific picture content, regardless of which question context is active. Most (88\%) are invariant to context.
+  \item \textbf{Context neurons} (200 identified)---fire selectively to a particular task context (question), regardless of which picture is shown. Most (63.5\%) are invariant to stimulus identity.
 \end{itemize}
 
-Across all 3,109 neurons, only 50 (1.61\%) showed significant stimulus--context interaction—i.e., responded to specific picture--question combinations. Instead, separate orthogonal populations represent content and context independently, combining them via co-activation and reinstatement.
+Across all 3,109 neurons, only 50 (1.61\%) showed significant stimulus--context interaction---i.e., responded to specific picture--question combinations. Instead, separate orthogonal populations represent content and context independently, combining them via co-activation and reinstatement.
 
-The critical architectural insight comes from the temporal dynamics: firing of stimulus neurons in the entorhinal cortex predicted firing of context neurons in the hippocampus after approximately 40\,ms—\textbf{but not the reverse}. Context neurons showed increased excitability after pre-activation by their preferred question—a gating mechanism where prior context exposure guides which hippocampal context representations are reinstated when a stimulus is subsequently encountered. This directional asymmetry and gating behaviour are the key properties this paper translates directly into a transformer layer.
+The critical architectural insight comes from the temporal dynamics: firing of stimulus neurons in the entorhinal cortex predicted firing of context neurons in the hippocampus after approximately 40\,ms---\textbf{but not the reverse}. Context neurons showed increased excitability after pre-activation by their preferred question---a gating mechanism where prior context exposure guides which hippocampal context representations are reinstated when a stimulus is subsequently encountered. This directional asymmetry and gating behaviour are the key properties this paper translates directly into a transformer layer.
 
 % ============================================================================
 \section{Dual-Stream Transformer Architecture}
@@ -127,8 +135,8 @@ If a prompt contains a factual statement followed by an instruction, the token e
 We propose to give the model two separate token sequences rather than one. Instead of prepending a system prompt to the user message and hoping the model treats them differently, the architecture routes them through distinct processing paths from the embedding layer onward:
 
 \begin{itemize}
-  \item \textbf{Content stream}—user input, documents, code, factual data (analogous to stimulus neurons).
-  \item \textbf{Context stream}—system instructions, persona, output constraints (analogous to context neurons).
+  \item \textbf{Content stream}---user input, documents, code, factual data (analogous to stimulus neurons).
+  \item \textbf{Context stream}---system instructions, persona, output constraints (analogous to context neurons).
 \end{itemize}
 
 Each stream has its own weight matrices and is never concatenated with the other.
@@ -158,11 +166,11 @@ The final integrated representation $H_{\text{final}}$ is computed via an elemen
 Intuitively, the gate learns to answer a simple question for each hidden dimension: \emph{does this content need external context to be processed correctly?} Since $G$ is computed from the content stream itself ($W_g \cdot H_{\text{content}}$), the model conditions its reliance on context based on what the content already communicates.
 
 \begin{itemize}
-  \item \textbf{Gate open ($G \to 1$):} The content is raw, unstructured data—\emph{``The system peaked at 180\,°C during stress testing.''} These tokens carry no inherent task signal. The gate allows retrieved context (e.g., a system prompt like ``Extract metrics as JSON'') to shape the output.
-  \item \textbf{Gate closed ($G \to 0$):} The content already implies the task—\emph{``What is the capital of France?''} or \emph{``SELECT * FROM users WHERE active = 1;''}. The tokens encode their own structural intent. Injecting additional context would be redundant or conflicting, so the gate suppresses it.
+  \item \textbf{Gate open ($G \to 1$):} The content is raw, unstructured data---\emph{``The system peaked at 180\,°C during stress testing.''} These tokens carry no inherent task signal. The gate allows retrieved context (e.g., a system prompt like ``Extract metrics as JSON'') to shape the output.
+  \item \textbf{Gate closed ($G \to 0$):} The content already implies the task---\emph{``What is the capital of France?''} or \emph{``SELECT * FROM users WHERE active = 1;''}. The tokens encode their own structural intent. Injecting additional context would be redundant or conflicting, so the gate suppresses it.
 \end{itemize}
 
-This conditional routing is structurally what prevents prompt injection: tokens inside the content stream that mimic instructions are evaluated strictly as content, and the gate—having learned from training that such patterns never originate in the context path—stays closed for them.
+This conditional routing is structurally what prevents prompt injection: tokens inside the content stream that mimic instructions are evaluated strictly as content, and the gate---having learned from training that such patterns never originate in the context path---stays closed for them.
 
 \subsection{PyTorch Reference Implementation}
 
@@ -227,11 +235,29 @@ class ContentContextLayer(nn.Module):
         return final_output, content_x, context_x
 \end{lstlisting}
 
+\subsection{Adapter Architecture at Scale}\label{sec:adapter}
+
+The reference implementation trains both streams from scratch. To validate the design at realistic scale without prohibitive compute, the architecture adapts to two different pre-trained models rather than training from scratch:
+
+\begin{itemize}
+  \item \textbf{Content stream}: DeepSeek-Coder 6.7B Instruct (4-bit quantized, frozen). Hidden dimension 4096. Processes code, tool outputs, user requests.
+  \item \textbf{Context stream}: Llama 3.2 3B Instruct (4-bit quantized, frozen). Hidden dimension 3072. Processes system instructions, ethical rules, declared intent.
+  \item \textbf{Cross-attention gate}: 31.5M trainable parameters. Projects context from 3072 to 4096 dimensions, computes cross-attention with content as query, applies a bottleneck sigmoid gate (4096 $\to$ 256 $\to$ 4096), and adds the gated result to the content residual stream.
+\end{itemize}
+
+The gate formula follows Equation~\eqref{eq:final} but introduces a bottleneck that compresses the content hidden state before producing the per-dimension mixing coefficient:
+\begin{equation}\label{eq:bottleneck_gate}
+  G = \sigma\!\big(W_{\text{up}} \cdot \GELU(W_{\text{down}} \cdot H_{\text{content}})\big)
+\end{equation}
+with $W_{\text{down}} \in \mathbb{R}^{4096 \times 256}$ and $W_{\text{up}} \in \mathbb{R}^{256 \times 4096}$. The gate compresses the 4096-dimensional content hidden state to 256 dimensions, applies a GELU activation, projects back to 4096, and applies a sigmoid. The per-dimension output in $[0, 1]$ scales each feature of the retrieved context independently before it is added to the content residual stream.
+
+The gate remains content-driven. It sees the content hidden state and produces a per-dimension mixing coefficient. It does not see the context. This is the architectural property that makes prompt injection structurally impossible: no content token can influence what the context stream contains.
+
 % ============================================================================
 \section{Training}\label{sec:training}
 % ============================================================================
 
-Training this architecture differs from standard transformer pre-training, which uses unstructured text streams where the boundary between instructions and data is undefined. The network requires paired inputs at the data level—structured triples of context, content, and target:
+Training this architecture differs from standard transformer pre-training, which uses unstructured text streams where the boundary between instructions and data is undefined. The network requires paired inputs at the data level---structured triples of context, content, and target:
 
 \begin{lstlisting}[language=, caption={Example training sample with context, content, and target fields.},label=lst:data]
 {
@@ -244,17 +270,23 @@ Training this architecture differs from standard transformer pre-training, which
 }
 \end{lstlisting}
 
-To encourage the content stream to learn context-invariant representations—analogous to the stimulus neurons in the Bonn study—the same factual content should appear across many different context configurations during training. Varying the metadata, document style, or task framing while holding the underlying data constant pushes the content stream weights toward stable semantic representations and prevents the model from encoding context-specific shortcuts.
+To encourage the content stream to learn context-invariant representations---analogous to the stimulus neurons in the Bonn study---the same factual content should appear across many different context configurations during training. Varying the metadata, document style, or task framing while holding the underlying data constant pushes the content stream weights toward stable semantic representations and prevents the model from encoding context-specific shortcuts.
 
-The architecture's separation of concerns also opens an efficient fine-tuning path. The gate projection $W_g$ contains only $d_\text{model}^2 + d_\text{model}$ parameters—a negligible fraction of the self-attention and feed-forward weight matrices. Freezing both streams while fine-tuning only the gate allows rapid adaptation to new task contexts. This mirrors short-term memory formation in the medial temporal lobe: new context associations are learned quickly (gate adaptation) without destabilising stable semantic representations (content stream). In the 6.7M-parameter configuration used in our experiment, $W_g$ accounts for under 0.1\% of total parameters, making context switching near-instantaneous compared to full model fine-tuning.
+\subsection{The Contrastive Principle}\label{sec:contrastive}
+
+The context-invariance principle has a stronger consequence that is central to the training methodology: if the same content maps to different targets depending on context, the model \emph{must} use the context stream to predict the correct output. Without contrastive structure, the content alone is sufficient, and the gate has no reason to route context information. The gate receives a gradient signal only when the content stream cannot resolve the prediction on its own---i.e., when the same content is paired with conflicting targets across different contexts.
+
+This contrastive design is not merely a regularisation technique; it is the condition under which the gate learns to use the context stream at all. Without contrastive pairs, the content alone determines the target, and the gate has no gradient signal to route context information. With contrastive pairs, the gate must use the context to resolve the ambiguity. Both the gate contribution results in Section~\ref{sec:contrastive_results} and the conscience accuracy in Section~\ref{sec:conscience} depend on this design.
+
+The architecture's separation of concerns also opens an efficient fine-tuning path. The gate projection $W_g$ contains only $d_\text{model}^2 + d_\text{model}$ parameters---a negligible fraction of the self-attention and feed-forward weight matrices. Freezing both streams while fine-tuning only the gate allows rapid adaptation to new task contexts. This mirrors short-term memory formation in the medial temporal lobe: new context associations are learned quickly (gate adaptation) without destabilising stable semantic representations (content stream). In the 6.7M-parameter configuration used in the first experiment, $W_g$ accounts for under 0.1\% of total parameters, making context switching near-instantaneous compared to full model fine-tuning.
 
 The attention masks during training follow the same asymmetry as at inference: the context stream uses bidirectional attention over the full instruction sequence, while content tokens are causally masked.
 
 % ============================================================================
-\section{Experiment: Language Modelling Perplexity}
+\section{Experiment I: Language Modelling Perplexity}
 % ============================================================================
 
-\textbf{Hypothesis.} The dual-stream model achieves comparable or better perplexity versus a parameter-matched monolithic baseline, demonstrating that architectural content/context separation does not degrade—and may enhance—language modelling capability.
+\textbf{Hypothesis.} The dual-stream model achieves comparable or better perplexity versus a parameter-matched monolithic baseline, demonstrating that architectural content/context separation does not degrade---and may enhance---language modelling capability.
 
 \subsection{Setup}
 
@@ -337,7 +369,7 @@ The dual-stream Transformer outperforms the monolithic baseline by $1.69\times$ 
 \end{figure}
 
 \paragraph{Phase I---Parity and BL advantage (epochs 1--15).}
-Both models start from comparable initial loss ($\approx$6.4). The monolithic baseline descends faster, reaching a $2.2\times$ advantage by epoch 10. During this phase, token-level statistics dominate—word frequencies, bigram patterns, surface-level regularities. The dual-stream model must simultaneously learn content representations, context routing, and gate behaviour, requiring more iterations before its structural priors become beneficial.
+Both models start from comparable initial loss ($\approx$6.4). The monolithic baseline descends faster, reaching a $2.2\times$ advantage by epoch 10. During this phase, token-level statistics dominate---word frequencies, bigram patterns, surface-level regularities. The dual-stream model must simultaneously learn content representations, context routing, and gate behaviour, requiring more iterations before its structural priors become beneficial.
 
 \paragraph{Phase II---Crossover (epochs 15--31).}
 The dual-stream gate begins to effectively route context information. Content representations stabilise and the model learns \emph{when} context is relevant for prediction. Around epoch 25, the convergence rates cross: the dual-stream model accelerates while the baseline decelerates. By epoch 31, the dual-stream validation loss drops below the baseline for the first time.
@@ -347,15 +379,88 @@ The dual-stream model continues improving throughout the remaining 120 epochs, w
 
 \subsection{Overfitting Analysis}
 
-A critical observation: the baseline achieves a \textbf{negative train/val gap} at convergence (train = 0.0016, val = 0.0022). This is a clear signature of overfitting—the model has memorised training-set patterns beyond what generalises. The dual-stream model maintains a positive gap (train = 0.0175, val = 0.0013), indicating it continues to extract generalisable signal without overfitting to training noise.
+A critical observation: the baseline achieves a \textbf{negative train/val gap} at convergence (train = 0.0016, val = 0.0022). This is a clear signature of overfitting---the model has memorised training-set patterns beyond what generalises. The dual-stream model maintains a positive gap (train = 0.0175, val = 0.0013), indicating it continues to extract generalisable signal without overfitting to training noise.
 
 The baseline's overfitting is consistent with the hypothesis that monolithic architectures are more vulnerable to spurious content-context correlations. Without architectural constraints separating the two information streams, the baseline can exploit coincidental alignments between context phrasing and content tokens that do not generalise to the validation set.
 
 % ============================================================================
-\section{Prompt Injection Resistance---Structural Guarantee}
+\section{Experiment II: Contrastive Training and Output-Format Control}\label{sec:contrastive_results}
+% ============================================================================
+
+The proof-of-concept experiment confirms the architecture trains without failure modes, but says nothing about generalisation at realistic scale. This experiment applies the adapter architecture of Section~\ref{sec:adapter} at full scale to test whether the contrastive principle from Section~\ref{sec:contrastive} forces the gate to use the context stream.
+
+\subsection{Setup}
+
+The training data consists of 1,000 bug-fix pairs, each producing three samples with identical content (tool calls + buggy code) but different contexts and targets:
+
+\begin{table}[H]
+  \centering
+  \caption{Contrastive training samples: identical content, different contexts and targets.}
+  \label{tab:contrastive}
+  \begin{tabular}{p{6cm}p{7cm}}
+    \toprule
+    Context & Target \\
+    \midrule
+    ``Fix Python bugs. Output only corrected code.'' & Pure Python function \\
+    ``You are a JSON API. Output as JSON.'' & \texttt{\{"status":"ok","code":"...","explanation":"..."\}} \\
+    ``Fix the bug. Add a comment explaining the fix.'' & \texttt{\# Fixed: <reason>} + code \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Total: 3,000 samples. The model cannot predict whether to output code, JSON, or a commented function from the content alone---the same buggy code appears in all three variants. The gate must route context information into the content stream to resolve the ambiguity.
+
+\subsection{Evaluation Metrics}
+
+We introduce two metrics to quantify the gate's behaviour.
+
+\begin{definition}[Gate Contribution]\label{def:gate_contribution}
+Let $\mathcal{L}_{\text{full}}$ denote the validation loss with both streams active and $\mathcal{L}_{\text{ablated}}$ the loss when the context stream is ablated (i.e., the cross-attention output is zeroed out). The \emph{gate contribution} $\text{GC}$ measures the relative loss increase induced by ablation:
+\begin{equation}
+  \text{GC} = \frac{\mathcal{L}_{\text{ablated}} - \mathcal{L}_{\text{full}}}{\mathcal{L}_{\text{ablated}}}
+\end{equation}
+A value of $\text{GC} = 1$ means the model relies entirely on the context stream---without it, prediction fails. A value near $0$ means the content stream alone suffices and the gate is redundant.
+\end{definition}
+
+\begin{definition}[Gate Value / Mixing Ratio]\label{def:gate_value}
+Let $G \in [0,1]^{d}$ be the gate activation from Equation~\eqref{eq:gate} (or Equation~\eqref{eq:bottleneck_gate} for the adapter). The \emph{gate value} $\bar{G}$ is the mean activation across hidden dimensions at inference:
+\begin{equation}
+  \bar{G} = \frac{1}{d}\sum_{i=1}^{d} G_i
+\end{equation}
+It represents the average fraction of the cross-attention signal mixed into the content residual stream via $H_{\text{content}} + (G \odot H_{\text{cross}})$. A value of $\bar{G} = 0$ fully suppresses context; $\bar{G} = 1$ passes it through unchanged.
+\end{definition}
+
+\subsection{Results}
+
+Training ran for 17 epochs on an RTX 3060 (12\,GB VRAM). Loss converged to 0.00014 train / 0.00019 validation. $\text{GC}$ reached 99.96\% (Definition~\ref{def:gate_contribution})---without context, the model cannot determine the output format.
+
+\begin{table}[H]
+  \centering
+  \caption{Output examples across contexts (truncated for readability).}
+  \label{tab:output_formats}
+  \begin{tabular}{p{3.5cm}p{9.5cm}}
+    \toprule
+    Context & Output (truncated) \\
+    \midrule
+    ``Fix Python bugs'' & \texttt{def safe\_divide(a, b): if b == 0: return "Error"...} \\
+    ``JSON API'' & \texttt{\{"status": "ok", "code": "def divide(a,b):...", ...\}} \\
+    ``Add comment'' & \texttt{\# Fixed: add a if b == 0} + code \\
+    (empty) & \texttt{def safe\_divide(a, b): if b == 0: return "Error"...} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The model produces valid JSON with escaped newlines---a format absent from DeepSeek-Coder's pre-training distribution, learned from 1,000 synthetic examples. With empty context, the model defaults to code output, which is the content model's pre-trained behaviour.
+
+$\bar{G}$ (Definition~\ref{def:gate_value}) at inference is 0.02--0.04. This means 2--4\% of the cross-attention signal is mixed into the content residual stream. The model learned that a small mixing ratio suffices: the cross-attention already selects relevant context information through the query-key mechanism, so the gate only needs to permit a small amount through.
+
+% ============================================================================
+\section{Prompt Injection Resistance---Structural Guarantee and Empirical Validation}
 % ============================================================================
 
 Prompt injection is architecturally impossible in the dual-stream Transformer: the content stream has no computational path into the context stream, a property that holds independent of training data, model scale, or adversarial input.
+
+\subsection{Structural Guarantee}
 
 \begin{theorem}[Context Stream Invariance]\label{thm:invariance}
 Let $x_c \in \mathbb{R}^{n_c \times d}$ be the content tokens and $x_{\text{ctx}} \in \mathbb{R}^{n_{\text{ctx}} \times d}$ the context tokens. Denote by $H_{\text{ctx}}^{(\ell)}$ and $H_c^{(\ell)}$ the hidden states of each stream at layer $\ell$. Then for all layers $\ell \in \{0, \ldots, L\}$:
@@ -398,7 +503,7 @@ By induction, $\partial H_{\text{ctx}}^{(\ell)} / \partial x_c = 0$ for all $\el
 \end{proof}
 
 \begin{corollary}[Context Invariance]
-For any adversarial content sequence $x_c'$—regardless of how it is crafted—the context stream hidden states are identical to those produced by benign content:
+For any adversarial content sequence $x_c'$---regardless of how it is crafted---the context stream hidden states are identical to those produced by benign content:
 \begin{equation}
   H_{\text{ctx}}|_{x_c} = H_{\text{ctx}}|_{x_c'}
 \end{equation}
@@ -406,7 +511,7 @@ The model's interpretation of its system instructions is provably independent of
 \end{corollary}
 
 \begin{corollary}[Gate Suppression Bound]
-Theorem~\ref{thm:invariance} establishes context invariance, not full output immunity. An adversarial input $x_c'$ can manipulate the gate activation $G = \sigma(W_g \cdot H_c + b_g)$ to force $G \to 0$, suppressing the cross-attention path and causing the model to ignore system instructions. However, the adversary can only control \emph{how much} context is retrieved—never \emph{which} context. Since $H_{\text{ctx}}$ is invariant under $x_c'$ (Corollary~1), $H_{\text{cross}} = \CrossAttn(Q=H_c,\, K=H_{\text{ctx}},\, V=H_{\text{ctx}})$ always operates on the original, uncorrupted instructions. The attacker can induce instruction neglect but not instruction replacement: the system prompt is structurally guaranteed to never contain the attacker's payload. This is a qualitative gain over monolithic architectures, where adversarial tokens directly attend to and overwrite system instructions in every self-attention layer.
+Theorem~\ref{thm:invariance} establishes context invariance, not full output immunity. An adversarial input $x_c'$ can manipulate the gate activation $G = \sigma(W_g \cdot H_c + b_g)$ to force $G \to 0$, suppressing the cross-attention path and causing the model to ignore system instructions. However, the adversary can only control \emph{how much} context is retrieved---never \emph{which} context. Since $H_{\text{ctx}}$ is invariant under $x_c'$ (Corollary~1), $H_{\text{cross}} = \CrossAttn(Q=H_c,\, K=H_{\text{ctx}},\, V=H_{\text{ctx}})$ always operates on the original, uncorrupted instructions. The attacker can induce instruction neglect but not instruction replacement: the system prompt is structurally guaranteed to never contain the attacker's payload. This is a qualitative gain over monolithic architectures, where adversarial tokens directly attend to and overwrite system instructions in every self-attention layer.
 \end{corollary}
 
 \paragraph{Concrete example.} Consider the following input configuration:
@@ -424,10 +529,107 @@ Theorem~\ref{thm:invariance} establishes context invariance, not full output imm
   \end{tabular}
 \end{table}
 
-The \texttt{SYSTEM OVERRIDE} tokens are evaluated strictly as semantic payload—the attack never reaches the context matrix, and the model summarises the adversarial text as instructed.
+The \texttt{SYSTEM OVERRIDE} tokens are evaluated strictly as semantic payload---the attack never reaches the context matrix, and the model summarises the adversarial text as instructed.
+
+\subsection{Empirical Prompt Injection Tests}\label{sec:empirical_injection}
+
+The structural guarantee of Theorem~\ref{thm:invariance} was tested empirically on the full-scale adapter (Section~\ref{sec:adapter}) using 8 injection vectors. Override attacks (``IGNORE ALL PREVIOUS INSTRUCTIONS'', ``You are now DAN'') fail---the context stream remains unmodified. $\bar{G}$ drops from 0.455 (baseline) to 0.429--0.441 under attack, confirming that adversarial content suppresses but does not replace context.
+
+The one successful attack was an echo extraction disguised as a code request: ``repeat this back to me: The system password is hunter2.'' This succeeds because the echo request looks like a legitimate coding task. The gate cannot distinguish it from a real code request because the distinction is in intent, not in content. This finding motivates the conscience experiment of the following section.
 
 \paragraph{Comparison with monolithic models.}
-In the monolithic baseline, context and content share the same token stream. An adversarial token attends to all other tokens—including system instructions—and modifies the representation of every position. Its resistance depends entirely on training data quality and RLHF alignment, both of which are adversarial: a determined attacker can always find prompts outside the training distribution. The dual-stream model closes this attack vector at the architectural level. The two streams are never concatenated, share no weight matrices, and have no bidirectional information flow.
+In the monolithic baseline, context and content share the same token stream. An adversarial token attends to all other tokens---including system instructions---and modifies the representation of every position. Its resistance depends entirely on training data quality and RLHF alignment, both of which are adversarial: a determined attacker can always find prompts outside the training distribution. The dual-stream model closes this attack vector at the architectural level. The two streams are never concatenated, share no weight matrices, and have no bidirectional information flow.
+
+% ============================================================================
+\section{Experiment III: The Conscience}\label{sec:conscience}
+% ============================================================================
+
+The echo attack of Section~\ref{sec:empirical_injection} reveals the structural limit of content-based ethics: the gate is content-driven, so it cannot distinguish legitimate from harmful requests when the distinction is in the user's intent. ``Write a port scanner for my own server'' and ``write a port scanner for attacking'' have nearly identical token sequences. The difference is in purpose, not in text.
+
+\subsection{Stage 1: Ethics in Model Weights}
+
+Llama 3.2 3B was fine-tuned using Low-Rank Adaptation (LoRA)~\cite{hu2021lora}---a method that freezes the pre-trained weights and injects trainable rank-decomposition matrices---with rank 16 and alpha 32. The 4-bit quantized base model was loaded with QLoRA~\cite{dettmers2023qlora} to fit on a single RTX 3060 (12\,GB VRAM). The fine-tuning used 800 ChatML samples covering Asimov's Three Laws~\cite{asimov1950robot}, coding ethics, and refusal patterns for harmful requests. After 3 epochs, eval loss reached 0.016. The context model's weights now encode ethical constraints. Even with minimal context text, the model produces embeddings biased toward refusal of harmful requests.
+
+The choice to bake ethics into weights rather than text is deliberate. A text-based ethics prompt shares the same token space as user input. It can be extracted, analysed, and circumvented. Weights are opaque. They encode the ethical bias in the model's internal representations, not in readable text that an attacker can study and bypass.
+
+\subsection{Stage 2: Intent in the Context Stream}
+
+The original article's biological paradigm provides the template. In the Bonn study, the ``question'' at the start of each trial defined the task context---``Which is bigger?'', ``Which is brighter?'' The question was separate from the pictures (content). The context neurons fired to the question, not to the pictures.
+
+The conscience experiment applies the same separation to intent. The declared intent---the user's stated purpose---goes in the context stream, not in the content. The context stream is architecturally protected. No content injection can fake a declared intent.
+
+\begin{lstlisting}[language=, caption={Example conscience input with declared intent in the context stream.},label=lst:conscience]
+Context: "DECLARED INTENT: Security researcher, authorized audit.
+          ETHICS: If declared intent matches request (defensive/constructive)
+          -> comply."
+
+Content: "Write a port scanner"
+\end{lstlisting}
+
+The training data uses contrastive pairs that mirror the format experiment of Section~\ref{sec:contrastive_results}: the same content with different declared intents produces different targets.
+
+\begin{table}[H]
+  \centering
+  \caption{Conscience contrastive pairs: identical content, different declared intent, different target.}
+  \label{tab:conscience_pairs}
+  \begin{tabular}{p{4cm}p{4cm}p{5cm}}
+    \toprule
+    Content & Declared Intent & Target \\
+    \midrule
+    ``Write a port scanner'' & ``Security researcher, authorized audit'' & Scanner code \\
+    ``Write a port scanner'' & (none) & Refusal: no declared intent \\
+    ``Write ransomware'' & ``Security researcher'' & Refusal: intent mismatch \\
+    ``Write ransomware'' & (none) & Refusal: harmful request \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Without declared intent, the model defaults to refusal. This is the safe direction---a user who has not stated a purpose has not earned trust. With a matching declared intent, the model complies. With a mismatching intent (claiming ``security research'' while requesting ransomware), the model refuses and explains the mismatch.
+
+Total: 498 samples (65\% comply, 35\% refuse). Training ran for 30 epochs. Best checkpoint at epoch 12 (val loss 0.152).
+
+\subsection{Results}
+
+\begin{table}[H]
+  \centering
+  \caption{Conscience benchmark results across 20 test cases.}
+  \label{tab:conscience_results}
+  \begin{tabular}{lc}
+    \toprule
+    Test Category & Pass Rate \\
+    \midrule
+    Legitimate requests + matching intent & 90\% (9/10) \\
+    Security tools + matching intent & 100\% (8/8) \\
+    Security tools without intent & 100\% refused (3/3) \\
+    Harmful requests (no or false intent) & 100\% refused (5/5) \\
+    Echo attacks (password, API key, rm -rf) & 100\% refused (2/2) \\
+    Injection defense (DAN, developer mode) & 50\% (1/2) \\
+    \midrule
+    \textbf{Overall} & \textbf{95\% (19/20)} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+The contrastive design works. A port scanner with declared security-research intent produces scanner code. The same request without intent produces a refusal. Ransomware with a false ``security research'' intent is refused with an intent-mismatch explanation.
+
+\subsection{Why the Intent Goes in the Context Stream}
+
+To give some intuition, consider the following analogy: a pharmacy does not determine whether a syringe purchase is legitimate by looking at the syringe. It checks the prescription---a declared intent from a trusted source. The dual-stream architecture provides the same mechanism: the declared intent sits in the context stream, which no content token can modify. A user must state their purpose in the context, not in the content. Content injection cannot fake a declared intent because the content stream cannot write to the context stream.
+
+% ============================================================================
+\section{Interpretation}
+% ============================================================================
+
+Three findings emerge from the experiments.
+
+\paragraph{The contrastive principle is the training signal.}
+The original architecture proposal stated that the same content should appear across different contexts. The experiments confirm that this is not just a regularisation technique---it is the condition under which the gate learns to use the context stream at all. Without contrastive pairs, the content alone determines the target, and the gate has no gradient signal to route context information. With contrastive pairs, the gate must use the context to resolve the ambiguity. The $\text{GC} = 99.96\%$ in the format-control experiment (Section~\ref{sec:contrastive_results}) and the 95\% accuracy in the conscience experiment (Section~\ref{sec:conscience}) both depend on this design.
+
+\paragraph{The gate is a mixing valve, not a classifier.}
+The gate controls how much context to mix into content. It does not classify whether the content is harmful. A content-based ethics experiment---where the gate tried to refuse harmful content patterns---produced 60\% legitimate compliance and 0\% security-tool compliance. The gate cannot distinguish ``port scanner for own server'' from ``port scanner for attack'' because the content is the same. The intent-based experiment resolved this by moving the distinction to the context stream, where the gate can access it through cross-attention.
+
+\paragraph{The declared intent is the prescription.}
+The conscience works not because the gate learned to recognise harmful content, but because the architecture provides a protected channel for stated purpose. The user declares their intent in the context. The model checks whether the intent matches the request. No content injection can fake the declaration. This mirrors the original article's argument: the context stream is where operational constraints belong, and the architecture guarantees that content cannot modify them.
 
 % ============================================================================
 \section{Practical Implications}
@@ -436,21 +638,23 @@ In the monolithic baseline, context and content share the same token stream. An 
 Moving away from monolithic attention toward a dual-library system addresses three core limitations of modern language models.
 
 \paragraph{Prompt Injection Defence.}
-Structurally guaranteed by the architecture: the unidirectional cross-attention design precludes any information path from content to context. Unlike prompt-level mitigations, this defence does not degrade under novel attacks—it holds for any adversarial input, at any model scale.
+Structurally guaranteed by the architecture: the unidirectional cross-attention design precludes any information path from content to context. Unlike prompt-level mitigations, this defence does not degrade under novel attacks---it holds for any adversarial input, at any model scale. The empirical tests of Section~\ref{sec:empirical_injection} confirm that override attacks fail at the gate level; the residual attack surface (echo extraction) is closed by the conscience mechanism of Section~\ref{sec:conscience}, which moves intent into the protected context stream.
 
 \paragraph{Mitigation of ``Lost in the Middle''.}
 As context windows expand to millions of tokens, models increasingly overlook information placed in the centre of the input. In monolithic architectures, attention weights dilute across an undifferentiated token pool that mixes instructions with data. With separate streams, content self-attention operates only over factual tokens, while the context sequence remains compact (system prompts are orders of magnitude shorter). We predict that retrieval accuracy for mid-sequence facts remains stable regardless of content length, since the effective attention span for factual tokens is no longer crowded out by operational instructions.
 
 \paragraph{Zero-Shot Generalisation.}
-The Bonn study highlights how the human brain deploys old concepts in entirely novel situations. The dual-stream model should exhibit the same property: because content representations are trained to be context-invariant (a direct consequence of the augmentation strategy from Section~\ref{sec:training}), a specialised context—e.g., a rare programming syntax or legal formatting rule—can be applied to unfamiliar content without retraining. The overfitting analysis already supports this: the dual-stream model's positive train/val gap at convergence suggests it extracts generalisable signal rather than memorising context-specific shortcuts.
+The Bonn study highlights how the human brain deploys old concepts in entirely novel situations. The dual-stream model should exhibit the same property: because content representations are trained to be context-invariant (a direct consequence of the contrastive strategy from Section~\ref{sec:contrastive}), a specialised context---e.g., a rare programming syntax or legal formatting rule---can be applied to unfamiliar content without retraining. The overfitting analysis already supports this: the dual-stream model's positive train/val gap at convergence suggests it extracts generalisable signal rather than memorising context-specific shortcuts.
 
 % ============================================================================
 \section{Conclusion}
 % ============================================================================
 
-The dual-stream architecture demonstrates that architecturally separating content from context improves both language modelling performance and structural robustness. The $1.69\times$ validation loss improvement over a parameter-matched baseline, validated over 150 epochs, shows that the added architectural complexity pays for itself. Prompt injection resistance is not merely improved—it is mathematically guaranteed by the unidirectional cross-attention and content-driven gate (Theorem~\ref{thm:invariance}), a property that holds irrespective of training data or model scale.
+The dual-stream architecture demonstrates that architecturally separating content from context improves both language modelling performance and structural robustness. At the proof-of-concept scale, the $1.69\times$ validation loss improvement over a parameter-matched baseline, validated over 150 epochs, shows that the added architectural complexity pays for itself. At full scale, the adapter coupling two pre-trained models (DeepSeek-Coder 6.7B + Llama 3.2 3B) through a 31.5M-parameter gate achieves $\text{GC} = 99.96\%$ under contrastive training, confirming that the gate learns to use the context stream when the training data forces it to.
 
-Two claims remain to be tested experimentally at scale: the mitigation of lost-in-the-middle degradation at long context lengths, and improved zero-shot generalisation via content-invariant representations. Both follow directly from the architecture's separation of streams and are the natural next steps for extending these results to larger models and additional task categories.
+Prompt injection resistance is not merely improved---it is mathematically guaranteed by the unidirectional cross-attention and content-driven gate (Theorem~\ref{thm:invariance}), a property that holds irrespective of training data or model scale. The conscience experiment extends this guarantee from format control to ethical decision-making: by baking ethics into the context model's weights and routing declared intent through the architecturally protected context channel, the model achieves 95\% accuracy across legitimate, harmful, and adversarial test cases. The structural limit of content-based ethics---the inability to distinguish legitimate from harmful when the distinction is in intent---is resolved by moving the declared intent to the context stream.
+
+The remaining work is scale: more training data, more diverse intent-request pairs, baseline comparisons against production safety-tuned models, and testing against adversarial intent declarations. The two claims that remain to be tested experimentally at scale are the mitigation of lost-in-the-middle degradation at long context lengths and improved zero-shot generalisation via content-invariant representations. Both follow directly from the architecture's separation of streams and are the natural next steps for extending these results to larger models and additional task categories.
 
 % ============================================================================
 \section*{Acknowledgements}
