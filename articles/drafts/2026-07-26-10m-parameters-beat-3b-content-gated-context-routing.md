@@ -12,7 +12,7 @@ tags:
 - efficiency
 - LLM
 - context-routing
-title: '10M Parameters Beat 1.5B: Content-Gated Context Routing Outperforms Model Scaling'
+title: "10M Parameters Beat 1.5B \u2014 Content-Gated Context Routing Outperforms Model Scaling"
 wp_modified: '2026-07-26T18:00:00'
 ---
 
