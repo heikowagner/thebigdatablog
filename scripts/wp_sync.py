@@ -85,7 +85,8 @@ def _post(endpoint: str, data: dict) -> dict:
         auth=(user, pwd), json=data, timeout=30,
     )
     r.raise_for_status()
-    return r.json()
+    d = r.json()
+    return d[0] if isinstance(d, list) else d
 
 
 def _patch(endpoint: str, data: dict) -> dict:
@@ -95,7 +96,8 @@ def _patch(endpoint: str, data: dict) -> dict:
         auth=(user, pwd), json=data, timeout=30,
     )
     r.raise_for_status()
-    return r.json()
+    d = r.json()
+    return d[0] if isinstance(d, list) else d
 
 
 def fetch_all(resource: str, **params) -> list:
