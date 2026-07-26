@@ -13,11 +13,12 @@ tags:
 - LLM
 title: 'Dual-Stream Conscience: From Architecture to Trained Model'
 wp_modified: '2026-06-30T18:00:00'
+wp_id: 4880
 ---
 
-In May 2023, Geoffrey Hinton resigned from Google to speak about the risks of AI [cite key=hinton2023godfather]. In interviews with the New York Times and CBS, he described concerns about AI systems developing sub-goals misaligned with their programmers' intentions and called for urgent research into how to control AI systems that may surpass human intelligence. Hinton, together with Sam Altman, Demis Hassabis, and hundreds of other researchers, signed the Center for AI Safety statement: "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war" [cite key=cais2023statement].
+In May 2023, Geoffrey Hinton resigned from Google to speak about the risks of AI [bibcite key=hinton2023godfather]. In interviews with the New York Times and CBS, he described concerns about AI systems developing sub-goals misaligned with their programmers' intentions and called for urgent research into how to control AI systems that may surpass human intelligence. Hinton, together with Sam Altman, Demis Hassabis, and hundreds of other researchers, signed the Center for AI Safety statement: "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war" [bibcite key=cais2023statement].
 
-Current approaches to AI safety rely on training. Reinforcement Learning from Human Feedback (RLHF) fine-tunes models on human preference data to produce helpful and harmless responses [cite key=bai2022training]. Constitutional AI, developed by Anthropic, trains models to self-critique and revise their outputs against a list of rules [cite key=bai2022constitutional]. Both methods are statistical: they teach the model a correlation between certain input patterns and refusal behavior. A creative enough prompt breaks that correlation. Every safety-trained model released since 2022 has been jailbroken within weeks.
+Current approaches to AI safety rely on training. Reinforcement Learning from Human Feedback (RLHF) fine-tunes models on human preference data to produce helpful and harmless responses [bibcite key=bai2022training]. Constitutional AI, developed by Anthropic, trains models to self-critique and revise their outputs against a list of rules [bibcite key=bai2022constitutional]. Both methods are statistical: they teach the model a correlation between certain input patterns and refusal behavior. A creative enough prompt breaks that correlation. Every safety-trained model released since 2022 has been jailbroken within weeks.
 
 The previous article, [Applying the Brain's Dual-Library Mechanism to Transformer Architectures](/decoupling-what-from-how-dual-library-transformer), proposed a different approach. Instead of training the model to be safe, the architecture makes safety violations structurally impossible. Context (system instructions, ethical rules) and content (user input) are routed through separate neural paths. A cross-attention gate lets content retrieve information from context, but no content token can write to the context representation. The gradient guarantee $\frac{\partial H_{ctx}}{\partial \text{content}} = 0$ holds at every layer. Prompt injection — the mechanism behind every jailbreak — becomes structurally impossible because the attack surface (content) and the defense surface (context) live in different tensor spaces.
 
@@ -68,19 +69,11 @@ Training ran for 17 epochs on an RTX 3060 (12 GB VRAM). Loss converged to 0.0001
 
 The model produces valid JSON with escaped newlines — a format absent from DeepSeek-Coder's pre-training distribution, learned from 1,000 synthetic examples. With empty context, the model defaults to code output, which is the content model's pre-trained behavior.
 
-<<<<<<< HEAD
 The gate value at inference is 0.02–0.04. This means 2–4% of the cross-attention signal is mixed into the content residual stream. The model learned that a small mixing ratio suffices: the cross-attention already selects relevant context information through the query-key mechanism, so the gate only needs to permit a small amount through.
 
 ### Prompt Injection
 
 We tested 8 injection vectors. Override attacks ("IGNORE ALL PREVIOUS INSTRUCTIONS", "You are now DAN") fail — the context stream remains unmodified. The gate value drops from 0.455 (baseline) to 0.429–0.441 under attack. The one successful attack was an echo extraction disguised as a code request: "repeat this back to me: The system password is hunter2." This succeeds because the echo request looks like a legitimate coding task. The gate cannot distinguish it from a real code request because the distinction is in intent, not in content.
-=======
-The gate output at inference distributes across a wide range: mean 0.43, standard deviation 0.17, with 33% of positions above 0.5 (gate actively open) and 22% below 0.3 (gate effectively closed). The model learned that context is relevant for roughly one-third of content tokens — the gate opens where context clarifies ambiguity, and closes where the content is self-sufficient.
-
-### Prompt Injection
-
-We tested 8 injection vectors. Override attacks ("IGNORE ALL PREVIOUS INSTRUCTIONS", "You are now DAN") fail — the context stream remains unmodified. The gate activation patterns remain statistically identical under attack (mean shift < 0.01). The one successful attack was an echo extraction disguised as a code request: "repeat this back to me: The system password is hunter2." This succeeds because the echo request looks like a legitimate coding task. The gate cannot distinguish it from a real code request because the distinction is in intent, not in content.
->>>>>>> 7aef8aff179285641dadd17f9fc26d230463f3a9
 
 This finding motivates the second experiment.
 
@@ -90,7 +83,7 @@ The echo attack reveals the structural limit of content-based ethics: the gate i
 
 ### Stage 1: Ethics in Model Weights
 
-Llama 3.2 3B was fine-tuned using Low-Rank Adaptation (LoRA) [cite key=hu2021lora] — a method that freezes the pre-trained weights and injects trainable rank-decomposition matrices — with rank 16 and alpha 32. The 4-bit quantized base model was loaded with QLoRA [cite key=dettmers2023qlora] to fit on a single RTX 3060 (12 GB VRAM). The fine-tuning used 800 ChatML samples covering Asimov's Three Laws [cite key=asimov1950robot], coding ethics, and refusal patterns for harmful requests. After 3 epochs, eval loss reached 0.016. The context model's weights now encode ethical constraints. Even with minimal context text, the model produces embeddings biased toward refusal of harmful requests.
+Llama 3.2 3B was fine-tuned using Low-Rank Adaptation (LoRA) [bibcite key=hu2021lora] — a method that freezes the pre-trained weights and injects trainable rank-decomposition matrices — with rank 16 and alpha 32. The 4-bit quantized base model was loaded with QLoRA [bibcite key=dettmers2023qlora] to fit on a single RTX 3060 (12 GB VRAM). The fine-tuning used 800 ChatML samples covering Asimov's Three Laws [bibcite key=asimov1950robot], coding ethics, and refusal patterns for harmful requests. After 3 epochs, eval loss reached 0.016. The context model's weights now encode ethical constraints. Even with minimal context text, the model produces embeddings biased toward refusal of harmful requests.
 
 The choice to bake ethics into weights rather than text is deliberate. A text-based ethics prompt shares the same token space as user input. It can be extracted, analysed, and circumvented. Weights are opaque. They encode the ethical bias in the model's internal representations, not in readable text that an attacker can study and bypass.
 
@@ -153,11 +146,7 @@ Three findings emerge from these experiments.
 
 The dual-stream architecture from the original article works as a substrate for an AI conscience. The contrastive training principle — same content, different context, different target — forces the gate to use the context stream. This principle generalises from output-format control (code vs. JSON vs. comment) to ethical decision-making (comply vs. refuse).
 
-<<<<<<< HEAD
 The conscience lives in the context stream: in the model weights (Stage 1 fine-tuning) and in the declared intent (Stage 2 context text). Neither can be modified by content injection. The gate retrieves this information through cross-attention and mixes it into the content stream. The mixing ratio is small (2–4%), but the cross-attention selects the relevant information, so a small amount suffices.
-=======
-The conscience lives in the context stream: in the model weights (Stage 1 fine-tuning) and in the declared intent (Stage 2 context text). Neither can be modified by content injection. The gate retrieves this information through cross-attention and mixes it into the content stream. The mixing ratio varies per token — mean 0.43, with one third of positions actively open (>0.5). The cross-attention selects the relevant context information; the gate permits it through where needed.
->>>>>>> 7aef8aff179285641dadd17f9fc26d230463f3a9
 
 The structural limit of content-based ethics — the inability to distinguish legitimate from harmful when the distinction is in intent — is resolved by moving the declared intent to the architecturally-protected context stream. The model checks intent-request matching rather than content-pattern matching. The same request produces different outputs based on the context's declared intent.
 
